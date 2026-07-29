@@ -18,7 +18,7 @@ export interface Project {
   _id?: string
   title: string
   slug: string
-  category: Category
+  category: Category | null
   excerpt: string
   content: string
   coverImage?: string
@@ -43,7 +43,7 @@ export interface BlogPost {
   excerpt: string
   content: string
   coverImage?: string
-  category: Category
+  category: Category | null
   tags: Tag[]
   published: boolean
   featured: boolean

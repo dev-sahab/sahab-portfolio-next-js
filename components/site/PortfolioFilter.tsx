@@ -10,7 +10,7 @@ export default function PortfolioFilter({ projects, categories }: { projects: Pr
   const gridRef = useRef<HTMLDivElement>(null)
 
   const filters = [{ label: 'All', value: '*' }, ...categories.map(c => ({ label: c.name, value: c.slug }))]
-  const filtered = active === '*' ? projects : projects.filter(p => p.category.slug === active)
+  const filtered = active === '*' ? projects : projects.filter(p => p.category?.slug === active)
 
   const handleFilter = async (val: string) => {
     if (val === active || animating) return
@@ -53,12 +53,12 @@ export default function PortfolioFilter({ projects, categories }: { projects: Pr
               />
             ) : (
               <div style={{ width: '100%', height: '100%', background: 'var(--surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--f-d)', fontWeight: 800, fontSize: 42, color: 'var(--border2)', letterSpacing: '-.04em' }}>
-                {p.category.name.slice(0, 2).toUpperCase()}
+                {(p.category?.name || '??').slice(0, 2).toUpperCase()}
               </div>
             )}
             <div className="pf-overlay">
               <div style={{ fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: 7 }}>
-                {p.category.name} · {p.year}
+                {p.category?.name || 'Uncategorized'} · {p.year}
               </div>
               <h3 style={{ fontFamily: 'var(--f-d)', fontWeight: 700, fontSize: 19, letterSpacing: '-.01em', color: 'var(--text)', marginBottom: 7 }}>{p.title}</h3>
               <p style={{ fontSize: 13, color: 'var(--text2)', lineHeight: 1.5, marginBottom: 14 }}>{p.excerpt}</p>

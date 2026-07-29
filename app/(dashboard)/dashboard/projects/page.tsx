@@ -25,12 +25,12 @@ export default async function ProjectsPage() {
               <div style={{ width: 48, height: 48, background: '#222', borderRadius: 6, overflow: 'hidden', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--f-d)', fontWeight: 800, fontSize: 14, color: '#b8ff4f', flexShrink: 0 }}>
                 {p.coverImage ? (
                   <Image src={p.coverImage} alt={p.title} fill sizes="48px" style={{ objectFit: 'cover' }} />
-                ) : p.category.name.slice(0, 2).toUpperCase()}
+                ) : (p.category?.name || '??').slice(0, 2).toUpperCase()}
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontWeight: 600, fontSize: 14, color: '#f0ede6', marginBottom: 2 }}>{p.title}</div>
                 <div style={{ fontSize: 12, color: '#555', display: 'flex', gap: 12 }}>
-                  <span>{p.category.name}</span>
+                  <span>{p.category?.name || 'Uncategorized'}</span>
                   <span>·</span>
                   <span>{p.year}</span>
                   <span>·</span>

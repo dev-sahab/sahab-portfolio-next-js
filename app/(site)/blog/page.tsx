@@ -52,11 +52,11 @@ export default async function BlogPage() {
                           sizes="200px"
                           style={{ objectFit: 'cover' }}
                         />
-                      ) : post.category.name.slice(0, 2).toUpperCase()}
+                      ) : (post.category?.name || '??').slice(0, 2).toUpperCase()}
                     </div>
                     <div style={{ padding: '24px 26px', display: 'flex', flexDirection: 'column' }}>
                       <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 9, fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--muted)' }}>
-                        <span style={{ color: 'var(--accent)' }}>{post.category.name}</span>
+                        <span style={{ color: 'var(--accent)' }}>{post.category?.name || 'Uncategorized'}</span>
                         <span>·</span>
                         <span>{post.readTime || 5} min read</span>
                         <span>·</span>

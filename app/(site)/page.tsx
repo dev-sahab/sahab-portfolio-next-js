@@ -169,7 +169,7 @@ export default async function HomePage() {
                         sizes="(max-width: 1024px) 100vw, 33vw"
                         style={{ objectFit: 'cover' }}
                       />
-                    ) : p.category.name.slice(0, 2).toUpperCase()}
+                    ) : (p.category?.name || '??').slice(0, 2).toUpperCase()}
                   </div>
                   <div style={{ padding: 28, flex: 1, display: 'flex', flexDirection: 'column' }}>
                     <div style={{ fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.15em', color: 'var(--muted)', marginBottom: 9 }}>{String(i + 1).padStart(2, '0')} / {p.year}</div>
@@ -224,11 +224,11 @@ export default async function HomePage() {
                           sizes="(max-width: 1024px) 100vw, 33vw"
                           style={{ objectFit: 'cover' }}
                         />
-                      ) : post.category.name.slice(0, 2).toUpperCase()}
+                      ) : (post.category?.name || '??').slice(0, 2).toUpperCase()}
                     </div>
                     <div style={{ padding: 24, flex: 1, display: 'flex', flexDirection: 'column' }}>
                       <div style={{ display: 'flex', gap: 10, marginBottom: 11, fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--muted)' }}>
-                        <span style={{ color: 'var(--accent)' }}>{post.category.name}</span>
+                        <span style={{ color: 'var(--accent)' }}>{post.category?.name || 'Uncategorized'}</span>
                         <span>·</span>
                         <span>{post.readTime || 5} min read</span>
                       </div>

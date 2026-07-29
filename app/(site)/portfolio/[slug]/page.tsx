@@ -98,7 +98,7 @@ export default async function ProjectPage({
                 flexWrap: "wrap",
               }}
             >
-              <span className="tag green">{project.category.name}</span>
+              <span className="tag green">{project.category?.name || 'Uncategorized'}</span>
               <span className="tag">{project.year}</span>
               {project.client && (
                 <span className="tag">Client: {project.client}</span>
@@ -207,7 +207,7 @@ export default async function ProjectPage({
                   style={{ objectFit: "cover" }}
                 />
               ) : (
-                project.category.name.slice(0, 2).toUpperCase()
+                (project.category?.name || '??').slice(0, 2).toUpperCase()
               )}
             </div>
           </AnimatedSection>
@@ -279,7 +279,7 @@ export default async function ProjectPage({
                   }}
                 >
                   {[
-                    ["Category", project.category.name],
+                    ["Category", project.category?.name || "Uncategorized"],
                     ["Year", project.year],
                     ["Client", project.client || "Confidential"],
                     ["Duration", project.duration || "N/A"],
