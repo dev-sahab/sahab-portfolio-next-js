@@ -5,8 +5,7 @@ import UserModel from '@/models/User'
 
 async function requireAdmin() {
   const session = await auth()
-  if (!session) return false
-  return (session.user as any)?.role === 'admin'
+  return (session?.user as any)?.role === 'admin'
 }
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -15,8 +14,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     await connectDB()
     const { id } = await params
     const body = await req.json()
-    // Don't allow password update via this route — use dedicated endpoint
-    delete body.password
+    delete body.password // password changes handled separately
     const user = await UserModel.findByIdAndUpdate(id, body, { new: true }).select('-password')
     if (!user) return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 })
     return NextResponse.json({ success: true, data: user })

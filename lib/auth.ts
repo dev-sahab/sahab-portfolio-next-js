@@ -1,7 +1,6 @@
 import NextAuth from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
 import connectDB from './mongodb'
-import UserModel from '@/models/User'
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -15,7 +14,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!credentials?.email || !credentials?.password) return null
         try {
           await connectDB()
-          // 1. Try MongoDB users first
+          // Dynamic import avoids edge-runtime issues
+          const UserModel = (await import('@/models/User')).default
           const user = await UserModel.findOne({
             email: (credentials.email as string).toLowerCase(),
             active: true,
@@ -23,21 +23,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           if (user) {
             const ok = await user.comparePassword(credentials.password as string)
             if (!ok) return null
-            return {
-              id:   user._id.toString(),
-              name: user.name,
-              email: user.email,
-              role: user.role,
-            }
+            return { id: user._id.toString(), name: user.name, email: user.email, role: user.role }
           }
-          // 2. Fallback: env-var admin (for initial setup before first DB user is created)
-          const adminEmail = process.env.ADMIN_EMAIL
+          // Fallback: .env admin (used before first DB user created)
+          const adminEmail    = process.env.ADMIN_EMAIL
           const adminPassword = process.env.ADMIN_PASSWORD
-          if (
-            adminEmail && adminPassword &&
-            credentials.email === adminEmail &&
-            credentials.password === adminPassword
-          ) {
+          if (adminEmail && adminPassword &&
+              credentials.email === adminEmail &&
+              credentials.password === adminPassword) {
             return { id: 'env-admin', name: 'Admin', email: adminEmail, role: 'admin' }
           }
           return null
@@ -59,7 +52,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session
     },
     authorized({ auth, request: { nextUrl } }) {
-      const isLoggedIn = !!auth?.user
+      const isLoggedIn  = !!auth?.user
       const isDashboard = nextUrl.pathname.startsWith('/dashboard')
       if (isDashboard) return isLoggedIn
       return true

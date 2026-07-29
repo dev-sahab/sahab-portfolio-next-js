@@ -11,13 +11,11 @@ const UserSchema = new Schema({
   active:   { type: Boolean, default: true },
 }, { timestamps: true })
 
-// Hash password before save
 UserSchema.pre('save', async function () {
   if (!this.isModified('password')) return
   this.password = await bcrypt.hash(this.password, 12)
 })
 
-// Compare method
 UserSchema.methods.comparePassword = function (plain: string) {
   return bcrypt.compare(plain, this.password)
 }

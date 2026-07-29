@@ -3,136 +3,105 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import ThemeToggle from './ThemeToggle'
+import { Menu, X } from 'lucide-react'
 
 const links = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About' },
+  { href: '/',          label: 'Home' },
+  { href: '/about',     label: 'About' },
   { href: '/portfolio', label: 'Portfolio' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/blog',      label: 'Blog' },
+  { href: '/contact',   label: 'Contact' },
 ]
 
 export default function Navbar() {
   const pathname = usePathname()
-  const [scrolled, setScrolled] = useState(false)
-  const [hidden, setHidden] = useState(false)
-  const [drawerOpen, setDrawerOpen] = useState(false)
-  const [lastY, setLastY] = useState(0)
+  const [scrolled,    setScrolled]    = useState(false)
+  const [hidden,      setHidden]      = useState(false)
+  const [drawerOpen,  setDrawerOpen]  = useState(false)
+  const [lastY,       setLastY]       = useState(0)
 
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY
       setScrolled(y > 80)
       if (y > 120) {
-        setHidden(y > lastY + 6)
-        if (y < lastY - 2) setHidden(false)
-      } else {
-        setHidden(false)
-      }
+        if (y > lastY + 6) setHidden(true)
+        else if (y < lastY - 2) setHidden(false)
+      } else setHidden(false)
       setLastY(y)
     }
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [lastY])
 
-  useEffect(() => {
-    document.body.style.overflow = drawerOpen ? 'hidden' : ''
-  }, [drawerOpen])
-
-  useEffect(() => {
-    setDrawerOpen(false)
-  }, [pathname])
+  useEffect(() => { document.body.style.overflow = drawerOpen ? 'hidden' : '' }, [drawerOpen])
+  useEffect(() => { setDrawerOpen(false) }, [pathname])
 
   return (
     <>
-      {/* Drawer */}
-      <div
-        className={`nav-drawer ${drawerOpen ? 'open' : ''}`}
-        role="dialog"
-        aria-hidden={!drawerOpen}
-      >
-        <nav>
+      {/* Mobile Drawer */}
+      <div style={{
+        position: 'fixed', inset: 0, background: 'var(--bg)', zIndex: 350,
+        display: 'flex', flexDirection: 'column', justifyContent: 'center',
+        alignItems: 'flex-start', padding: 'var(--px)',
+        transform: drawerOpen ? 'translateX(0)' : 'translateX(-100%)',
+        transition: 'transform .5s var(--ease)',
+      }}>
+        <nav style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
           {links.map((l, i) => (
-            <Link key={l.href} href={l.href}>
-              <span style={{ fontFamily: 'var(--f-m)', fontSize: '10px', color: 'var(--muted)', marginRight: 12 }}>0{i + 1}</span>
+            <Link key={l.href} href={l.href} style={{
+              fontFamily: 'var(--f-d)', fontWeight: 700,
+              fontSize: 'clamp(34px, 9vw, 68px)', lineHeight: 1.12,
+              color: pathname === l.href ? 'var(--accent)' : 'var(--text)',
+              display: 'flex', alignItems: 'center', gap: 14, transition: 'color .3s',
+            }}>
+              <span style={{ fontFamily: 'var(--f-m)', fontSize: '0.28em', color: 'var(--muted)' }}>0{i + 1}</span>
               {l.label}
             </Link>
           ))}
         </nav>
-        <div style={{ position: 'absolute', bottom: 'var(--px)', left: 'var(--px)', right: 'var(--px)', display: 'flex', gap: 22 }}>
-          <a href="https://github.com/dev-sahab" target="_blank" rel="noopener" style={{ fontFamily: 'var(--f-m)', fontSize: 11, color: 'var(--text2)' }}>GitHub</a>
-          <a href="https://linkedin.com/in/sahab-mi" target="_blank" rel="noopener" style={{ fontFamily: 'var(--f-m)', fontSize: 11, color: 'var(--text2)' }}>LinkedIn</a>
-          <a href="mailto:frshahab.me@gmail.com" style={{ fontFamily: 'var(--f-m)', fontSize: 11, color: 'var(--text2)' }}>Email</a>
+        <div style={{ position: 'absolute', bottom: 'var(--px)', left: 'var(--px)', right: 'var(--px)', display: 'flex', gap: 22, flexWrap: 'wrap' }}>
+          {[['GitHub','https://github.com/dev-sahab'],['LinkedIn','https://linkedin.com/in/sahab-mi'],['Email','mailto:frshahab.me@gmail.com']].map(([l,h]) => (
+            <a key={l} href={h} target="_blank" rel="noopener" style={{ fontFamily: 'var(--f-m)', fontSize: 11, color: 'var(--text2)', transition: 'color .3s' }}>{l}</a>
+          ))}
         </div>
       </div>
 
-      <header
-        id="site-nav"
-        className={`${scrolled ? 'scrolled' : ''} ${hidden ? 'nav-hidden' : ''}`}
-      >
-        {/* Logo */}
-        <Link href="/" style={{ fontFamily: 'var(--f-d)', fontWeight: 800, fontSize: 20, letterSpacing: '-.02em' }}>
+      <header id="site-nav" className={`${scrolled ? 'scrolled' : ''} ${hidden ? 'nav-hidden' : ''}`}>
+        <Link href="/" className="nav-logo" style={{ fontFamily: 'var(--f-d)', fontWeight: 800, fontSize: 20, letterSpacing: '-.02em' }}>
           Sahab<span style={{ color: 'var(--accent)' }}>.</span>
         </Link>
 
         {/* Desktop links */}
-        <nav style={{ display: 'flex', gap: 34 }} className="nav-links-desktop">
-          {links.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className={`nav-link ${pathname === l.href ? 'active' : ''}`}
-              style={{
-                fontFamily: 'var(--f-m)', fontSize: 11, letterSpacing: '.1em',
-                textTransform: 'uppercase', color: pathname === l.href ? 'var(--accent)' : 'var(--text2)',
-                transition: 'color .3s',
-              }}
-            >
+        <nav className="nav-links-desktop" style={{ display: 'flex', gap: 34 }}>
+          {links.map(l => (
+            <Link key={l.href} href={l.href} className={`nav-link ${pathname === l.href ? 'active' : ''}`}
+              style={{ fontFamily: 'var(--f-m)', fontSize: 11, letterSpacing: '.1em', textTransform: 'uppercase', color: pathname === l.href ? 'var(--accent)' : 'var(--text2)', transition: 'color .3s' }}>
               {l.label}
             </Link>
           ))}
         </nav>
 
-        {/* Right */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <span
-            className="nav-status"
-            style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--text2)' }}
-          >
-            <span
-              className="pulse"
-              style={{ width: 7, height: 7, borderRadius: '50%', background: '#22c55e', flexShrink: 0 }}
-            />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <span className="nav-status-desktop" style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--text2)' }}>
+            <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#22c55e', flexShrink: 0, animation: 'pulse 2s ease-in-out infinite' }} />
             Available
           </span>
           <ThemeToggle />
-          <Link href="/get-quote" className="btn btn-accent" style={{ padding: '10px 22px', fontSize: 10 }}>
-            Get Quote
-          </Link>
-          {/* Hamburger */}
+          <Link href="/get-quote" className="btn btn-accent nav-cta-desktop" style={{ padding: '10px 20px', fontSize: 10 }}>Get Quote</Link>
           <button
-            onClick={() => setDrawerOpen(!drawerOpen)}
-            className="hamburger"
+            onClick={() => setDrawerOpen(v => !v)}
             aria-label={drawerOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={drawerOpen}
-            style={{ display: 'flex', flexDirection: 'column', gap: 5, padding: 3 }}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, border: '1px solid var(--border2)', borderRadius: 8, color: 'var(--text2)' }}
           >
-            <span style={{ display: 'block', width: 24, height: 1.5, background: 'var(--text)', transition: '.38s var(--ease)', transform: drawerOpen ? 'translateY(6.5px) rotate(45deg)' : 'none' }} />
-            <span style={{ display: 'block', width: 24, height: 1.5, background: 'var(--text)', transition: '.38s var(--ease)', opacity: drawerOpen ? 0 : 1 }} />
-            <span style={{ display: 'block', width: 24, height: 1.5, background: 'var(--text)', transition: '.38s var(--ease)', transform: drawerOpen ? 'translateY(-6.5px) rotate(-45deg)' : 'none' }} />
+            {drawerOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
         </div>
       </header>
 
       <style>{`
-        .nav-links-desktop { display: flex; }
-        @media (max-width: 768px) { .nav-links-desktop { display: none !important; } .nav-status { display: none !important; } }
+        @media (min-width: 769px) { header #site-nav button[aria-label] { display: none; } }
         @keyframes pulse { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,.5)} 50%{opacity:.7;box-shadow:0 0 0 6px rgba(34,197,94,0)} }
-        .pulse { animation: pulse 2s ease-in-out infinite; }
-        .nav-drawer { position: fixed; inset: 0; background: var(--bg); z-index: 350; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: var(--px); transform: translateX(-100%); transition: transform .5s var(--ease); }
-        .nav-drawer.open { transform: translateX(0); }
-        .nav-drawer a { font-family: var(--f-d); font-weight: 700; font-size: clamp(34px,9vw,68px); line-height: 1.12; color: var(--text); transition: color .3s; display: flex; align-items: center; gap: 14px; margin-bottom: 4px; }
-        .nav-drawer a:hover { color: var(--accent); }
       `}</style>
     </>
   )

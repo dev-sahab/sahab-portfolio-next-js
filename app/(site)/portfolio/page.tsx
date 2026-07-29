@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { connection } from 'next/server'
 import connectDB from '@/lib/mongodb'
 import Project from '@/models/Project'
 import PortfolioFilter from '@/components/site/PortfolioFilter'
@@ -10,17 +9,11 @@ import type { Project as IProject } from '@/types'
 export const metadata: Metadata = { title: 'Portfolio' }
 
 export default async function PortfolioPage() {
-  await connection()
   let projects: IProject[] = []
   try {
     await connectDB()
-    const projectDocuments = await Project.find({ published: true }).sort({ featured: -1, createdAt: -1 }).lean()
-    projects = projectDocuments.map((project) => ({
-      ...project,
-      _id: project._id.toString(),
-      createdAt: project.createdAt?.toISOString(),
-      updatedAt: project.updatedAt?.toISOString(),
-    })) as unknown as IProject[]
+    projects = await Project.find({ published: true })
+      .sort({ featured: -1, createdAt: -1 }).lean() as unknown as IProject[]
   } catch {}
 
   return (
@@ -29,13 +22,18 @@ export default async function PortfolioPage() {
         <div className="ph-dots" aria-hidden="true" />
         <div className="container">
           <AnimatedSection>
-            <div style={{ fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 17, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 17, display: 'flex', gap: 8 }}>
               <Link href="/" style={{ color: 'var(--muted)' }}>Home</Link>
-              <span>/</span><span>Portfolio</span>
+              <span style={{ color: 'var(--border2)' }}>/</span>
+              <span>Portfolio</span>
             </div>
           </AnimatedSection>
           <AnimatedSection><h1 className="h-xl">Selected <span className="accent-word">Work</span></h1></AnimatedSection>
-          <AnimatedSection from="fade"><p style={{ fontSize: 16, color: 'var(--text2)', maxWidth: 540, marginTop: 17, lineHeight: 1.72 }}>A curated collection — WordPress, Webflow, MERN and more.</p></AnimatedSection>
+          <AnimatedSection from="fade">
+            <p style={{ fontSize: 16, color: 'var(--text2)', maxWidth: 540, marginTop: 17, lineHeight: 1.72 }}>
+              A curated collection — WordPress, Webflow, MERN and more.
+            </p>
+          </AnimatedSection>
         </div>
       </section>
 
@@ -54,7 +52,9 @@ export default async function PortfolioPage() {
           <AnimatedSection>
             <span className="s-label" style={{ justifyContent: 'center' }}>Your project next</span>
             <h2 className="h-xl">Got an <span className="accent-word">idea?</span></h2>
-            <p style={{ color: 'var(--text2)', maxWidth: 420, margin: '18px auto 36px', fontSize: 16, lineHeight: 1.7 }}>Let's turn your vision into a live, high-performance product.</p>
+            <p style={{ color: 'var(--text2)', maxWidth: 420, margin: '18px auto 36px', fontSize: 16, lineHeight: 1.7 }}>
+              Let's turn your vision into a live, high-performance product.
+            </p>
             <Link href="/contact" className="btn btn-accent">Start a Project →</Link>
           </AnimatedSection>
         </div>
