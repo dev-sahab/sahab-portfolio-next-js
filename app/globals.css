@@ -412,7 +412,7 @@ select.form-input option {
 .services-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2px;
+  gap: 12px;
 }
 .service-card {
   background: var(--surface);
@@ -448,7 +448,7 @@ select.form-input option {
 .work-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 2px;
+  gap: 12px;
 }
 .project-card {
   background: var(--surface);
@@ -504,7 +504,7 @@ select.form-input option {
 .portfolio-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2px;
+  gap: 12px;
   padding: 44px 0;
   min-height: 400px;
 }
@@ -530,6 +530,13 @@ select.form-input option {
 }
 .pf-item:hover .pf-overlay {
   opacity: 1;
+}
+
+/*  blog layout */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
 }
 
 /* ── FILTER ── */
@@ -809,6 +816,9 @@ select.form-input option {
   }
 
   /* Blog layout */
+  .blog-grid {
+    grid-template-columns: 1fr !important;
+  }
   .blog-post-layout {
     grid-template-columns: 1fr !important;
   }
