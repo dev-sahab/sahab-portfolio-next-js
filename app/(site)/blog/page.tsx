@@ -5,6 +5,8 @@ import Image from 'next/image'
 import AnimatedSection from '@/components/site/AnimatedSection'
 import connectDB from '@/lib/mongodb'
 import BlogPost from '@/models/BlogPost'
+import '@/models/Category'
+import '@/models/Tag'
 import { formatDate } from '@/lib/utils'
 import type { BlogPost as IPost } from '@/types'
 
@@ -13,7 +15,7 @@ export const metadata: Metadata = { title: 'Blog' }
 export default async function BlogPage() {
   await connection()
   let posts: IPost[] = []
-  try { await connectDB(); posts = await BlogPost.find({ published: true }).sort({ createdAt: -1 }).lean() as unknown as IPost[] } catch {}
+  try { await connectDB(); posts = await BlogPost.find({ published: true }).sort({ createdAt: -1 }).populate('category').lean() as unknown as IPost[] } catch {}
 
   return (
     <main>
@@ -50,11 +52,11 @@ export default async function BlogPage() {
                           sizes="200px"
                           style={{ objectFit: 'cover' }}
                         />
-                      ) : post.category.slice(0, 2).toUpperCase()}
+                      ) : post.category.name.slice(0, 2).toUpperCase()}
                     </div>
                     <div style={{ padding: '24px 26px', display: 'flex', flexDirection: 'column' }}>
                       <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 9, fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--muted)' }}>
-                        <span style={{ color: 'var(--accent)' }}>{post.category}</span>
+                        <span style={{ color: 'var(--accent)' }}>{post.category.name}</span>
                         <span>·</span>
                         <span>{post.readTime || 5} min read</span>
                         <span>·</span>

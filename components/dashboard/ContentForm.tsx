@@ -2,6 +2,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import ImageUpload from './ImageUpload'
+import TagsInput from './TagsInput'
+import CategoryCombobox from './CategoryCombobox'
 
 const S = {
   lbl: { display: 'block', fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.14em', textTransform: 'uppercase' as const, color: '#555', marginBottom: 6 },
@@ -12,8 +14,11 @@ const S = {
 
 export interface Field {
   name: string; label: string
-  type?: 'text'|'textarea'|'select'|'checkbox'|'tags'|'number'|'url'|'email'|'image'
-  options?: string[]; required?: boolean; placeholder?: string; imageFolder?: string
+  type?: 'text'|'textarea'|'select'|'checkbox'|'tags'|'number'|'url'|'email'|'image'|'category'
+  options?: string[] | { value: string; label: string }[]; required?: boolean; placeholder?: string; imageFolder?: string
+  suggestions?: string[]
+  categories?: { _id: string; name: string; parent?: string | null }[]
+  taxonomyType?: 'project' | 'blog'
 }
 
 interface Props {
@@ -31,7 +36,16 @@ export default function ContentForm({ title, endpoint, method = 'POST', fields, 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true); setError('')
+    setError('')
+    for (const f of fields) {
+      if (!f.required) continue
+      const v = values[f.name]
+      if (v === undefined || v === null || v === '' || (Array.isArray(v) && v.length === 0)) {
+        setError(`${f.label} is required`)
+        return
+      }
+    }
+    setLoading(true)
     try {
       const res  = await fetch(endpoint, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(values) })
       const data = await res.json()
@@ -63,29 +77,32 @@ export default function ContentForm({ title, endpoint, method = 'POST', fields, 
               <><label style={S.lbl}>{f.label}{f.required && ' *'}</label>
               <select value={values[f.name] || ''} onChange={e => set(f.name, e.target.value)} required={f.required} style={S.inp}>
                 <option value="">Select…</option>
-                {f.options?.map(o => <option key={o} value={o}>{o}</option>)}
+                {f.options?.map(o => typeof o === 'string'
+                  ? <option key={o} value={o}>{o}</option>
+                  : <option key={o.value} value={o.value}>{o.label}</option>)}
               </select></>
+            ) : f.type === 'category' ? (
+              <CategoryCombobox
+                label={f.label}
+                value={values[f.name] || ''}
+                onChange={v => set(f.name, v)}
+                categories={f.categories || []}
+                taxonomyType={f.taxonomyType || 'project'}
+                required={f.required}
+              />
             ) : f.type === 'checkbox' ? (
               <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
                 <input type="checkbox" checked={!!values[f.name]} onChange={e => set(f.name, e.target.checked)} style={{ width: 16, height: 16, accentColor: '#b8ff4f' }} />
                 <span style={{ fontSize: 14, color: '#9a9a9a' }}>{f.label}</span>
               </label>
             ) : f.type === 'tags' ? (
-              <><label style={S.lbl}>{f.label}</label>
-              <input type="text" placeholder={f.placeholder || 'Type and press Enter'}  style={S.inp}
-                onKeyDown={e => {
-                  if (e.key !== 'Enter') return; e.preventDefault()
-                  const v = (e.target as HTMLInputElement).value.trim()
-                  if (v) { set(f.name, [...(values[f.name] || []), v]); (e.target as HTMLInputElement).value = '' }
-                }} />
-              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 8 }}>
-                {(values[f.name] || []).map((tag: string, i: number) => (
-                  <span key={i} onClick={() => set(f.name, values[f.name].filter((_: any, j: number) => j !== i))}
-                    style={{ padding: '3px 10px', background: 'rgba(184,255,79,.1)', border: '1px solid rgba(184,255,79,.2)', borderRadius: 100, fontSize: 11, color: '#b8ff4f', cursor: 'pointer', fontFamily: 'var(--f-m)' }}>
-                    {tag} ×
-                  </span>
-                ))}
-              </div></>
+              <TagsInput
+                label={f.label}
+                value={values[f.name] || []}
+                onChange={v => set(f.name, v)}
+                suggestions={f.suggestions}
+                placeholder={f.placeholder}
+              />
             ) : f.type === 'number' ? (
               <><label style={S.lbl}>{f.label}{f.required && ' *'}</label>
               <input type="number" value={values[f.name] ?? ''} onChange={e => set(f.name, Number(e.target.value))} required={f.required} style={S.inp} /></>

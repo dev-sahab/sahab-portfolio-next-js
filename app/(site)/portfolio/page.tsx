@@ -1,19 +1,25 @@
 import type { Metadata } from 'next'
 import connectDB from '@/lib/mongodb'
 import Project from '@/models/Project'
+import Category from '@/models/Category'
+import '@/models/Tag'
 import PortfolioFilter from '@/components/site/PortfolioFilter'
 import AnimatedSection from '@/components/site/AnimatedSection'
 import Link from 'next/link'
-import type { Project as IProject } from '@/types'
+import type { Project as IProject, Category as ICategory } from '@/types'
 
 export const metadata: Metadata = { title: 'Portfolio' }
 
 export default async function PortfolioPage() {
   let projects: IProject[] = []
+  let categories: ICategory[] = []
   try {
     await connectDB()
-    projects = await Project.find({ published: true })
-      .sort({ featured: -1, createdAt: -1 }).lean() as unknown as IProject[]
+    ;[projects, categories] = await Promise.all([
+      Project.find({ published: true })
+        .sort({ featured: -1, createdAt: -1 }).populate('category').populate('tags').lean() as unknown as IProject[],
+      Category.find({ type: 'project' }).sort({ name: 1 }).lean() as unknown as ICategory[],
+    ])
   } catch {}
 
   return (
@@ -43,7 +49,7 @@ export default async function PortfolioPage() {
             <p style={{ fontSize: 16 }}>Projects coming soon. Check back later!</p>
           </div>
         ) : (
-          <PortfolioFilter projects={projects} />
+          <PortfolioFilter projects={projects} categories={categories} />
         )}
       </div>
 

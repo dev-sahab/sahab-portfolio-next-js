@@ -1,13 +1,29 @@
+export interface Category {
+  _id: string
+  name: string
+  slug: string
+  type: 'project' | 'blog'
+  parent?: string | null
+  description?: string
+}
+
+export interface Tag {
+  _id: string
+  name: string
+  slug: string
+  type: 'project' | 'blog'
+}
+
 export interface Project {
   _id?: string
   title: string
   slug: string
-  category: 'wordpress' | 'woocommerce' | 'webflow' | 'mern' | 'framer' | 'other'
+  category: Category
   excerpt: string
   content: string
   coverImage?: string
   images?: string[]
-  tags: string[]
+  tags: Tag[]
   liveUrl?: string
   githubUrl?: string
   featured: boolean
@@ -27,8 +43,8 @@ export interface BlogPost {
   excerpt: string
   content: string
   coverImage?: string
-  category: string
-  tags: string[]
+  category: Category
+  tags: Tag[]
   published: boolean
   featured: boolean
   readTime?: number

@@ -1,27 +1,37 @@
 import connectDB from '@/lib/mongodb'
 import BlogPost from '@/models/BlogPost'
+import Category from '@/models/Category'
+import Tag from '@/models/Tag'
 import ContentForm from '@/components/dashboard/ContentForm'
 import DeleteButton from '@/components/dashboard/DeleteButton'
 import { notFound } from 'next/navigation'
 
-const FIELDS = [
-  { name: 'title',      label: 'Post Title', required: true },
-  { name: 'slug',       label: 'Slug' },
-  { name: 'category',  label: 'Category', required: true },
-  { name: 'coverImage', label: 'Cover Image', type: 'image' as const, imageFolder: 'sahab-blog' },
-  { name: 'excerpt',    label: 'Excerpt', type: 'textarea' as const },
-  { name: 'content',   label: 'Full Content (Markdown)', type: 'textarea' as const },
-  { name: 'tags',      label: 'Tags', type: 'tags' as const },
-  { name: 'featured',  label: 'Featured?', type: 'checkbox' as const },
-  { name: 'published', label: 'Published?', type: 'checkbox' as const },
-]
-
 export default async function EditBlogPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   await connectDB()
-  const post = await BlogPost.findById(id).lean()
+  const [post, categories, tags] = await Promise.all([
+    BlogPost.findById(id).populate('category').populate('tags').lean(),
+    Category.find({ type: 'blog' }).sort({ name: 1 }).lean(),
+    Tag.find({ type: 'blog' }).sort({ name: 1 }).lean(),
+  ])
   if (!post) notFound()
   const p = post as any
+  const categoriesPlain = (categories as any[]).map(c => ({ _id: String(c._id), name: c.name, parent: c.parent ? String(c.parent) : null }))
+  const tagNames = (tags as any[]).map(t => t.name)
+
+  const FIELDS = [
+    { name: 'title',      label: 'Post Title', required: true },
+    { name: 'slug',       label: 'Slug' },
+    { name: 'category',  label: 'Category', type: 'category' as const, required: true,
+      categories: categoriesPlain, taxonomyType: 'blog' as const },
+    { name: 'coverImage', label: 'Cover Image', type: 'image' as const, imageFolder: 'sahab-blog' },
+    { name: 'excerpt',    label: 'Excerpt', type: 'textarea' as const },
+    { name: 'content',   label: 'Full Content (Markdown)', type: 'textarea' as const },
+    { name: 'tags',      label: 'Tags', type: 'tags' as const, suggestions: tagNames },
+    { name: 'featured',  label: 'Featured?', type: 'checkbox' as const },
+    { name: 'published', label: 'Published?', type: 'checkbox' as const },
+  ]
+
   return (
     <div style={{ padding: 32, maxWidth: 900 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
@@ -33,7 +43,12 @@ export default async function EditBlogPage({ params }: { params: Promise<{ id: s
         endpoint={`/api/blog/${id}`}
         method="PUT"
         fields={FIELDS}
-        defaults={{ ...p, _id: undefined, tags: p.tags || [] }}
+        defaults={{
+          ...p,
+          _id: undefined,
+          category: p.category?._id ? String(p.category._id) : '',
+          tags: (p.tags || []).map((t: any) => t.name),
+        }}
         redirectTo="/dashboard/blog"
       />
     </div>

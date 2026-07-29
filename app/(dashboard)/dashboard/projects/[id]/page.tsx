@@ -1,34 +1,44 @@
 import connectDB from '@/lib/mongodb'
 import Project from '@/models/Project'
+import Category from '@/models/Category'
+import Tag from '@/models/Tag'
 import ContentForm from '@/components/dashboard/ContentForm'
 import DeleteButton from '@/components/dashboard/DeleteButton'
 import { notFound } from 'next/navigation'
 
-const FIELDS = [
-  { name: 'title',      label: 'Project Title', required: true },
-  { name: 'slug',       label: 'Slug' },
-  { name: 'category',  label: 'Category', type: 'select' as const, required: true,
-    options: ['wordpress','woocommerce','webflow','mern','framer','other'] },
-  { name: 'year',       label: 'Year', type: 'number' as const, required: true },
-  { name: 'client',     label: 'Client Name' },
-  { name: 'duration',   label: 'Duration' },
-  { name: 'liveUrl',    label: 'Live URL',   type: 'url' as const },
-  { name: 'githubUrl',  label: 'GitHub URL', type: 'url' as const },
-  { name: 'coverImage', label: 'Cover Image', type: 'image' as const, imageFolder: 'sahab-projects' },
-  { name: 'excerpt',    label: 'Short Excerpt',           type: 'textarea' as const },
-  { name: 'content',    label: 'Full Case Study (Markdown)', type: 'textarea' as const },
-  { name: 'tags',       label: 'Tags',       type: 'tags' as const },
-  { name: 'stack',      label: 'Tech Stack', type: 'tags' as const },
-  { name: 'featured',  label: 'Featured?',  type: 'checkbox' as const },
-  { name: 'published', label: 'Published?', type: 'checkbox' as const },
-]
-
 export default async function EditProjectPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   await connectDB()
-  const project = await Project.findById(id).lean()
+  const [project, categories, tags, stack] = await Promise.all([
+    Project.findById(id).populate('category').populate('tags').lean(),
+    Category.find({ type: 'project' }).sort({ name: 1 }).lean(),
+    Tag.find({ type: 'project' }).sort({ name: 1 }).lean(),
+    Project.distinct('stack'),
+  ])
   if (!project) notFound()
   const p = project as any
+  const categoriesPlain = (categories as any[]).map(c => ({ _id: String(c._id), name: c.name, parent: c.parent ? String(c.parent) : null }))
+  const tagNames = (tags as any[]).map(t => t.name)
+
+  const FIELDS = [
+    { name: 'title',      label: 'Project Title', required: true },
+    { name: 'slug',       label: 'Slug' },
+    { name: 'category',  label: 'Category', type: 'category' as const, required: true,
+      categories: categoriesPlain, taxonomyType: 'project' as const },
+    { name: 'year',       label: 'Year', type: 'number' as const, required: true },
+    { name: 'client',     label: 'Client Name' },
+    { name: 'duration',   label: 'Duration' },
+    { name: 'liveUrl',    label: 'Live URL',   type: 'url' as const },
+    { name: 'githubUrl',  label: 'GitHub URL', type: 'url' as const },
+    { name: 'coverImage', label: 'Cover Image', type: 'image' as const, imageFolder: 'sahab-projects' },
+    { name: 'excerpt',    label: 'Short Excerpt',           type: 'textarea' as const },
+    { name: 'content',    label: 'Full Case Study (Markdown)', type: 'textarea' as const },
+    { name: 'tags',       label: 'Tags',       type: 'tags' as const, suggestions: tagNames },
+    { name: 'stack',      label: 'Tech Stack', type: 'tags' as const, suggestions: stack as string[] },
+    { name: 'featured',  label: 'Featured?',  type: 'checkbox' as const },
+    { name: 'published', label: 'Published?', type: 'checkbox' as const },
+  ]
+
   return (
     <div style={{ padding: 32, maxWidth: 900 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
@@ -40,7 +50,13 @@ export default async function EditProjectPage({ params }: { params: Promise<{ id
         endpoint={`/api/projects/${id}`}
         method="PUT"
         fields={FIELDS}
-        defaults={{ ...p, _id: undefined, tags: p.tags || [], stack: p.stack || [] }}
+        defaults={{
+          ...p,
+          _id: undefined,
+          category: p.category?._id ? String(p.category._id) : '',
+          tags: (p.tags || []).map((t: any) => t.name),
+          stack: p.stack || [],
+        }}
         redirectTo="/dashboard/projects"
       />
     </div>

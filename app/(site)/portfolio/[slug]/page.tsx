@@ -5,6 +5,8 @@ import { connection } from "next/server";
 import { notFound } from "next/navigation";
 import connectDB from "@/lib/mongodb";
 import Project from "@/models/Project";
+import "@/models/Category";
+import "@/models/Tag";
 import AnimatedSection from "@/components/site/AnimatedSection";
 import type { Project as IProject } from "@/types";
 
@@ -41,7 +43,10 @@ export default async function ProjectPage({
     project = (await Project.findOne({
       slug,
       published: true,
-    }).lean()) as unknown as IProject;
+    })
+      .populate("category")
+      .populate("tags")
+      .lean()) as unknown as IProject;
   } catch {}
   if (!project) notFound();
 
@@ -93,7 +98,7 @@ export default async function ProjectPage({
                 flexWrap: "wrap",
               }}
             >
-              <span className="tag green">{project.category}</span>
+              <span className="tag green">{project.category.name}</span>
               <span className="tag">{project.year}</span>
               {project.client && (
                 <span className="tag">Client: {project.client}</span>
@@ -202,7 +207,7 @@ export default async function ProjectPage({
                   style={{ objectFit: "cover" }}
                 />
               ) : (
-                project.category.slice(0, 2).toUpperCase()
+                project.category.name.slice(0, 2).toUpperCase()
               )}
             </div>
           </AnimatedSection>
@@ -274,7 +279,7 @@ export default async function ProjectPage({
                   }}
                 >
                   {[
-                    ["Category", project.category],
+                    ["Category", project.category.name],
                     ["Year", project.year],
                     ["Client", project.client || "Confidential"],
                     ["Duration", project.duration || "N/A"],

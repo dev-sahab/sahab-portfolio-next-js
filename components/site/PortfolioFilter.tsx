@@ -2,23 +2,15 @@
 import { useState, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import type { Project } from '@/types'
+import type { Project, Category } from '@/types'
 
-const FILTERS = [
-  { label: 'All',        value: '*' },
-  { label: 'WordPress',  value: 'wordpress' },
-  { label: 'WooCommerce',value: 'woocommerce' },
-  { label: 'Webflow',    value: 'webflow' },
-  { label: 'MERN',       value: 'mern' },
-  { label: 'Framer',     value: 'framer' },
-]
-
-export default function PortfolioFilter({ projects }: { projects: Project[] }) {
+export default function PortfolioFilter({ projects, categories }: { projects: Project[]; categories: Category[] }) {
   const [active,    setActive]    = useState('*')
   const [animating, setAnimating] = useState(false)
   const gridRef = useRef<HTMLDivElement>(null)
 
-  const filtered = active === '*' ? projects : projects.filter(p => p.category === active)
+  const filters = [{ label: 'All', value: '*' }, ...categories.map(c => ({ label: c.name, value: c.slug }))]
+  const filtered = active === '*' ? projects : projects.filter(p => p.category.slug === active)
 
   const handleFilter = async (val: string) => {
     if (val === active || animating) return
@@ -41,7 +33,7 @@ export default function PortfolioFilter({ projects }: { projects: Project[] }) {
     <>
       {/* Filter bar */}
       <div className="portfolio-filter-wrap" style={{ display: 'flex', gap: 10, flexWrap: 'wrap', padding: '26px 0', borderBottom: '1px solid var(--border)' }}>
-        {FILTERS.map(f => (
+        {filters.map(f => (
           <button key={f.value} className={`filter-btn${active === f.value ? ' active' : ''}`} onClick={() => handleFilter(f.value)}>
             {f.label}
           </button>
@@ -61,12 +53,12 @@ export default function PortfolioFilter({ projects }: { projects: Project[] }) {
               />
             ) : (
               <div style={{ width: '100%', height: '100%', background: 'var(--surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--f-d)', fontWeight: 800, fontSize: 42, color: 'var(--border2)', letterSpacing: '-.04em' }}>
-                {p.category.slice(0, 2).toUpperCase()}
+                {p.category.name.slice(0, 2).toUpperCase()}
               </div>
             )}
             <div className="pf-overlay">
               <div style={{ fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: 7 }}>
-                {p.category} · {p.year}
+                {p.category.name} · {p.year}
               </div>
               <h3 style={{ fontFamily: 'var(--f-d)', fontWeight: 700, fontSize: 19, letterSpacing: '-.01em', color: 'var(--text)', marginBottom: 7 }}>{p.title}</h3>
               <p style={{ fontSize: 13, color: 'var(--text2)', lineHeight: 1.5, marginBottom: 14 }}>{p.excerpt}</p>

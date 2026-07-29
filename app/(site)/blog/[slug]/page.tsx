@@ -5,6 +5,8 @@ import { connection } from 'next/server'
 import { notFound } from 'next/navigation'
 import connectDB from '@/lib/mongodb'
 import BlogPost from '@/models/BlogPost'
+import '@/models/Category'
+import '@/models/Tag'
 import AnimatedSection from '@/components/site/AnimatedSection'
 import { formatDate } from '@/lib/utils'
 import type { BlogPost as IPost } from '@/types'
@@ -23,7 +25,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   await connection()
   const { slug } = await params
   let post: IPost | null = null
-  try { await connectDB(); post = await BlogPost.findOne({ slug, published: true }).lean() as unknown as IPost } catch {}
+  try { await connectDB(); post = await BlogPost.findOne({ slug, published: true }).populate('category').populate('tags').lean() as unknown as IPost } catch {}
   if (!post) notFound()
 
   return (
@@ -35,12 +37,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <div style={{ fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 18, display: 'flex', gap: 8 }}>
               <Link href="/" style={{ color: 'var(--muted)' }}>Home</Link><span>/</span>
               <Link href="/blog" style={{ color: 'var(--muted)' }}>Blog</Link><span>/</span>
-              <span>{post.category}</span>
+              <span>{post.category.name}</span>
             </div>
           </AnimatedSection>
           <AnimatedSection>
             <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 18, flexWrap: 'wrap' }}>
-              <span className="tag green">{post.category}</span>
+              <span className="tag green">{post.category.name}</span>
               <span style={{ fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--muted)' }}>{post.createdAt ? formatDate(post.createdAt) : ''}</span>
               <span style={{ fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--muted)' }}>{post.readTime || 5} min read</span>
             </div>
@@ -71,7 +73,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 65vw, 800px"
                     style={{ objectFit: 'cover' }}
                   />
-                ) : post.category.slice(0, 2).toUpperCase()}
+                ) : post.category.name.slice(0, 2).toUpperCase()}
               </div>
             </AnimatedSection>
             <AnimatedSection>
@@ -80,7 +82,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <AnimatedSection style={{ marginTop: 44, paddingTop: 30, borderTop: '1px solid var(--border)' }}>
               <div style={{ fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.15em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 12 }}>Tags</div>
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                {post.tags.map((t) => <span key={t} className="tag">{t}</span>)}
+                {post.tags.map((t: any) => <span key={t._id} className="tag">{t.name}</span>)}
               </div>
             </AnimatedSection>
           </article>

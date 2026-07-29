@@ -7,6 +7,8 @@ import TestimonialSlider from '@/components/site/TestimonialSlider'
 import connectDB from '@/lib/mongodb'
 import Project from '@/models/Project'
 import BlogPost from '@/models/BlogPost'
+import '@/models/Category'
+import '@/models/Tag'
 import Testimonial from '@/models/Testimonial'
 import SiteSettings from '@/models/SiteSettings'
 import type { Project as IProject, BlogPost as IBlogPost, Testimonial as ITestimonial, SiteSettings as ISettings } from '@/types'
@@ -15,8 +17,8 @@ async function getData() {
   try {
     await connectDB()
     const [projects, posts, testimonials, settings] = await Promise.all([
-      Project.find({ published: true }).sort({ featured: -1, createdAt: -1 }).limit(3).lean(),
-      BlogPost.find({ published: true }).sort({ createdAt: -1 }).limit(3).lean(),
+      Project.find({ published: true }).sort({ featured: -1, createdAt: -1 }).limit(3).populate('category').populate('tags').lean(),
+      BlogPost.find({ published: true }).sort({ createdAt: -1 }).limit(3).populate('category').lean(),
       Testimonial.find({ featured: true }).sort({ order: 1 }).lean(),
       SiteSettings.findOne().lean(),
     ])
@@ -167,7 +169,7 @@ export default async function HomePage() {
                         sizes="(max-width: 1024px) 100vw, 33vw"
                         style={{ objectFit: 'cover' }}
                       />
-                    ) : p.category.slice(0, 2).toUpperCase()}
+                    ) : p.category.name.slice(0, 2).toUpperCase()}
                   </div>
                   <div style={{ padding: 28, flex: 1, display: 'flex', flexDirection: 'column' }}>
                     <div style={{ fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.15em', color: 'var(--muted)', marginBottom: 9 }}>{String(i + 1).padStart(2, '0')} / {p.year}</div>
@@ -175,7 +177,7 @@ export default async function HomePage() {
                     <p style={{ fontSize: 13, color: 'var(--text2)', lineHeight: 1.62, marginBottom: 20 }}>{p.excerpt}</p>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                        {p.tags.slice(0, 2).map((t) => <span key={t} className="tag">{t}</span>)}
+                        {p.tags.slice(0, 2).map((t: any) => <span key={t._id} className="tag">{t.name}</span>)}
                       </div>
                       <div style={{ width: 38, height: 38, border: '1px solid var(--border2)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 15 }}>↗</div>
                     </div>
@@ -222,11 +224,11 @@ export default async function HomePage() {
                           sizes="(max-width: 1024px) 100vw, 33vw"
                           style={{ objectFit: 'cover' }}
                         />
-                      ) : post.category.slice(0, 2).toUpperCase()}
+                      ) : post.category.name.slice(0, 2).toUpperCase()}
                     </div>
                     <div style={{ padding: 24, flex: 1, display: 'flex', flexDirection: 'column' }}>
                       <div style={{ display: 'flex', gap: 10, marginBottom: 11, fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--muted)' }}>
-                        <span style={{ color: 'var(--accent)' }}>{post.category}</span>
+                        <span style={{ color: 'var(--accent)' }}>{post.category.name}</span>
                         <span>·</span>
                         <span>{post.readTime || 5} min read</span>
                       </div>

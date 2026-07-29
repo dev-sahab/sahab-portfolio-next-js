@@ -1,5 +1,6 @@
 import connectDB from '@/lib/mongodb'
 import BlogPost from '@/models/BlogPost'
+import '@/models/Category'
 import PageHeader from '@/components/dashboard/PageHeader'
 import EmptyState from '@/components/dashboard/EmptyState'
 import DeleteButton from '@/components/dashboard/DeleteButton'
@@ -9,7 +10,7 @@ import type { BlogPost as IPost } from '@/types'
 
 export default async function BlogPage() {
   await connectDB()
-  const posts = await BlogPost.find().sort({ createdAt: -1 }).lean() as unknown as IPost[]
+  const posts = await BlogPost.find().sort({ createdAt: -1 }).populate('category').lean() as unknown as IPost[]
 
   return (
     <div style={{ padding: 32 }}>
@@ -24,7 +25,7 @@ export default async function BlogPage() {
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontWeight: 600, fontSize: 14, color: '#f0ede6', marginBottom: 3 }}>{p.title}</div>
                 <div style={{ fontSize: 12, color: '#555', display: 'flex', gap: 12 }}>
-                  <span style={{ color: '#60a5fa' }}>{p.category}</span>
+                  <span style={{ color: '#60a5fa' }}>{p.category.name}</span>
                   <span>·</span>
                   <span>{p.readTime || 5} min read</span>
                   <span>·</span>
