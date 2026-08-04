@@ -15,18 +15,18 @@ export default async function NewBlogPage() {
   const FIELDS = [
     { name: 'title',      label: 'Post Title',  required: true },
     { name: 'slug',       label: 'Slug (auto-generated if blank)' },
-    { name: 'category',  label: 'Category', type: 'category' as const, required: true,
-      categories: categoriesPlain, taxonomyType: 'blog' as const },
-    { name: 'coverImage', label: 'Cover Image', type: 'image' as const, imageFolder: 'sahab-blog' },
     { name: 'excerpt',    label: 'Excerpt (short summary shown on blog list)', type: 'textarea' as const },
-    { name: 'content',   label: 'Full Content (Markdown supported)', type: 'textarea' as const },
-    { name: 'tags',      label: 'Tags (press Enter to add)', type: 'tags' as const, suggestions: tagNames },
-    { name: 'featured',  label: 'Mark as Featured?', type: 'checkbox' as const },
-    { name: 'published', label: 'Publish immediately?', type: 'checkbox' as const },
+    { name: 'content',   label: 'Full Content (Markdown supported)', type: 'richtext' as const },
+    { name: 'featured',  label: 'Mark as Featured?', type: 'checkbox' as const, section: 'side' as const },
+    { name: 'published', label: 'Publish immediately?', type: 'checkbox' as const, section: 'side' as const },
+    { name: 'coverImage', label: 'Cover Image', type: 'image' as const, imageFolder: 'sahab-blog', section: 'side' as const, sideGroup: 'Featured Image' },
+    { name: 'category',  label: 'Category', type: 'category' as const, required: true,
+      categories: categoriesPlain, taxonomyType: 'blog' as const, section: 'side' as const, sideGroup: 'Category' },
+    { name: 'tags',      label: 'Tags (press Enter to add)', type: 'tags' as const, suggestions: tagNames, section: 'side' as const, sideGroup: 'Tags' },
   ]
 
   return (
-    <div style={{ padding: 32, maxWidth: 900 }}>
+    <div style={{ padding: 32, maxWidth: 1280 }}>
       <h1 style={{ fontSize: 24, fontWeight: 700, fontFamily: 'var(--f-d)', color: '#f0ede6', letterSpacing: '-.02em', marginBottom: 24 }}>
         New Blog Post
       </h1>

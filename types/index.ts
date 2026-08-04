@@ -22,12 +22,13 @@ export interface Project {
   excerpt: string
   content: string
   coverImage?: string
-  images?: string[]
+  gallery?: string[]
   tags: Tag[]
   liveUrl?: string
   githubUrl?: string
   featured: boolean
   published: boolean
+  noIndex?: boolean
   year: number
   client?: string
   duration?: string
@@ -105,6 +106,31 @@ export interface SiteSettings {
   services: Service[]
   skills: SkillGroup[]
   stats: Stat[]
+  updatedAt?: string
+}
+
+export interface MediaReference {
+  type: 'project' | 'blog' | 'testimonial'
+  id: string
+  title: string
+}
+
+export interface Media {
+  _id: string
+  url: string
+  publicId: string
+  filename: string
+  title: string
+  altText: string
+  caption: string
+  mimeType?: string
+  width?: number
+  height?: number
+  size?: number
+  folder: string
+  uploadedBy?: string
+  inUse?: boolean
+  createdAt?: string
   updatedAt?: string
 }
 

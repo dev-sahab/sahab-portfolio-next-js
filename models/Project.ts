@@ -1,4 +1,4 @@
-import mongoose, { Schema, model, models } from 'mongoose'
+import { Schema, model, models } from 'mongoose'
 
 const ProjectSchema = new Schema({
   title: { type: String, required: true },
@@ -7,12 +7,13 @@ const ProjectSchema = new Schema({
   excerpt: { type: String, required: true },
   content: { type: String, default: '' },
   coverImage: { type: String },
-  images: [{ type: String }],
+  gallery: [{ type: String }],
   tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }],
   liveUrl: { type: String },
   githubUrl: { type: String },
   featured: { type: Boolean, default: false },
   published: { type: Boolean, default: true },
+  noIndex: { type: Boolean, default: false },
   year: { type: Number, default: () => new Date().getFullYear() },
   client: { type: String },
   duration: { type: String },

@@ -40,7 +40,7 @@ export default function SettingsPage() {
     <div style={{ padding: 32, maxWidth: 800 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 28 }}>
         <h1 style={{ fontSize: 24, fontWeight: 700, fontFamily: 'var(--f-d)', color: '#f0ede6', letterSpacing: '-.02em' }}>Site Settings</h1>
-        <button onClick={handleSave} disabled={saving} style={{ background: saving ? '#555' : '#b8ff4f', color: '#0a0a0a', border: 'none', padding: '10px 24px', borderRadius: 8, fontSize: 13, fontWeight: 700, cursor: 'pointer', fontFamily: 'var(--f-m)', display: 'flex', alignItems: 'center', gap: 8 }}>
+        <button type="button" onClick={handleSave} disabled={saving} style={{ background: saving ? '#555' : '#b8ff4f', color: '#0a0a0a', border: 'none', padding: '10px 24px', borderRadius: 8, fontSize: 13, fontWeight: 700, cursor: 'pointer', fontFamily: 'var(--f-m)', display: 'flex', alignItems: 'center', gap: 8 }}>
           {saving ? 'Saving…' : saved ? '✓ Saved!' : 'Save Changes'}
         </button>
       </div>
@@ -88,10 +88,10 @@ export default function SettingsPage() {
             <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 2fr auto', gap: 10, alignItems: 'center' }}>
               <input value={st.value} onChange={(e) => { const arr = [...(settings.stats || [])]; arr[i] = { ...arr[i], value: e.target.value }; set('stats', arr) }} style={S.input} placeholder="100+" />
               <input value={st.label} onChange={(e) => { const arr = [...(settings.stats || [])]; arr[i] = { ...arr[i], label: e.target.value }; set('stats', arr) }} style={S.input} placeholder="Projects Shipped" />
-              <button onClick={() => set('stats', (settings.stats || []).filter((_: any, j: number) => j !== i))} style={{ padding: '9px 12px', background: 'transparent', border: '1px solid #ef444433', borderRadius: 6, color: '#ef4444', cursor: 'pointer', fontSize: 13 }}>×</button>
+              <button type="button" onClick={() => set('stats', (settings.stats || []).filter((_: any, j: number) => j !== i))} style={{ padding: '9px 12px', background: 'transparent', border: '1px solid #ef444433', borderRadius: 6, color: '#ef4444', cursor: 'pointer', fontSize: 13 }}>×</button>
             </div>
           ))}
-          <button onClick={() => set('stats', [...(settings.stats || []), { value: '', label: '' }])} style={{ background: 'transparent', border: '1px dashed #2a2a2a', borderRadius: 6, padding: '8px', color: '#555', cursor: 'pointer', fontSize: 13, fontFamily: 'var(--f-m)' }}>
+          <button type="button" onClick={() => set('stats', [...(settings.stats || []), { value: '', label: '' }])} style={{ background: 'transparent', border: '1px dashed #2a2a2a', borderRadius: 6, padding: '8px', color: '#555', cursor: 'pointer', fontSize: 13, fontFamily: 'var(--f-m)' }}>
             + Add Stat
           </button>
         </div>

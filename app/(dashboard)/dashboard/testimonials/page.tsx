@@ -22,10 +22,10 @@ function TestimonialCard({ t, onDelete, onToggle }: { t: Testimonial; onDelete: 
           <p style={{ fontSize: 13, color: '#9a9a9a', lineHeight: 1.6, fontStyle: 'italic' }}>"{t.content.slice(0, 120)}{t.content.length > 120 ? '…' : ''}"</p>
         </div>
         <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
-          <button onClick={onToggle} style={{ padding: '6px 12px', background: t.featured ? 'rgba(184,255,79,.12)' : '#222', border: `1px solid ${t.featured ? '#b8ff4f33' : '#2a2a2a'}`, borderRadius: 6, fontSize: 11, color: t.featured ? '#b8ff4f' : '#9a9a9a', cursor: 'pointer', fontFamily: 'var(--f-m)' }}>
+          <button type="button" onClick={onToggle} style={{ padding: '6px 12px', background: t.featured ? 'rgba(184,255,79,.12)' : '#222', border: `1px solid ${t.featured ? '#b8ff4f33' : '#2a2a2a'}`, borderRadius: 6, fontSize: 11, color: t.featured ? '#b8ff4f' : '#9a9a9a', cursor: 'pointer', fontFamily: 'var(--f-m)' }}>
             {t.featured ? 'Featured' : 'Feature'}
           </button>
-          <button onClick={onDelete} style={{ padding: '6px 12px', background: 'transparent', border: '1px solid #ef444433', borderRadius: 6, fontSize: 11, color: '#ef4444', cursor: 'pointer', fontFamily: 'var(--f-m)' }}>Delete</button>
+          <button type="button" onClick={onDelete} style={{ padding: '6px 12px', background: 'transparent', border: '1px solid #ef444433', borderRadius: 6, fontSize: 11, color: '#ef4444', cursor: 'pointer', fontFamily: 'var(--f-m)' }}>Delete</button>
         </div>
       </div>
     </div>
@@ -49,7 +49,7 @@ function AddForm({ onAdd }: { onAdd: (t: Testimonial) => void }) {
   const lbl = { display: 'block', fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.14em', textTransform: 'uppercase' as const, color: '#555', marginBottom: 5 }
 
   if (!open) return (
-    <button onClick={() => setOpen(true)} style={{ display: 'flex', alignItems: 'center', gap: 8, background: '#b8ff4f', color: '#0a0a0a', padding: '10px 20px', borderRadius: 8, fontSize: 13, fontWeight: 600, fontFamily: 'var(--f-m)', border: 'none', cursor: 'pointer' }}>
+    <button type="button" onClick={() => setOpen(true)} style={{ display: 'flex', alignItems: 'center', gap: 8, background: '#b8ff4f', color: '#0a0a0a', padding: '10px 20px', borderRadius: 8, fontSize: 13, fontWeight: 600, fontFamily: 'var(--f-m)', border: 'none', cursor: 'pointer' }}>
       + Add Testimonial
     </button>
   )

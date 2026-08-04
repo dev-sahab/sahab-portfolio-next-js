@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import {
-  LayoutDashboard, FolderKanban, FileText, Star,
+  LayoutDashboard, FolderKanban, FileText, Star, Image as ImageIcon,
   Settings, MessageSquare, FileQuestion, LogOut, ExternalLink, ChevronDown, type LucideIcon
 } from 'lucide-react'
 
@@ -33,6 +33,7 @@ const nav: (NavLink | NavGroup)[] = [
       { href: '/dashboard/blog/tags', label: 'Tags' },
     ],
   },
+  { href: '/dashboard/media', icon: ImageIcon, label: 'Media' },
   { href: '/dashboard/testimonials', icon: Star, label: 'Testimonials' },
   { href: '/dashboard/contacts', icon: MessageSquare, label: 'Contacts' },
   { href: '/dashboard/quotes', icon: FileQuestion, label: 'Quote Requests' },

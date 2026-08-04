@@ -24,6 +24,7 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://shahabweb.vercel.app'),
   title: { default: 'Sahab Uddin Mintu — WordPress & MERN Developer', template: '%s — Sahab Uddin Mintu' },
   description: 'WordPress & MERN developer turning Figma into pixel-perfect, high-converting websites.',
   keywords: ['WordPress', 'MERN', 'Webflow', 'Framer', 'Developer', 'Freelance'],

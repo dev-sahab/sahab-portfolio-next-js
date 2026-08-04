@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { connection } from 'next/server'
 import { notFound } from 'next/navigation'
+import DOMPurify from 'isomorphic-dompurify'
 import connectDB from '@/lib/mongodb'
 import BlogPost from '@/models/BlogPost'
 import '@/models/Category'
@@ -77,7 +78,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               </div>
             </AnimatedSection>
             <AnimatedSection>
-              <div style={{ fontSize: 16, lineHeight: 1.88, color: 'var(--text2)', whiteSpace: 'pre-wrap' }}>{post.content}</div>
+              <div
+                className="markdown-content"
+                style={{ fontSize: 16, lineHeight: 1.88, color: 'var(--text2)' }}
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
+              />
             </AnimatedSection>
             <AnimatedSection style={{ marginTop: 44, paddingTop: 30, borderTop: '1px solid var(--border)' }}>
               <div style={{ fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.15em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 12 }}>Tags</div>

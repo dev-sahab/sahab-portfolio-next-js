@@ -22,18 +22,18 @@ export default async function EditBlogPage({ params }: { params: Promise<{ id: s
   const FIELDS = [
     { name: 'title',      label: 'Post Title', required: true },
     { name: 'slug',       label: 'Slug' },
-    { name: 'category',  label: 'Category', type: 'category' as const, required: true,
-      categories: categoriesPlain, taxonomyType: 'blog' as const },
-    { name: 'coverImage', label: 'Cover Image', type: 'image' as const, imageFolder: 'sahab-blog' },
     { name: 'excerpt',    label: 'Excerpt', type: 'textarea' as const },
-    { name: 'content',   label: 'Full Content (Markdown)', type: 'textarea' as const },
-    { name: 'tags',      label: 'Tags', type: 'tags' as const, suggestions: tagNames },
-    { name: 'featured',  label: 'Featured?', type: 'checkbox' as const },
-    { name: 'published', label: 'Published?', type: 'checkbox' as const },
+    { name: 'content',   label: 'Full Content (Markdown)', type: 'richtext' as const },
+    { name: 'featured',  label: 'Featured?', type: 'checkbox' as const, section: 'side' as const },
+    { name: 'published', label: 'Published?', type: 'checkbox' as const, section: 'side' as const },
+    { name: 'coverImage', label: 'Cover Image', type: 'image' as const, imageFolder: 'sahab-blog', section: 'side' as const, sideGroup: 'Featured Image' },
+    { name: 'category',  label: 'Category', type: 'category' as const, required: true,
+      categories: categoriesPlain, taxonomyType: 'blog' as const, section: 'side' as const, sideGroup: 'Category' },
+    { name: 'tags',      label: 'Tags', type: 'tags' as const, suggestions: tagNames, section: 'side' as const, sideGroup: 'Tags' },
   ]
 
   return (
-    <div style={{ padding: 32, maxWidth: 900 }}>
+    <div style={{ padding: 32, maxWidth: 1280 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
         <h1 style={{ fontSize: 24, fontWeight: 700, fontFamily: 'var(--f-d)', color: '#f0ede6', letterSpacing: '-.02em' }}>Edit Post</h1>
         <DeleteButton endpoint={`/api/blog/${id}`} redirectTo="/dashboard/blog" />

@@ -3,11 +3,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { connection } from "next/server";
 import { notFound } from "next/navigation";
+import DOMPurify from "isomorphic-dompurify";
 import connectDB from "@/lib/mongodb";
 import Project from "@/models/Project";
 import "@/models/Category";
 import "@/models/Tag";
 import AnimatedSection from "@/components/site/AnimatedSection";
+import Lightbox from "@/components/site/Lightbox";
 import type { Project as IProject } from "@/types";
 
 export async function generateMetadata({
@@ -24,7 +26,11 @@ export async function generateMetadata({
       published: true,
     }).lean()) as unknown as IProject;
     if (!p) return { title: "Project Not Found" };
-    return { title: p.title, description: p.excerpt };
+    return {
+      title: p.title,
+      description: p.excerpt,
+      robots: p.noIndex ? { index: false, follow: false } : undefined,
+    };
   } catch {
     return { title: "Project" };
   }
@@ -38,6 +44,8 @@ export default async function ProjectPage({
   await connection();
   const { slug } = await params;
   let project: IProject | null = null;
+  let prevProject: { slug: string; title: string } | null = null;
+  let nextProject: { slug: string; title: string } | null = null;
   try {
     await connectDB();
     project = (await Project.findOne({
@@ -47,6 +55,20 @@ export default async function ProjectPage({
       .populate("category")
       .populate("tags")
       .lean()) as unknown as IProject;
+
+    if (project) {
+      const order = (await Project.find({ published: true })
+        .sort({ featured: -1, createdAt: -1 })
+        .select("slug title")
+        .lean()) as unknown as { _id: string; slug: string; title: string }[];
+      const idx = order.findIndex((p) => p.slug === slug);
+      if (idx !== -1 && order.length > 1) {
+        const prev = order[(idx - 1 + order.length) % order.length];
+        const next = order[(idx + 1) % order.length];
+        prevProject = { slug: prev.slug, title: prev.title };
+        nextProject = { slug: next.slug, title: next.title };
+      }
+    }
   } catch {}
   if (!project) notFound();
 
@@ -101,7 +123,7 @@ export default async function ProjectPage({
               <span className="tag green">{project.category?.name || 'Uncategorized'}</span>
               <span className="tag">{project.year}</span>
               {project.client && (
-                <span className="tag">Client: {project.client}</span>
+                <span className="tag">Client Project</span>
               )}
               {project.duration && (
                 <span className="tag">{project.duration}</span>
@@ -134,6 +156,11 @@ export default async function ProjectPage({
               {project.stack.map((s) => (
                 <span key={s} className="tag">
                   {s}
+                </span>
+              ))}
+              {(project.tags as any[] | undefined)?.map((t) => (
+                <span key={t._id} className="tag">
+                  {t.name}
                 </span>
               ))}
             </div>
@@ -281,7 +308,7 @@ export default async function ProjectPage({
                   {[
                     ["Category", project.category?.name || "Uncategorized"],
                     ["Year", project.year],
-                    ["Client", project.client || "Confidential"],
+                    ["Client", project.client ? "Client Project" : "Personal Project"],
                     ["Duration", project.duration || "N/A"],
                   ].map(([k, v]) => (
                     <div
@@ -342,97 +369,141 @@ export default async function ProjectPage({
                 Case Study
               </div>
               <div
+                className="markdown-content"
                 style={{
                   fontSize: 15,
                   color: "var(--text2)",
                   lineHeight: 1.84,
-                  whiteSpace: "pre-wrap",
+                }}
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(project.content),
+                }}
+              />
+            </AnimatedSection>
+          )}
+
+          {/* Gallery */}
+          {project.gallery && project.gallery.length > 0 && (
+            <AnimatedSection
+              style={{
+                padding: "0 0 68px",
+                borderTop: "1px solid var(--border)",
+                paddingTop: 68,
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: "var(--f-m)",
+                  fontSize: 10,
+                  letterSpacing: ".18em",
+                  textTransform: "uppercase",
+                  color: "var(--accent)",
+                  marginBottom: 12,
                 }}
               >
-                {project.content}
+                Screenshots
+              </div>
+              <h2
+                style={{
+                  fontFamily: "var(--f-d)",
+                  fontWeight: 700,
+                  fontSize: "clamp(20px,2.6vw,36px)",
+                  letterSpacing: "-.02em",
+                  marginBottom: 10,
+                }}
+              >
+                Visual walkthrough
+              </h2>
+              <p style={{ fontSize: 14, color: "var(--text2)" }}>
+                Click any image to view full-size.
+              </p>
+              <Lightbox images={project.gallery} />
+            </AnimatedSection>
+          )}
+
+          {/* Tech Stack */}
+          {project.stack && project.stack.length > 0 && (
+            <AnimatedSection
+              style={{
+                padding: "0 0 68px",
+                borderTop: "1px solid var(--border)",
+                paddingTop: 68,
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: 40,
+                  flexWrap: "wrap",
+                  marginBottom: 30,
+                }}
+              >
+                <div>
+                  <div
+                    style={{
+                      fontFamily: "var(--f-m)",
+                      fontSize: 10,
+                      letterSpacing: ".18em",
+                      textTransform: "uppercase",
+                      color: "var(--accent)",
+                      marginBottom: 12,
+                    }}
+                  >
+                    Tech Stack
+                  </div>
+                  <h2
+                    style={{
+                      fontFamily: "var(--f-d)",
+                      fontWeight: 700,
+                      fontSize: "clamp(20px,2.6vw,36px)",
+                      letterSpacing: "-.02em",
+                    }}
+                  >
+                    Tools &amp; Technologies
+                  </h2>
+                </div>
+                {project.liveUrl && (
+                  <a
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noopener"
+                    className="btn btn-accent"
+                  >
+                    View Live Project ↗
+                  </a>
+                )}
+              </div>
+              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+                {project.stack.map((s) => (
+                  <span key={s} className="tag sp-stack-pill">
+                    {s}
+                  </span>
+                ))}
               </div>
             </AnimatedSection>
           )}
         </div>
       </div>
 
-      {/* NAV */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          borderTop: "1px solid var(--border)",
-        }}
-      >
-        <Link
-          href="/portfolio"
-          style={{
-            padding: "36px var(--px)",
-            background: "var(--surface)",
-            display: "flex",
-            flexDirection: "column",
-            transition: "background .3s",
-          }}
-        >
-          <span
-            style={{
-              fontFamily: "var(--f-m)",
-              fontSize: 10,
-              letterSpacing: ".15em",
-              textTransform: "uppercase",
-              color: "var(--muted)",
-              marginBottom: 7,
-            }}
-          >
-            ← Back to Portfolio
-          </span>
-          <span
-            style={{
-              fontFamily: "var(--f-d)",
-              fontWeight: 700,
-              fontSize: 18,
-              letterSpacing: "-.01em",
-            }}
-          >
-            All Projects
-          </span>
-        </Link>
-        <Link
-          href="/contact"
-          style={{
-            padding: "36px var(--px)",
-            background: "var(--surface)",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-end",
-            textAlign: "right",
-            transition: "background .3s",
-          }}
-        >
-          <span
-            style={{
-              fontFamily: "var(--f-m)",
-              fontSize: 10,
-              letterSpacing: ".15em",
-              textTransform: "uppercase",
-              color: "var(--muted)",
-              marginBottom: 7,
-            }}
-          >
-            Start a Project →
-          </span>
-          <span
-            style={{
-              fontFamily: "var(--f-d)",
-              fontWeight: 700,
-              fontSize: 18,
-              letterSpacing: "-.01em",
-            }}
-          >
-            Work with me
-          </span>
-        </Link>
-      </div>
+      {/* PREV / NEXT */}
+      {(prevProject || nextProject) && (
+        <div className="sp-nav-grid">
+          {prevProject && (
+            <Link href={`/portfolio/${prevProject.slug}`} className="sp-nav-item">
+              <span className="sp-nav-dir">← Previous Project</span>
+              <span className="sp-nav-title">{prevProject.title}</span>
+            </Link>
+          )}
+          {nextProject && (
+            <Link href={`/portfolio/${nextProject.slug}`} className="sp-nav-item sp-next">
+              <span className="sp-nav-dir">Next Project →</span>
+              <span className="sp-nav-title">{nextProject.title}</span>
+            </Link>
+          )}
+        </div>
+      )}
     </main>
   );
 }

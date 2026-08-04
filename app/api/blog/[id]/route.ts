@@ -4,7 +4,7 @@ import connectDB from '@/lib/mongodb'
 import BlogPost from '@/models/BlogPost'
 import '@/models/Category'
 import '@/models/Tag'
-import { calculateReadTime } from '@/lib/utils'
+import { calculateReadTime, slugify } from '@/lib/utils'
 import { resolveTagIds } from '@/lib/taxonomy'
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -26,6 +26,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     await connectDB()
     const { id } = await params
     const body = await req.json()
+    if (!body.slug && body.title) body.slug = slugify(body.title)
     if (body.content) body.readTime = calculateReadTime(body.content)
     if (Array.isArray(body.tags)) body.tags = await resolveTagIds(body.tags, 'blog')
     const post = await BlogPost.findByIdAndUpdate(id, body, { new: true, runValidators: true })

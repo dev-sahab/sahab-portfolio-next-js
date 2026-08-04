@@ -134,11 +134,11 @@ export default function TaxonomyManager({ kind, type, items, basePath }: Props) 
               <div style={{ display: 'flex', gap: 8 }}>
                 {editingId === item._id ? (
                   <>
-                    <button onClick={() => handleRename(item._id)} style={{ padding: '7px 14px', background: '#b8ff4f', border: 'none', borderRadius: 6, fontSize: 12, color: '#0a0a0a', fontFamily: 'var(--f-m)', cursor: 'pointer' }}>Save</button>
-                    <button onClick={() => setEditingId(null)} style={{ padding: '7px 14px', background: '#222', border: '1px solid #2a2a2a', borderRadius: 6, fontSize: 12, color: '#9a9a9a', fontFamily: 'var(--f-m)', cursor: 'pointer' }}>Cancel</button>
+                    <button type="button" onClick={() => handleRename(item._id)} style={{ padding: '7px 14px', background: '#b8ff4f', border: 'none', borderRadius: 6, fontSize: 12, color: '#0a0a0a', fontFamily: 'var(--f-m)', cursor: 'pointer' }}>Save</button>
+                    <button type="button" onClick={() => setEditingId(null)} style={{ padding: '7px 14px', background: '#222', border: '1px solid #2a2a2a', borderRadius: 6, fontSize: 12, color: '#9a9a9a', fontFamily: 'var(--f-m)', cursor: 'pointer' }}>Cancel</button>
                   </>
                 ) : (
-                  <button onClick={() => { setEditingId(item._id); setEditValue(item.name) }} style={{ padding: '7px 14px', background: '#222', border: '1px solid #2a2a2a', borderRadius: 6, fontSize: 12, color: '#9a9a9a', fontFamily: 'var(--f-m)', cursor: 'pointer' }}>Edit</button>
+                  <button type="button" onClick={() => { setEditingId(item._id); setEditValue(item.name) }} style={{ padding: '7px 14px', background: '#222', border: '1px solid #2a2a2a', borderRadius: 6, fontSize: 12, color: '#9a9a9a', fontFamily: 'var(--f-m)', cursor: 'pointer' }}>Edit</button>
                 )}
                 <DeleteButton endpoint={`${endpoint}/${item._id}`} redirectTo={basePath} />
               </div>

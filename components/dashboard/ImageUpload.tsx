@@ -1,92 +1,81 @@
 'use client'
-import { useState, useRef } from 'react'
+import { useState } from 'react'
+import MediaPicker from './MediaPicker'
 
 interface Props {
   value?: string
   onChange: (url: string) => void
   folder?: string
   label?: string
+  /** Stage a newly-picked file instead of uploading it immediately. */
+  onStageUpload?: (blobUrl: string, file: File) => void
+  /** Stage an existing (already-uploaded) image for deletion — only applied once the form is actually saved. */
+  onStageDelete?: (url: string) => void
 }
 
-export default function ImageUpload({ value, onChange, folder = 'sahab-portfolio', label = 'Image' }: Props) {
-  const [uploading, setUploading] = useState(false)
-  const [error, setError]         = useState('')
-  const [preview, setPreview]     = useState(value || '')
-  const inputRef = useRef<HTMLInputElement>(null)
-
-  const uploadFile = async (file: File) => {
-    setUploading(true); setError('')
-    try {
-      const fd = new FormData()
-      fd.append('file', file)
-      fd.append('folder', folder)
-      const res  = await fetch('/api/upload', { method: 'POST', body: fd })
-      const data = await res.json()
-      if (!data.success) throw new Error(data.error)
-      setPreview(data.data.url)
-      onChange(data.data.url)
-    } catch (e: any) {
-      setError(e.message)
-    } finally {
-      setUploading(false)
-    }
-  }
-
-  const onDrop = (e: React.DragEvent) => {
-    e.preventDefault()
-    const file = e.dataTransfer.files[0]
-    if (file) uploadFile(file)
-  }
+export default function ImageUpload({ value, onChange, folder = 'sahab-portfolio', label = 'Image', onStageUpload, onStageDelete }: Props) {
+  const [pickerOpen, setPickerOpen] = useState(false)
 
   const lbl = { display: 'block', fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.14em', textTransform: 'uppercase' as const, color: '#555', marginBottom: 8 }
+
+  const stageOldValueForDeletion = (old: string) => {
+    if (!old || old.startsWith('blob:')) return
+    onStageDelete ? onStageDelete(old) : fetch('/api/upload', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url: old }) }).catch(() => {})
+  }
+
+  const remove = () => {
+    stageOldValueForDeletion(value || '')
+    onChange('')
+  }
+
+  const replace = (urls: string[]) => {
+    stageOldValueForDeletion(value || '')
+    onChange(urls[0])
+  }
 
   return (
     <div>
       <label style={lbl}>{label}</label>
 
-      <div
-        onDrop={onDrop}
-        onDragOver={e => e.preventDefault()}
-        onClick={() => inputRef.current?.click()}
-        style={{ border: '2px dashed #2a2a2a', borderRadius: 8, padding: 24, textAlign: 'center', cursor: 'pointer', background: '#111', transition: 'border-color .2s' }}
-        onMouseEnter={e => (e.currentTarget.style.borderColor = '#b8ff4f')}
-        onMouseLeave={e => (e.currentTarget.style.borderColor = '#2a2a2a')}
-      >
-        <input ref={inputRef} type="file" accept="image/*" style={{ display: 'none' }}
-          onChange={e => { const f = e.target.files?.[0]; if (f) uploadFile(f) }} />
-
-        {uploading ? (
-          <div style={{ color: '#b8ff4f', fontFamily: 'var(--f-m)', fontSize: 13 }}>
-            <div style={{ fontSize: 28, marginBottom: 8 }}>⏳</div>
-            Uploading to Cloudinary…
-          </div>
-        ) : (
-          <>
-            <div style={{ fontSize: 32, marginBottom: 8 }}>📷</div>
-            <div style={{ fontSize: 13, color: '#9a9a9a', marginBottom: 4 }}>Click or drag image here</div>
-            <div style={{ fontSize: 11, color: '#555', fontFamily: 'var(--f-m)' }}>JPG · PNG · WebP · GIF — max 10 MB</div>
-          </>
-        )}
-      </div>
-
-      {preview && (
-        <div style={{ position: 'relative', marginTop: 10 }}>
+      {value ? (
+        <div style={{ position: 'relative' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={preview} alt="Preview" style={{ width: '100%', maxHeight: 240, objectFit: 'cover', borderRadius: 6 }} />
-          <button onClick={() => { setPreview(''); onChange('') }}
+          <img src={value} alt="Preview" style={{ width: '100%', maxHeight: 240, objectFit: 'cover', borderRadius: 6 }} />
+          {value.startsWith('blob:') && (
+            <div style={{ position: 'absolute', top: 8, left: 8, background: 'rgba(184,255,79,.9)', color: '#0a0a0a', borderRadius: 4, padding: '3px 8px', fontSize: 10, fontWeight: 700, fontFamily: 'var(--f-m)' }}>
+              Pending — saves with post
+            </div>
+          )}
+          <button onClick={remove} type="button"
             style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(0,0,0,.75)', color: '#fff', border: 'none', borderRadius: '50%', width: 28, height: 28, cursor: 'pointer', fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             ×
           </button>
+          <button onClick={() => setPickerOpen(true)} type="button"
+            style={{ position: 'absolute', bottom: 8, right: 8, background: 'rgba(0,0,0,.75)', color: '#fff', border: 'none', borderRadius: 6, padding: '6px 12px', cursor: 'pointer', fontSize: 11, fontFamily: 'var(--f-m)' }}>
+            Replace
+          </button>
+        </div>
+      ) : (
+        <div
+          onClick={() => setPickerOpen(true)}
+          style={{ border: '2px dashed #2a2a2a', borderRadius: 8, padding: 24, textAlign: 'center', cursor: 'pointer', background: '#111', transition: 'border-color .2s' }}
+          onMouseEnter={e => (e.currentTarget.style.borderColor = '#b8ff4f')}
+          onMouseLeave={e => (e.currentTarget.style.borderColor = '#2a2a2a')}
+        >
+          <div style={{ fontSize: 32, marginBottom: 8 }}>📷</div>
+          <div style={{ fontSize: 13, color: '#9a9a9a', marginBottom: 4 }}>Choose Image</div>
+          <div style={{ fontSize: 11, color: '#555', fontFamily: 'var(--f-m)' }}>Upload new or select from Media Library</div>
         </div>
       )}
 
-      {/* URL paste fallback */}
-      <input type="url" placeholder="Or paste an image URL directly"
-        value={preview}
-        onChange={e => { setPreview(e.target.value); onChange(e.target.value) }}
-        style={{ width: '100%', marginTop: 8, background: '#111', border: '1px solid #2a2a2a', borderRadius: 6, padding: '8px 12px', color: '#f0ede6', fontSize: 12, outline: 'none', fontFamily: 'var(--f-m)' }} />
-
-      {error && <p style={{ fontSize: 12, color: '#ef4444', marginTop: 6 }}>{error}</p>}
+      {pickerOpen && (
+        <MediaPicker
+          folder={folder}
+          onSelect={replace}
+          onClose={() => setPickerOpen(false)}
+          onStageUpload={onStageUpload}
+        />
+      )}
     </div>
   )
 }
