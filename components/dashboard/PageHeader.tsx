@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import './PageHeader.scss'
 
 interface Props {
   title: string
@@ -8,13 +9,13 @@ interface Props {
 
 export default function PageHeader({ title, subtitle, action }: Props) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 28 }}>
+    <div className="page-header">
       <div>
-        <h1 style={{ fontSize: 24, fontWeight: 700, fontFamily: 'var(--f-d)', color: '#f0ede6', letterSpacing: '-.02em', marginBottom: 4 }}>{title}</h1>
-        {subtitle && <p style={{ fontSize: 14, color: '#9a9a9a' }}>{subtitle}</p>}
+        <h1 className="page-header-title">{title}</h1>
+        {subtitle && <p className="page-header-subtitle">{subtitle}</p>}
       </div>
       {action && (
-        <Link href={action.href} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#b8ff4f', color: '#0a0a0a', padding: '10px 20px', borderRadius: 8, fontSize: 13, fontWeight: 600, fontFamily: 'var(--f-m)', textDecoration: 'none', transition: 'opacity .2s' }}>
+        <Link href={action.href} className="page-header-action">
           + {action.label}
         </Link>
       )}

@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import MediaPicker from './MediaPicker'
+import './GalleryUpload.scss'
 
 interface Props {
   value?: string[]
@@ -34,14 +35,12 @@ export default function GalleryUpload({ value = [], onChange, folder = 'sahab-po
     onChange(next)
   }
 
-  const lbl = { display: 'block', fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.14em', textTransform: 'uppercase' as const, color: '#555', marginBottom: 8 }
-
   return (
     <div>
-      <label style={lbl}>{label}</label>
+      <label className="gu-lbl">{label}</label>
 
       {value.length > 0 && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: 12 }}>
+        <div className="gu-grid">
           {value.map((url, i) => (
             <div
               key={url + i}
@@ -50,16 +49,12 @@ export default function GalleryUpload({ value = [], onChange, folder = 'sahab-po
               onDragOver={e => e.preventDefault()}
               onDrop={e => { e.preventDefault(); if (dragIndex !== null) reorder(dragIndex, i); setDragIndex(null) }}
               onDragEnd={() => setDragIndex(null)}
-              style={{
-                position: 'relative', aspectRatio: '4/3', borderRadius: 6, overflow: 'hidden',
-                background: '#111', border: '1px solid #2a2a2a', cursor: 'grab',
-                opacity: dragIndex === i ? 0.4 : 1,
-              }}
+              className={`gu-item ${dragIndex === i ? 'is-dragging' : ''}`}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={url} alt={`Gallery ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img src={url} alt={`Gallery ${i + 1}`} className="gu-item-img" />
               {url.startsWith('blob:') && (
-                <div style={{ position: 'absolute', bottom: 6, left: 6, background: 'rgba(184,255,79,.9)', color: '#0a0a0a', borderRadius: 4, padding: '2px 6px', fontSize: 9, fontWeight: 700, fontFamily: 'var(--f-m)' }}>
+                <div className="gu-pending-badge">
                   Pending
                 </div>
               )}
@@ -67,7 +62,7 @@ export default function GalleryUpload({ value = [], onChange, folder = 'sahab-po
                 type="button"
                 onClick={() => remove(i)}
                 aria-label="Remove image"
-                style={{ position: 'absolute', top: 6, right: 6, background: 'rgba(0,0,0,.75)', color: '#fff', border: 'none', borderRadius: '50%', width: 24, height: 24, cursor: 'pointer', fontSize: 14, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                className="gu-remove-btn"
               >
                 ×
               </button>
@@ -79,11 +74,7 @@ export default function GalleryUpload({ value = [], onChange, folder = 'sahab-po
       <button
         type="button"
         onClick={() => setPickerOpen(true)}
-        style={{
-          width: '100%', border: '2px dashed #2a2a2a', borderRadius: 8, padding: 16, textAlign: 'center',
-          cursor: 'pointer', background: '#111', color: '#9a9a9a',
-          fontSize: 13, fontFamily: 'var(--f-m)',
-        }}
+        className="gu-add-btn"
       >
         + Add Images
       </button>

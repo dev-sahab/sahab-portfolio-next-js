@@ -1,0 +1,131 @@
+// Shared dashboard CRUD styles for the projects + blog list / create / edit /
+// taxonomy pages. Defined once here and imported (by relative path) from the
+// blog/* pages too, so the two near-identical CRUD sections don't duplicate
+// the same rules across ten files.
+
+.dashboard-page {
+  padding: 32px;
+}
+
+.dashboard-page-wide {
+  padding: 32px;
+  max-width: 1280px;
+}
+
+.crud-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.crud-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 14px 18px;
+}
+
+.crud-thumb {
+  width: 48px;
+  height: 48px;
+  background: #222;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--f-d);
+  font-weight: 800;
+  font-size: 14px;
+  color: #b8ff4f;
+  flex-shrink: 0;
+}
+
+.crud-thumb-img {
+  object-fit: cover;
+}
+
+.crud-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.crud-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: #f0ede6;
+  margin-bottom: 2px;
+
+  &--tight {
+    margin-bottom: 3px;
+  }
+}
+
+.crud-meta {
+  font-size: 12px;
+  color: #555;
+  display: flex;
+  gap: 12px;
+}
+
+.crud-meta-blue {
+  color: #60a5fa;
+}
+
+.crud-status {
+  &.published {
+    color: #22c55e;
+  }
+  &.draft {
+    color: #f59e0b;
+  }
+}
+
+.crud-featured {
+  color: #b8ff4f;
+}
+
+.crud-date {
+  font-size: 12px;
+  color: #555;
+  flex-shrink: 0;
+}
+
+.crud-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.crud-edit-btn {
+  padding: 7px 14px;
+  background: #222;
+  border: 1px solid #2a2a2a;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #9a9a9a;
+  font-family: var(--f-m);
+  text-decoration: none;
+}
+
+.crud-form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.crud-form-title {
+  font-size: 24px;
+  font-weight: 700;
+  font-family: var(--f-d);
+  color: #f0ede6;
+  letter-spacing: -0.02em;
+
+  &--standalone {
+    margin-bottom: 24px;
+  }
+}

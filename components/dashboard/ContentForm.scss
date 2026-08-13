@@ -1,0 +1,263 @@
+// Shared field classes (label/input) used throughout ContentForm's generic
+// field renderer. Visually identical patterns exist in ImageUpload.scss /
+// GalleryUpload.scss but with slightly different values (margin-bottom etc.),
+// so they're kept as separate, file-local classes rather than merged here.
+
+.cf-lbl {
+  display: block;
+  font-family: var(--f-m);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+.cf-inp {
+  width: 100%;
+  background: #111;
+  border: 1px solid #2a2a2a;
+  border-radius: 6px;
+  padding: 10px 14px;
+  color: #f0ede6;
+  font-size: 14px;
+  outline: none;
+  font-family: inherit;
+}
+
+.cf-textarea {
+  min-height: 200px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.cf-row {
+  margin-bottom: 20px;
+}
+
+.cf-card {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.cf-box-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #f0ede6;
+  margin-bottom: 14px;
+  font-family: var(--f-d);
+}
+
+.cf-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #f0ede6;
+  margin-bottom: 20px;
+  font-family: var(--f-d);
+}
+
+.cf-error {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  font-size: 13px;
+}
+
+// ── Grid layout (base rule; the max-width:960px collapse to one column
+// lives in app/globals.css under `.cf-grid` with !important) ──
+.cf-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 24px;
+  align-items: start;
+}
+
+.cf-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cf-publish-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.cf-box-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cf-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.cf-btn-save {
+  flex: 1;
+  background: #b8ff4f;
+  color: #0a0a0a;
+  border: none;
+  padding: 11px 20px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: var(--f-m);
+  cursor: pointer;
+  opacity: 1;
+
+  &.is-loading {
+    opacity: 0.6;
+  }
+}
+
+.cf-btn-cancel {
+  background: transparent;
+  color: #9a9a9a;
+  border: 1px solid #2a2a2a;
+  padding: 11px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: var(--f-m);
+  cursor: pointer;
+}
+
+// ── Checkbox field ──
+.cf-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.cf-checkbox-input {
+  width: 16px;
+  height: 16px;
+  accent-color: #b8ff4f;
+}
+
+.cf-checkbox-text {
+  font-size: 14px;
+  color: #9a9a9a;
+}
+
+// ── Slug editing (WordPress-style confirm-to-unlock flow) ──
+.cf-slug-row {
+  display: flex;
+  gap: 8px;
+}
+
+.cf-slug-input {
+  opacity: 1;
+  cursor: text;
+
+  &.is-locked {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+}
+
+.cf-slug-btn {
+  border-radius: 6px;
+  padding: 0 16px;
+  font-size: 12px;
+  font-family: var(--f-m);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.cf-slug-btn-cancel {
+  background: transparent;
+  color: #9a9a9a;
+  border: 1px solid #2a2a2a;
+}
+
+.cf-slug-btn-edit {
+  background: transparent;
+  color: #b8ff4f;
+  border: 1px solid rgba(184, 255, 79, 0.3);
+}
+
+.cf-slug-confirm {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(239, 68, 68, 0.06);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cf-slug-confirm-text {
+  font-size: 12px;
+  color: #9a9a9a;
+}
+
+.cf-slug-confirm-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.cf-slug-suggest {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(184, 255, 79, 0.06);
+  border: 1px solid rgba(184, 255, 79, 0.2);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cf-slug-suggest-text {
+  font-size: 12px;
+  color: #9a9a9a;
+
+  strong {
+    color: #f0ede6;
+  }
+}
+
+// Small confirm/accept/danger action buttons used inside the slug
+// confirm/suggest banners — smaller padding+font than .cf-slug-btn.
+.cf-slug-mini-btn {
+  border-radius: 4px;
+  padding: 5px 12px;
+  font-size: 11px;
+  font-family: var(--f-m);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.cf-slug-btn-danger {
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  font-weight: 700;
+}
+
+.cf-slug-btn-muted {
+  background: transparent;
+  color: #9a9a9a;
+  border: 1px solid #2a2a2a;
+}
+
+.cf-slug-btn-accent {
+  background: #b8ff4f;
+  color: #0a0a0a;
+  border: none;
+  font-weight: 700;
+}

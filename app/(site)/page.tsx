@@ -17,6 +17,7 @@ import type {
   Testimonial as ITestimonial,
   SiteSettings as ISettings,
 } from "@/types";
+import "./page.scss";
 
 async function getData() {
   try {
@@ -65,93 +66,19 @@ export default async function HomePage() {
     <main>
       {/* ── HERO ── */}
       <section id="hero">
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            overflow: "hidden",
-            pointerEvents: "none",
-          }}
-        >
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              backgroundImage:
-                "radial-gradient(circle, rgba(255,255,255,.048) 1px, transparent 1px)",
-              backgroundSize: "48px 48px",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              width: 720,
-              height: 720,
-              borderRadius: "50%",
-              background:
-                "radial-gradient(circle, rgba(184,255,79,.07) 0%, transparent 60%)",
-              right: -180,
-              top: -180,
-            }}
-          />
+        <div className="home-hero-bg">
+          <div className="home-hero-dots" />
+          <div className="home-hero-glow" />
         </div>
 
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            padding: "128px var(--px) 0",
-            display: "flex",
-            alignItems: "flex-start",
-            justifyContent: "space-between",
-            gap: 40,
-          }}
-        >
-          <AnimatedSection
-            from="fade"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 10,
-              border: "1px solid var(--border2)",
-              borderRadius: 100,
-              padding: "8px 16px",
-              fontFamily: "var(--f-m)",
-              fontSize: 10,
-              letterSpacing: ".14em",
-              textTransform: "uppercase",
-              color: "var(--text2)",
-            }}
-          >
-            <span
-              style={{
-                width: 7,
-                height: 7,
-                borderRadius: "50%",
-                background: "#22c55e",
-                flexShrink: 0,
-                display: "block",
-                animation: "pulse 2s ease-in-out infinite",
-              }}
-            />
+        <div className="home-hero-topbar">
+          <AnimatedSection from="fade" className="home-hero-badge">
+            <span className="home-hero-badge-dot" />
             {s?.availabilityText || "Available for new projects"}
           </AnimatedSection>
-          <AnimatedSection from="fade" style={{ textAlign: "right" }}>
-            <p
-              style={{
-                fontFamily: "var(--f-m)",
-                fontSize: 10,
-                letterSpacing: ".14em",
-                textTransform: "uppercase",
-                color: "var(--muted)",
-                lineHeight: 1.9,
-              }}
-            >
-              <strong style={{ color: "var(--text2)", fontWeight: 400 }}>
-                {s?.location || "Sylhet, Bangladesh"}
-              </strong>
+          <AnimatedSection from="fade" className="home-hero-right-info">
+            <p>
+              <strong>{s?.location || "Sylhet, Bangladesh"}</strong>
               <br />
               {s?.company || "PIXELVEGA"}
               <br />
@@ -161,7 +88,7 @@ export default async function HomePage() {
         </div>
 
         <h1 className="hero-name">
-          <AnimatedSection as="span" from="bottom" style={{ display: "block" }}>
+          <AnimatedSection as="span" from="bottom" className="home-hero-line1">
             Sahab
           </AnimatedSection>
           <AnimatedSection
@@ -176,19 +103,11 @@ export default async function HomePage() {
 
         <div className="hero-bottom-bar">
           <AnimatedSection from="bottom" delay={0.2}>
-            <p
-              style={{
-                fontSize: 15,
-                lineHeight: 1.75,
-                color: "var(--text2)",
-                marginBottom: 26,
-                maxWidth: 358,
-              }}
-            >
+            <p className="home-hero-desc">
               {s?.bio?.slice(0, 160) ||
                 "WordPress & MERN developer turning Figma into pixel-perfect, high-converting websites. Available for freelance worldwide."}
             </p>
-            <div style={{ display: "flex", gap: 13, flexWrap: "wrap" }}>
+            <div className="home-hero-cta-row">
               <Link href="/portfolio" className="btn btn-accent">
                 View Work ↓
               </Link>
@@ -200,78 +119,28 @@ export default async function HomePage() {
 
           <AnimatedSection
             from="fade"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 10,
-              justifySelf: "center",
-            }}
+            className="home-hero-scroll-indicator"
             aria-hidden="true"
           >
-            <div
-              style={{
-                width: 1,
-                height: 60,
-                background: "var(--border2)",
-                position: "relative",
-                overflow: "hidden",
-              }}
-            >
-              <div
-                style={{
-                  position: "absolute",
-                  top: -30,
-                  left: 0,
-                  width: "100%",
-                  height: 30,
-                  background: "var(--accent)",
-                  animation: "scrollDrop 2s ease-in-out infinite",
-                }}
-              />
+            <div className="home-hero-scroll-bar">
+              <div className="home-hero-scroll-drop" />
             </div>
-            <span
-              style={{
-                fontFamily: "var(--f-m)",
-                fontSize: 9,
-                letterSpacing: ".2em",
-                textTransform: "uppercase",
-                color: "var(--muted)",
-                writingMode: "vertical-rl",
-              }}
-            >
-              scroll
-            </span>
+            <span className="home-hero-scroll-label">scroll</span>
           </AnimatedSection>
 
           <AnimatedSection
             from="bottom"
             delay={0.2}
-            style={{ textAlign: "right" }}
+            className="home-hero-stats-col"
           >
             {stats.map((st) => (
-              <p
-                key={st.label}
-                style={{
-                  fontFamily: "var(--f-m)",
-                  fontSize: 10,
-                  letterSpacing: ".14em",
-                  textTransform: "uppercase",
-                  color: "var(--muted)",
-                  lineHeight: 2.1,
-                }}
-              >
+              <p key={st.label} className="home-hero-stat-row">
                 {st.label}{" "}
-                <span style={{ color: "var(--text2)" }}>{st.value}</span>
+                <span className="home-hero-stat-val">{st.value}</span>
               </p>
             ))}
           </AnimatedSection>
         </div>
-
-        <style>{`
-          @keyframes scrollDrop { 0%{top:-30px} 100%{top:60px} }
-          @keyframes pulse { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,.5)} 50%{opacity:.7;box-shadow:0 0 0 6px rgba(34,197,94,0)} }
-        `}</style>
       </section>
 
       <Marquee />
@@ -287,38 +156,19 @@ export default async function HomePage() {
       </div>
 
       {/* ── SERVICES ── */}
-      <section
-        className="section-pad"
-        style={{ borderTop: "1px solid var(--border)" }}
-      >
+      <section className="section-pad home-border-top">
         <div className="container">
           <AnimatedSection>
             <span className="s-label">What I Do</span>
           </AnimatedSection>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-end",
-              justifyContent: "space-between",
-              gap: 40,
-              marginBottom: 56,
-              flexWrap: "wrap",
-            }}
-          >
+          <div className="home-section-header-row">
             <AnimatedSection>
               <h2 className="h-xl">
                 My <span className="accent-word">Services</span>
               </h2>
             </AnimatedSection>
             <AnimatedSection from="fade">
-              <Link
-                href="/contact"
-                style={{
-                  fontFamily: "var(--f-m)",
-                  fontSize: 12,
-                  color: "var(--accent)",
-                }}
-              >
+              <Link href="/contact" className="home-services-link">
                 Let's discuss →
               </Link>
             </AnimatedSection>
@@ -360,42 +210,11 @@ export default async function HomePage() {
                   delay={i * 0.08}
                   className="service-card"
                 >
-                  <div
-                    style={{
-                      fontFamily: "var(--f-m)",
-                      fontSize: 11,
-                      letterSpacing: ".12em",
-                      color: "var(--muted)",
-                      marginBottom: 20,
-                    }}
-                  >
-                    0{i + 1}
-                  </div>
-                  <div style={{ fontSize: 29, marginBottom: 16 }}>
-                    {svc.icon}
-                  </div>
-                  <h3
-                    style={{
-                      fontFamily: "var(--f-d)",
-                      fontWeight: 700,
-                      fontSize: 20,
-                      letterSpacing: "-.01em",
-                      marginBottom: 11,
-                    }}
-                  >
-                    {svc.title}
-                  </h3>
-                  <p
-                    style={{
-                      fontSize: 14,
-                      lineHeight: 1.72,
-                      color: "var(--text2)",
-                      marginBottom: 20,
-                    }}
-                  >
-                    {svc.description}
-                  </p>
-                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                  <div className="home-service-index">0{i + 1}</div>
+                  <div className="home-service-icon">{svc.icon}</div>
+                  <h3 className="home-service-title">{svc.title}</h3>
+                  <p className="home-service-desc">{svc.description}</p>
+                  <div className="home-tag-row">
                     {svc.tags.map((t) => (
                       <span key={t} className="tag">
                         {t}
@@ -409,21 +228,9 @@ export default async function HomePage() {
       </section>
 
       {/* ── WORK ── */}
-      <section
-        className="section-pad"
-        style={{ borderTop: "1px solid var(--border)" }}
-      >
+      <section className="section-pad home-border-top">
         <div className="container">
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-end",
-              justifyContent: "space-between",
-              gap: 40,
-              marginBottom: 56,
-              flexWrap: "wrap",
-            }}
-          >
+          <div className="home-section-header-row">
             <div>
               <AnimatedSection>
                 <span className="s-label">Selected Work</span>
@@ -443,112 +250,35 @@ export default async function HomePage() {
           <div className="work-grid">
             {(projects as unknown as IProject[]).map((p, i) => (
               <AnimatedSection key={p._id} delay={i * 0.06}>
-                <Link
-                  href={`/portfolio/${p.slug}`}
-                  className="project-card"
-                  style={{ display: "flex", flexDirection: "column" }}
-                >
-                  <div
-                    style={{
-                      width: "100%",
-                      aspectRatio: "16/9",
-                      overflow: "hidden",
-                      position: "relative",
-                      background: "var(--surface2)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontFamily: "var(--f-d)",
-                      fontWeight: 800,
-                      fontSize: 55,
-                      color: "var(--border2)",
-                      letterSpacing: "-.04em",
-                    }}
-                  >
+                <Link href={`/portfolio/${p.slug}`} className="project-card">
+                  <div className="home-project-thumb">
                     {p.coverImage ? (
                       <Image
                         src={p.coverImage}
                         alt={p.title}
                         fill
                         sizes="(max-width: 1024px) 100vw, 33vw"
-                        style={{ objectFit: "cover" }}
+                        className="home-cover-img"
                       />
                     ) : (
                       (p.category?.name || "??").slice(0, 2).toUpperCase()
                     )}
                   </div>
-                  <div
-                    style={{
-                      padding: 28,
-                      flex: 1,
-                      display: "flex",
-                      flexDirection: "column",
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontFamily: "var(--f-m)",
-                        fontSize: 10,
-                        letterSpacing: ".15em",
-                        color: "var(--muted)",
-                        marginBottom: 9,
-                      }}
-                    >
+                  <div className="home-project-body">
+                    <div className="home-project-meta">
                       {String(i + 1).padStart(2, "0")} / {p.year}
                     </div>
-                    <h3
-                      style={{
-                        fontFamily: "var(--f-d)",
-                        fontWeight: 700,
-                        fontSize: "clamp(18px,2.3vw,26px)",
-                        letterSpacing: "-.01em",
-                        marginBottom: 8,
-                        transition: "color .3s",
-                        flex: 1,
-                      }}
-                    >
-                      {p.title}
-                    </h3>
-                    <p
-                      style={{
-                        fontSize: 13,
-                        color: "var(--text2)",
-                        lineHeight: 1.62,
-                        marginBottom: 20,
-                      }}
-                    >
-                      {p.excerpt}
-                    </p>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <div
-                        style={{ display: "flex", gap: 8, flexWrap: "wrap" }}
-                      >
+                    <h3 className="home-project-title">{p.title}</h3>
+                    <p className="home-project-excerpt">{p.excerpt}</p>
+                    <div className="home-project-footer">
+                      <div className="home-tag-row">
                         {p.tags.slice(0, 2).map((t: any) => (
                           <span key={t._id} className="tag">
                             {t.name}
                           </span>
                         ))}
                       </div>
-                      <div
-                        style={{
-                          width: 38,
-                          height: 38,
-                          border: "1px solid var(--border2)",
-                          borderRadius: "50%",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          fontSize: 15,
-                        }}
-                      >
-                        ↗
-                      </div>
+                      <div className="home-project-arrow">↗</div>
                     </div>
                   </div>
                 </Link>
@@ -560,14 +290,7 @@ export default async function HomePage() {
 
       {/* ── TESTIMONIALS ── */}
       {testimonials.length > 0 && (
-        <section
-          className="section-pad"
-          style={{
-            background: "var(--surface)",
-            borderTop: "1px solid var(--border)",
-            borderBottom: "1px solid var(--border)",
-          }}
-        >
+        <section className="section-pad home-testimonials-section">
           <div className="container">
             <AnimatedSection>
               <span className="s-label">Client Stories</span>
@@ -584,21 +307,9 @@ export default async function HomePage() {
 
       {/* ── BLOG ── */}
       {posts.length > 0 && (
-        <section
-          className="section-pad"
-          style={{ borderTop: "1px solid var(--border)" }}
-        >
+        <section className="section-pad home-border-top">
           <div className="container">
-            <div
-              style={{
-                display: "flex",
-                alignItems: "flex-end",
-                justifyContent: "space-between",
-                gap: 40,
-                marginBottom: 56,
-                flexWrap: "wrap",
-              }}
-            >
+            <div className="home-section-header-row">
               <div>
                 <AnimatedSection>
                   <span className="s-label">Latest Writing</span>
@@ -620,101 +331,32 @@ export default async function HomePage() {
                 <AnimatedSection key={post._id} delay={i * 0.06}>
                   <Link
                     href={`/blog/${post.slug}`}
-                    style={{
-                      background: "var(--surface)",
-                      borderRadius: "var(--r)",
-                      overflow: "hidden",
-                      display: "flex",
-                      flexDirection: "column",
-                      transition: "transform .38s var(--ease)",
-                    }}
+                    className="home-blog-card"
                   >
-                    <div
-                      style={{
-                        width: "100%",
-                        aspectRatio: "16/9",
-                        position: "relative",
-                        background: "var(--surface2)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontFamily: "var(--f-d)",
-                        fontSize: 42,
-                        fontWeight: 800,
-                        color: "var(--border2)",
-                      }}
-                    >
+                    <div className="home-blog-thumb">
                       {post.coverImage ? (
                         <Image
                           src={post.coverImage}
                           alt={post.title}
                           fill
                           sizes="(max-width: 1024px) 100vw, 33vw"
-                          style={{ objectFit: "cover" }}
+                          className="home-cover-img"
                         />
                       ) : (
                         (post.category?.name || "??").slice(0, 2).toUpperCase()
                       )}
                     </div>
-                    <div
-                      style={{
-                        padding: 24,
-                        flex: 1,
-                        display: "flex",
-                        flexDirection: "column",
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          gap: 10,
-                          marginBottom: 11,
-                          fontFamily: "var(--f-m)",
-                          fontSize: 10,
-                          letterSpacing: ".1em",
-                          textTransform: "uppercase",
-                          color: "var(--muted)",
-                        }}
-                      >
-                        <span style={{ color: "var(--accent)" }}>
+                    <div className="home-blog-body">
+                      <div className="home-blog-meta">
+                        <span className="home-blog-cat">
                           {post.category?.name || "Uncategorized"}
                         </span>
                         <span>·</span>
                         <span>{post.readTime || 5} min read</span>
                       </div>
-                      <h3
-                        style={{
-                          fontFamily: "var(--f-d)",
-                          fontWeight: 700,
-                          fontSize: 18,
-                          letterSpacing: "-.01em",
-                          marginBottom: 7,
-                          flex: 1,
-                        }}
-                      >
-                        {post.title}
-                      </h3>
-                      <p
-                        style={{
-                          fontSize: 13,
-                          color: "var(--text2)",
-                          lineHeight: 1.62,
-                          marginBottom: 16,
-                        }}
-                      >
-                        {post.excerpt}
-                      </p>
-                      <span
-                        style={{
-                          fontFamily: "var(--f-m)",
-                          fontSize: 11,
-                          letterSpacing: ".1em",
-                          textTransform: "uppercase",
-                          color: "var(--accent)",
-                        }}
-                      >
-                        Read →
-                      </span>
+                      <h3 className="home-blog-title">{post.title}</h3>
+                      <p className="home-blog-excerpt">{post.excerpt}</p>
+                      <span className="home-blog-readmore">Read →</span>
                     </div>
                   </Link>
                 </AnimatedSection>
@@ -726,36 +368,19 @@ export default async function HomePage() {
 
       {/* ── CTA ── */}
       <section className="cta-section">
-        <div className="container" style={{ position: "relative", zIndex: 1 }}>
-          <AnimatedSection style={{ textAlign: "center" }}>
-            <span className="s-label" style={{ justifyContent: "center" }}>
-              Let's Collaborate
-            </span>
+        <div className="container home-cta-container">
+          <AnimatedSection className="home-cta-inner">
+            <span className="s-label justify-center">Let's Collaborate</span>
             <h2 className="cta-title">
               Have an <span className="accent-word">idea?</span>
               <br />
               Let's build it.
             </h2>
-            <p
-              style={{
-                fontSize: 16,
-                color: "var(--text2)",
-                maxWidth: 460,
-                margin: "0 auto 44px",
-                lineHeight: 1.7,
-              }}
-            >
+            <p className="home-cta-desc">
               Open for freelance projects, consulting & full-time roles. Reply
               within 24 hours.
             </p>
-            <div
-              style={{
-                display: "flex",
-                gap: 14,
-                justifyContent: "center",
-                flexWrap: "wrap",
-              }}
-            >
+            <div className="home-cta-btns">
               <Link href="/get-quote" className="btn btn-accent">
                 Get a Free Quote →
               </Link>

@@ -1,12 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import type { Media, MediaReference } from '@/types'
-
-const S = {
-  lbl: { display: 'block', fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.14em', textTransform: 'uppercase' as const, color: '#555', marginBottom: 6 },
-  inp: { width: '100%', background: '#111', border: '1px solid #2a2a2a', borderRadius: 6, padding: '9px 13px', color: '#f0ede6', fontSize: 13, outline: 'none', fontFamily: 'inherit' },
-  select: { background: '#111', border: '1px solid #2a2a2a', borderRadius: 6, padding: '9px 12px', color: '#f0ede6', fontSize: 12, outline: 'none', fontFamily: 'var(--f-m)', cursor: 'pointer' } as React.CSSProperties,
-}
+import './MediaLibrary.scss'
 
 const TYPE_OPTIONS = [
   { value: '', label: 'All media items' },
@@ -166,15 +161,15 @@ export default function MediaLibrary() {
 
   return (
     <div>
-      <input ref={inputRef} type="file" accept="image/*" multiple style={{ display: 'none' }}
+      <input ref={inputRef} type="file" accept="image/*" multiple className="d-none"
         onChange={e => { const files = Array.from(e.target.files || []); if (files.length) uploadFiles(files); e.target.value = '' }} />
 
-      <div style={{ display: 'flex', gap: 12, marginBottom: 14, flexWrap: 'wrap', alignItems: 'center' }}>
+      <div className="mlib-toolbar">
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={uploading}
-          style={{ background: '#b8ff4f', color: '#0a0a0a', border: 'none', padding: '10px 20px', borderRadius: 8, fontSize: 13, fontWeight: 700, fontFamily: 'var(--f-m)', cursor: 'pointer', opacity: uploading ? .6 : 1 }}
+          className="mlib-upload-btn"
         >
           {uploading ? 'Uploading…' : '+ Upload New'}
         </button>
@@ -183,20 +178,20 @@ export default function MediaLibrary() {
           value={search}
           onChange={e => { setSearch(e.target.value); load({ search: e.target.value, page: 1 }) }}
           placeholder="Search by filename…"
-          style={{ ...S.inp, maxWidth: 240 }}
+          className="mlib-input mlib-search-input"
         />
         <button type="button" onClick={toggleSelectMode}
-          style={{ background: selectMode ? 'rgba(184,255,79,.12)' : 'transparent', border: `1px solid ${selectMode ? '#b8ff4f' : '#2a2a2a'}`, color: selectMode ? '#b8ff4f' : '#9a9a9a', padding: '9px 16px', borderRadius: 8, fontSize: 12, fontFamily: 'var(--f-m)', cursor: 'pointer' }}>
+          className={selectMode ? 'mlib-select-btn active' : 'mlib-select-btn'}>
           {selectMode ? 'Cancel Select' : 'Select'}
         </button>
-        <span style={{ fontSize: 13, color: '#555' }}>{total} item{total === 1 ? '' : 's'}</span>
+        <span className="mlib-count">{total} item{total === 1 ? '' : 's'}</span>
       </div>
 
-      <div style={{ display: 'flex', gap: 10, marginBottom: 20, flexWrap: 'wrap', alignItems: 'center' }}>
-        <select value={typeFilter} onChange={e => { setTypeFilter(e.target.value); load({ type: e.target.value, page: 1 }) }} style={S.select}>
+      <div className="mlib-filters">
+        <select value={typeFilter} onChange={e => { setTypeFilter(e.target.value); load({ type: e.target.value, page: 1 }) }} className="mlib-select">
           {TYPE_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
         </select>
-        <select value={dateFilter} onChange={e => { setDateFilter(e.target.value); load({ date: e.target.value, page: 1 }) }} style={S.select}>
+        <select value={dateFilter} onChange={e => { setDateFilter(e.target.value); load({ date: e.target.value, page: 1 }) }} className="mlib-select">
           <option value="">All dates</option>
           {months.map(m => (
             <option key={`${m.year}-${m.month}`} value={`${m.year}-${m.month}`}>
@@ -204,27 +199,27 @@ export default function MediaLibrary() {
             </option>
           ))}
         </select>
-        <select value={limit} onChange={e => { const v = Number(e.target.value); setLimit(v); load({ limit: v, page: 1 }) }} style={S.select}>
+        <select value={limit} onChange={e => { const v = Number(e.target.value); setLimit(v); load({ limit: v, page: 1 }) }} className="mlib-select">
           {PAGE_SIZE_OPTIONS.map(n => <option key={n} value={n}>Show {n}</option>)}
         </select>
       </div>
 
       {selectMode && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16, padding: '10px 14px', background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: 8 }}>
-          <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 12, color: '#9a9a9a', fontFamily: 'var(--f-m)' }}>
-            <input type="checkbox" checked={allOnPageSelected} onChange={toggleSelectAll} style={{ accentColor: '#b8ff4f' }} />
+        <div className="mlib-selectbar">
+          <label className="mlib-selectall-label">
+            <input type="checkbox" checked={allOnPageSelected} onChange={toggleSelectAll} className="mlib-accent-cb" />
             Select all on page
           </label>
-          <span style={{ fontSize: 12, color: '#9a9a9a', fontFamily: 'var(--f-m)' }}>{selectedIds.length} selected</span>
+          <span className="mlib-meta-text">{selectedIds.length} selected</span>
           <button type="button" onClick={bulkDelete} disabled={!selectedIds.length}
-            style={{ background: '#ef4444', color: '#fff', border: 'none', padding: '7px 14px', borderRadius: 6, fontSize: 12, fontFamily: 'var(--f-m)', cursor: selectedIds.length ? 'pointer' : 'default', opacity: selectedIds.length ? 1 : .5 }}>
+            className="mlib-bulkdelete-btn">
             Delete Selected
           </button>
         </div>
       )}
 
       {bulkResult && (
-        <div style={{ marginBottom: 16, padding: '10px 14px', background: bulkResult.skipped.length ? 'rgba(239,68,68,.08)' : 'rgba(184,255,79,.08)', border: `1px solid ${bulkResult.skipped.length ? 'rgba(239,68,68,.2)' : 'rgba(184,255,79,.2)'}`, borderRadius: 8, fontSize: 12, color: '#9a9a9a' }}>
+        <div className={bulkResult.skipped.length ? 'mlib-bulkresult has-skipped' : 'mlib-bulkresult'}>
           Deleted {bulkResult.deleted} image{bulkResult.deleted === 1 ? '' : 's'}.
           {bulkResult.skipped.length > 0 && (
             <> Skipped {bulkResult.skipped.length} still in use: {bulkResult.skipped.map(s => `${s.filename} (used in ${refLabel(s.references)})`).join('; ')}</>
@@ -233,47 +228,44 @@ export default function MediaLibrary() {
       )}
 
       {loading ? (
-        <p style={{ color: '#555' }}>Loading…</p>
+        <p className="mlib-loading-text">Loading…</p>
       ) : items.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '80px 20px', background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: 12 }}>
-          <p style={{ fontSize: 15, color: '#555' }}>No media found.</p>
+        <div className="mlib-empty">
+          <p className="mlib-empty-text">No media found.</p>
         </div>
       ) : (
         <>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 12 }}>
+          <div className="mlib-grid">
             {items.map(item => (
               <button
                 key={item._id}
                 type="button"
                 onClick={() => selectMode ? toggleSelected(item._id) : openItem(item)}
-                style={{
-                  aspectRatio: '1/1', borderRadius: 8, overflow: 'hidden', cursor: 'pointer', padding: 0, position: 'relative', background: '#111',
-                  border: `2px solid ${selectMode && selectedIds.includes(item._id) ? '#b8ff4f' : '#2a2a2a'}`,
-                }}
+                className={selectMode && selectedIds.includes(item._id) ? 'mlib-grid-item is-selected' : 'mlib-grid-item'}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={item.url} alt={item.altText || item.filename} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img src={item.url} alt={item.altText || item.filename} className="mlib-grid-img" />
                 {item.inUse && (
-                  <div style={{ position: 'absolute', top: 6, left: 6, background: 'rgba(96,165,250,.9)', color: '#0a0a0a', borderRadius: 4, padding: '2px 6px', fontSize: 9, fontWeight: 700, fontFamily: 'var(--f-m)' }}>
+                  <div className="mlib-badge-inuse">
                     In use
                   </div>
                 )}
                 {selectMode && selectedIds.includes(item._id) && (
-                  <div style={{ position: 'absolute', top: 6, right: 6, width: 22, height: 22, borderRadius: '50%', background: '#b8ff4f', color: '#0a0a0a', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700 }}>✓</div>
+                  <div className="mlib-badge-check">✓</div>
                 )}
               </button>
             ))}
           </div>
 
           {pages > 1 && (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, marginTop: 24 }}>
+            <div className="mlib-pagination">
               <button type="button" onClick={() => load({ page: page - 1 })} disabled={page <= 1}
-                style={{ background: 'transparent', border: '1px solid #2a2a2a', color: page <= 1 ? '#444' : '#9a9a9a', padding: '8px 16px', borderRadius: 6, fontSize: 12, fontFamily: 'var(--f-m)', cursor: page <= 1 ? 'default' : 'pointer' }}>
+                className="mlib-page-btn">
                 ← Prev
               </button>
-              <span style={{ fontSize: 12, color: '#9a9a9a', fontFamily: 'var(--f-m)' }}>Page {page} of {pages}</span>
+              <span className="mlib-meta-text">Page {page} of {pages}</span>
               <button type="button" onClick={() => load({ page: page + 1 })} disabled={page >= pages}
-                style={{ background: 'transparent', border: '1px solid #2a2a2a', color: page >= pages ? '#444' : '#9a9a9a', padding: '8px 16px', borderRadius: 6, fontSize: 12, fontFamily: 'var(--f-m)', cursor: page >= pages ? 'default' : 'pointer' }}>
+                className="mlib-page-btn">
                 Next →
               </button>
             </div>
@@ -284,67 +276,67 @@ export default function MediaLibrary() {
       {selected && (
         <div
           onClick={() => setSelected(null)}
-          style={{ position: 'fixed', inset: 0, zIndex: 900, background: 'rgba(0,0,0,.75)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}
+          className="mlib-modal-overlay"
         >
           <div
             onClick={e => e.stopPropagation()}
-            style={{ background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: 12, width: '100%', maxWidth: 820, maxHeight: '86vh', overflow: 'auto', display: 'grid', gridTemplateColumns: '1fr 320px' }}
+            className="mlib-modal"
           >
-            <div style={{ background: '#0d0d0d', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
+            <div className="mlib-modal-preview">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={selected.url} alt={selected.altText || selected.filename} style={{ maxWidth: '100%', maxHeight: '70vh', objectFit: 'contain', borderRadius: 6 }} />
+              <img src={selected.url} alt={selected.altText || selected.filename} className="mlib-modal-preview-img" />
             </div>
-            <div style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <div className="d-flex flex-col gap-4 p-5">
               <div>
-                <div style={{ fontSize: 13, fontWeight: 600, color: '#f0ede6', marginBottom: 4, wordBreak: 'break-all' }}>{selected.filename}</div>
-                <div style={{ fontSize: 11, color: '#555', fontFamily: 'var(--f-m)' }}>
+                <div className="mlib-filename">{selected.filename}</div>
+                <div className="mlib-filemeta">
                   {selected.width && selected.height ? `${selected.width}×${selected.height}px · ` : ''}{formatBytes(selected.size)}
                 </div>
                 {selected.inUse && (
-                  <div style={{ marginTop: 8, fontSize: 11, color: '#60a5fa', fontFamily: 'var(--f-m)' }}>● Currently in use — can't be deleted until removed everywhere it's used</div>
+                  <div className="mlib-inuse-note">● Currently in use — can't be deleted until removed everywhere it's used</div>
                 )}
               </div>
 
               <div>
-                <label style={S.lbl}>Title</label>
-                <input value={selected.title} onChange={e => setSelected(s => s && { ...s, title: e.target.value })} style={S.inp} />
+                <label className="mlib-label">Title</label>
+                <input value={selected.title} onChange={e => setSelected(s => s && { ...s, title: e.target.value })} className="mlib-input" />
               </div>
               <div>
-                <label style={S.lbl}>Alt Text</label>
-                <input value={selected.altText} onChange={e => setSelected(s => s && { ...s, altText: e.target.value })} style={S.inp} placeholder="Describe the image for accessibility" />
+                <label className="mlib-label">Alt Text</label>
+                <input value={selected.altText} onChange={e => setSelected(s => s && { ...s, altText: e.target.value })} className="mlib-input" placeholder="Describe the image for accessibility" />
               </div>
               <div>
-                <label style={S.lbl}>Caption</label>
-                <textarea value={selected.caption} onChange={e => setSelected(s => s && { ...s, caption: e.target.value })} style={{ ...S.inp, minHeight: 70, resize: 'vertical' }} />
+                <label className="mlib-label">Caption</label>
+                <textarea value={selected.caption} onChange={e => setSelected(s => s && { ...s, caption: e.target.value })} className="mlib-input mlib-textarea" />
               </div>
 
-              <div style={{ display: 'flex', gap: 8, marginTop: 4 }}>
+              <div className="d-flex gap-2 mt-1">
                 <button type="button" onClick={saveDetails} disabled={saving}
-                  style={{ background: '#b8ff4f', color: '#0a0a0a', border: 'none', padding: '9px 18px', borderRadius: 6, fontSize: 12, fontWeight: 700, fontFamily: 'var(--f-m)', cursor: 'pointer', opacity: saving ? .6 : 1 }}>
+                  className="mlib-save-btn">
                   {saving ? 'Saving…' : 'Save'}
                 </button>
                 <button type="button" onClick={() => setSelected(null)}
-                  style={{ background: 'transparent', border: '1px solid #2a2a2a', color: '#9a9a9a', padding: '9px 18px', borderRadius: 6, fontSize: 12, fontFamily: 'var(--f-m)', cursor: 'pointer' }}>
+                  className="mlib-close-btn">
                   Close
                 </button>
               </div>
 
-              <div style={{ borderTop: '1px solid #2a2a2a', paddingTop: 14, marginTop: 4 }}>
+              <div className="mlib-delete-section">
                 {deleteBlocked && (
-                  <div style={{ marginBottom: 10, fontSize: 12, color: '#ef4444' }}>
+                  <div className="mlib-delete-blocked">
                     Can't delete — in use by: {refLabel(deleteBlocked)}
                   </div>
                 )}
                 {selected.inUse ? (
-                  <div style={{ fontSize: 12, color: '#555' }}>Remove it from every post/project/testimonial above to delete it.</div>
+                  <div className="mlib-delete-hint">Remove it from every post/project/testimonial above to delete it.</div>
                 ) : confirmingDelete ? (
-                  <div style={{ display: 'flex', gap: 8 }}>
-                    <button type="button" onClick={remove} style={{ padding: '7px 14px', background: '#ef4444', color: '#fff', border: 'none', borderRadius: 6, fontSize: 12, cursor: 'pointer', fontFamily: 'var(--f-m)' }}>Yes, delete</button>
-                    <button type="button" onClick={() => setConfirmingDelete(false)} style={{ padding: '7px 14px', background: '#222', border: '1px solid #2a2a2a', borderRadius: 6, fontSize: 12, color: '#9a9a9a', cursor: 'pointer', fontFamily: 'var(--f-m)' }}>Cancel</button>
+                  <div className="d-flex gap-2">
+                    <button type="button" onClick={remove} className="mlib-confirm-yes">Yes, delete</button>
+                    <button type="button" onClick={() => setConfirmingDelete(false)} className="mlib-confirm-cancel">Cancel</button>
                   </div>
                 ) : (
                   <button type="button" onClick={() => setConfirmingDelete(true)}
-                    style={{ padding: '7px 14px', background: 'transparent', border: '1px solid #ef444433', borderRadius: 6, fontSize: 12, color: '#ef4444', cursor: 'pointer', fontFamily: 'var(--f-m)' }}>
+                    className="mlib-delete-btn">
                     Delete Permanently
                   </button>
                 )}

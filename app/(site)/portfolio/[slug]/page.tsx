@@ -11,6 +11,7 @@ import "@/models/Tag";
 import AnimatedSection from "@/components/site/AnimatedSection";
 import Lightbox from "@/components/site/Lightbox";
 import type { Project as IProject } from "@/types";
+import "./portfolio-slug.scss";
 
 export async function generateMetadata({
   params,
@@ -75,35 +76,16 @@ export default async function ProjectPage({
   return (
     <main>
       {/* HERO */}
-      <section
-        style={{
-          padding: "136px var(--px) 54px",
-          borderBottom: "1px solid var(--border)",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
+      <section className="sp-hero">
         <div className="ph-dots" aria-hidden="true" />
         <div className="container">
           <AnimatedSection>
-            <div
-              style={{
-                fontFamily: "var(--f-m)",
-                fontSize: 10,
-                letterSpacing: ".14em",
-                textTransform: "uppercase",
-                color: "var(--muted)",
-                marginBottom: 18,
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-              }}
-            >
-              <Link href="/" style={{ color: "var(--muted)" }}>
+            <div className="sp-breadcrumb">
+              <Link href="/">
                 Home
               </Link>
               <span>/</span>
-              <Link href="/portfolio" style={{ color: "var(--muted)" }}>
+              <Link href="/portfolio">
                 Portfolio
               </Link>
               <span>/</span>
@@ -111,15 +93,7 @@ export default async function ProjectPage({
             </div>
           </AnimatedSection>
           <AnimatedSection>
-            <div
-              style={{
-                display: "flex",
-                gap: 10,
-                alignItems: "center",
-                marginBottom: 18,
-                flexWrap: "wrap",
-              }}
-            >
+            <div className="sp-tags-row">
               <span className="tag green">{project.category?.name || 'Uncategorized'}</span>
               <span className="tag">{project.year}</span>
               {project.client && (
@@ -131,28 +105,12 @@ export default async function ProjectPage({
             </div>
           </AnimatedSection>
           <AnimatedSection>
-            <h1
-              style={{
-                fontFamily: "var(--f-d)",
-                fontWeight: 800,
-                fontSize: "clamp(36px,6.2vw,88px)",
-                lineHeight: 0.94,
-                letterSpacing: "-.04em",
-                marginBottom: 26,
-              }}
-            >
+            <h1 className="sp-title">
               {project.title}
             </h1>
           </AnimatedSection>
           <AnimatedSection from="fade">
-            <div
-              style={{
-                display: "flex",
-                gap: 10,
-                flexWrap: "wrap",
-                marginBottom: 34,
-              }}
-            >
+            <div className="sp-stack-row">
               {project.stack.map((s) => (
                 <span key={s} className="tag">
                   {s}
@@ -166,7 +124,7 @@ export default async function ProjectPage({
             </div>
           </AnimatedSection>
           <AnimatedSection from="fade">
-            <div style={{ display: "flex", gap: 13, flexWrap: "wrap" }}>
+            <div className="sp-cta-row">
               {project.liveUrl && (
                 <a
                   href={project.liveUrl}
@@ -196,42 +154,18 @@ export default async function ProjectPage({
       </section>
 
       {/* CONTENT */}
-      <div style={{ padding: "0 var(--px)" }}>
-        <div
-          style={{
-            maxWidth: "calc(var(--max) + var(--px)*2)",
-            margin: "0 auto",
-          }}
-        >
+      <div className="sp-content-wrap">
+        <div className="sp-content-inner">
           {/* Featured image placeholder */}
           <AnimatedSection>
-            <div
-              style={{
-                width: "100%",
-                aspectRatio: "16/9",
-                background:
-                  "linear-gradient(135deg, var(--surface), var(--surface2))",
-                borderRadius: "var(--r)",
-                overflow: "hidden",
-                margin: "54px 0",
-                position: "relative",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontFamily: "var(--f-d)",
-                fontWeight: 800,
-                fontSize: 80,
-                color: "var(--border2)",
-                letterSpacing: "-.04em",
-              }}
-            >
+            <div className="sp-featured-img">
               {project.coverImage ? (
                 <Image
                   src={project.coverImage}
                   alt={project.title}
                   fill
                   sizes="(max-width: 768px) 100vw, 1200px"
-                  style={{ objectFit: "cover" }}
+                  className="sp-featured-img-el"
                 />
               ) : (
                 (project.category?.name || '??').slice(0, 2).toUpperCase()
@@ -240,71 +174,24 @@ export default async function ProjectPage({
           </AnimatedSection>
 
           {/* Overview */}
-          <AnimatedSection
-            style={{ padding: "68px 0", borderTop: "1px solid var(--border)" }}
-          >
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: 68,
-                alignItems: "start",
-              }}
-            >
+          <AnimatedSection className="sp-section">
+            <div className="sp-overview-grid">
               <div>
-                <div
-                  style={{
-                    fontFamily: "var(--f-m)",
-                    fontSize: 10,
-                    letterSpacing: ".18em",
-                    textTransform: "uppercase",
-                    color: "var(--accent)",
-                    marginBottom: 12,
-                  }}
-                >
+                <div className="sp-eyebrow">
                   Project Overview
                 </div>
-                <h2
-                  style={{
-                    fontFamily: "var(--f-d)",
-                    fontWeight: 700,
-                    fontSize: "clamp(20px,2.6vw,36px)",
-                    letterSpacing: "-.02em",
-                    marginBottom: 20,
-                  }}
-                >
+                <h2 className="sp-h2 sp-overview-title">
                   About this project
                 </h2>
-                <p
-                  style={{
-                    fontSize: 15,
-                    color: "var(--text2)",
-                    lineHeight: 1.84,
-                  }}
-                >
+                <p className="sp-body-text">
                   {project.excerpt}
                 </p>
               </div>
               <div>
-                <div
-                  style={{
-                    fontFamily: "var(--f-m)",
-                    fontSize: 10,
-                    letterSpacing: ".18em",
-                    textTransform: "uppercase",
-                    color: "var(--accent)",
-                    marginBottom: 12,
-                  }}
-                >
+                <div className="sp-eyebrow">
                   Details
                 </div>
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
-                    gap: 2,
-                  }}
-                >
+                <div className="sp-details-grid">
                   {[
                     ["Category", project.category?.name || "Uncategorized"],
                     ["Year", project.year],
@@ -313,31 +200,12 @@ export default async function ProjectPage({
                   ].map(([k, v]) => (
                     <div
                       key={k as string}
-                      style={{
-                        background: "var(--surface)",
-                        padding: "16px 18px",
-                        borderRadius: "var(--r)",
-                      }}
+                      className="sp-detail-cell"
                     >
-                      <div
-                        style={{
-                          fontFamily: "var(--f-m)",
-                          fontSize: 9,
-                          letterSpacing: ".18em",
-                          textTransform: "uppercase",
-                          color: "var(--muted)",
-                          marginBottom: 5,
-                        }}
-                      >
+                      <div className="sp-detail-label">
                         {k}
                       </div>
-                      <div
-                        style={{
-                          fontSize: 14,
-                          fontWeight: 500,
-                          textTransform: "capitalize",
-                        }}
-                      >
+                      <div className="sp-detail-value">
                         {v}
                       </div>
                     </div>
@@ -349,32 +217,12 @@ export default async function ProjectPage({
 
           {/* Full content */}
           {project.content && (
-            <AnimatedSection
-              style={{
-                padding: "0 0 68px",
-                borderTop: "1px solid var(--border)",
-                paddingTop: 68,
-              }}
-            >
-              <div
-                style={{
-                  fontFamily: "var(--f-m)",
-                  fontSize: 10,
-                  letterSpacing: ".18em",
-                  textTransform: "uppercase",
-                  color: "var(--accent)",
-                  marginBottom: 12,
-                }}
-              >
+            <AnimatedSection className="sp-section">
+              <div className="sp-eyebrow">
                 Case Study
               </div>
               <div
-                className="markdown-content"
-                style={{
-                  fontSize: 15,
-                  color: "var(--text2)",
-                  lineHeight: 1.84,
-                }}
+                className="markdown-content sp-body-text"
                 dangerouslySetInnerHTML={{
                   __html: DOMPurify.sanitize(project.content),
                 }}
@@ -384,37 +232,14 @@ export default async function ProjectPage({
 
           {/* Gallery */}
           {project.gallery && project.gallery.length > 0 && (
-            <AnimatedSection
-              style={{
-                padding: "0 0 68px",
-                borderTop: "1px solid var(--border)",
-                paddingTop: 68,
-              }}
-            >
-              <div
-                style={{
-                  fontFamily: "var(--f-m)",
-                  fontSize: 10,
-                  letterSpacing: ".18em",
-                  textTransform: "uppercase",
-                  color: "var(--accent)",
-                  marginBottom: 12,
-                }}
-              >
+            <AnimatedSection className="sp-section">
+              <div className="sp-eyebrow">
                 Screenshots
               </div>
-              <h2
-                style={{
-                  fontFamily: "var(--f-d)",
-                  fontWeight: 700,
-                  fontSize: "clamp(20px,2.6vw,36px)",
-                  letterSpacing: "-.02em",
-                  marginBottom: 10,
-                }}
-              >
+              <h2 className="sp-h2 sp-gallery-title">
                 Visual walkthrough
               </h2>
-              <p style={{ fontSize: 14, color: "var(--text2)" }}>
+              <p className="sp-gallery-hint">
                 Click any image to view full-size.
               </p>
               <Lightbox images={project.gallery} />
@@ -423,44 +248,13 @@ export default async function ProjectPage({
 
           {/* Tech Stack */}
           {project.stack && project.stack.length > 0 && (
-            <AnimatedSection
-              style={{
-                padding: "0 0 68px",
-                borderTop: "1px solid var(--border)",
-                paddingTop: 68,
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: 40,
-                  flexWrap: "wrap",
-                  marginBottom: 30,
-                }}
-              >
+            <AnimatedSection className="sp-section">
+              <div className="sp-stack-header">
                 <div>
-                  <div
-                    style={{
-                      fontFamily: "var(--f-m)",
-                      fontSize: 10,
-                      letterSpacing: ".18em",
-                      textTransform: "uppercase",
-                      color: "var(--accent)",
-                      marginBottom: 12,
-                    }}
-                  >
+                  <div className="sp-eyebrow">
                     Tech Stack
                   </div>
-                  <h2
-                    style={{
-                      fontFamily: "var(--f-d)",
-                      fontWeight: 700,
-                      fontSize: "clamp(20px,2.6vw,36px)",
-                      letterSpacing: "-.02em",
-                    }}
-                  >
+                  <h2 className="sp-h2">
                     Tools &amp; Technologies
                   </h2>
                 </div>
@@ -475,7 +269,7 @@ export default async function ProjectPage({
                   </a>
                 )}
               </div>
-              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+              <div className="sp-stack-pills">
                 {project.stack.map((s) => (
                   <span key={s} className="tag sp-stack-pill">
                     {s}

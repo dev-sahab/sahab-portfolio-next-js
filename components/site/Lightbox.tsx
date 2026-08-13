@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import Image from 'next/image'
+import './Lightbox.scss'
 
 // 'fit' = scaled to fit the viewport (the opening view). The rest are exact
 // percentages of the image's real/native pixel dimensions — 200% genuinely
@@ -94,7 +95,7 @@ export default function Lightbox({ images }: Props) {
             onClick={() => setOpenIndex(i)}
             aria-label={`Open image ${i + 1} of ${images.length}`}
           >
-            <Image src={src} alt={`Gallery image ${i + 1}`} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" style={{ objectFit: 'cover' }} />
+            <Image src={src} alt={`Gallery image ${i + 1}`} fill className="lb-thumb-img" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
           </button>
         ))}
       </div>
@@ -115,21 +116,17 @@ export default function Lightbox({ images }: Props) {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               ref={imgRef}
-              className="lb-img"
+              className={`lb-img ${zoom === 'fit' ? 'lb-img-fit' : 'lb-img-zoomed'}`}
               src={images[openIndex]}
               alt={`Gallery image ${openIndex + 1}`}
               onLoad={e => setNatural({ w: e.currentTarget.naturalWidth, h: e.currentTarget.naturalHeight })}
               onClick={e => { e.stopPropagation(); toggleZoom() }}
               style={
                 zoom === 'fit'
-                  ? { flexShrink: 0, cursor: 'zoom-in' }
+                  ? undefined
                   : {
                       width: natural ? natural.w * zoom : undefined,
                       height: natural ? natural.h * zoom : undefined,
-                      maxWidth: 'none',
-                      maxHeight: 'none',
-                      flexShrink: 0,
-                      cursor: 'zoom-out',
                     }
               }
             />

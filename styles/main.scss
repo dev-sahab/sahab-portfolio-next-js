@@ -1,0 +1,6 @@
+// Design tokens + reusable low-level utilities shared by every component-level
+// .scss file. Per-component styles live next to their component
+// (e.g. components/site/Navbar.scss) and are imported by that component only.
+@forward 'variables';
+@forward 'mixins';
+@use 'utilities';

@@ -1,0 +1,95 @@
+.iu-lbl {
+  display: block;
+  font-family: var(--f-m);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.iu-preview {
+  position: relative;
+}
+
+.iu-preview-img {
+  width: 100%;
+  max-height: 240px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.iu-pending-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(184, 255, 79, 0.9);
+  color: #0a0a0a;
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--f-m);
+}
+
+.iu-remove-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iu-replace-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 11px;
+  font-family: var(--f-m);
+}
+
+.iu-dropzone {
+  border: 2px dashed #2a2a2a;
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+  cursor: pointer;
+  background: #111;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: #b8ff4f;
+  }
+}
+
+.iu-dropzone-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.iu-dropzone-title {
+  font-size: 13px;
+  color: #9a9a9a;
+  margin-bottom: 4px;
+}
+
+.iu-dropzone-hint {
+  font-size: 11px;
+  color: #555;
+  font-family: var(--f-m);
+}

@@ -1,22 +1,9 @@
-import connectDB from "@/lib/mongodb";
-import SiteSettings from "@/models/SiteSettings";
 import type { SiteSettings as ISettings } from "@/types";
 import Link from "next/link";
-import { FaGithub, FaLinkedinIn } from "react-icons/fa";
-import { SiUpwork, SiX } from "react-icons/si";
+import { getSocialPlatform } from "./socialIcons";
+import "./Footer.scss";
 
-async function getSettings() {
-  try {
-    await connectDB();
-    const settings = await SiteSettings.findOne().lean();
-    return { settings };
-  } catch (error) {
-    console.error("Error fetching site settings:", error);
-    return null;
-  }
-}
-
-const pages = [
+const defaultPages = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/portfolio", label: "Portfolio" },
@@ -25,211 +12,97 @@ const pages = [
   { href: "/get-quote", label: "Get a Quote" },
 ];
 
-const services = [
+const defaultServices = [
   "WordPress Development",
   "Webflow Builds",
   "WooCommerce",
   "MERN Stack",
   "Figma → Code",
+].map((s) => ({ href: "/contact", label: s }));
+
+const defaultLegal = [
+  { href: "/privacy-policy", label: "Privacy Policy" },
+  { href: "/terms", label: "Terms of Service" },
 ];
 
-export default async function Footer() {
-  const { settings } = (await getSettings()) as { settings: ISettings | null };
+export default function Footer({ settings }: { settings?: ISettings | null }) {
   const social = settings?.social;
-  const socialIcons: Record<string, React.ReactNode> = {
-    github: <FaGithub />,
-    linkedin: <FaLinkedinIn />,
-    twitter: <SiX />, // X (Twitter)
-    upwork: <SiUpwork />,
+  const footerMenu = settings?.footerMenu && settings.footerMenu.length > 0
+    ? [...settings.footerMenu].sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+    : null;
+  const menuByColumn = (column: string, fallback: { href: string; label: string }[]) => {
+    if (!footerMenu) return fallback;
+    const items = footerMenu.filter((item) => (item.column || "Pages") === column);
+    return items.length > 0 ? items : fallback;
   };
+  const pagesCol = menuByColumn("Pages", defaultPages);
+  const servicesCol = menuByColumn("Services", defaultServices);
+  const legalCol = menuByColumn("Legal", defaultLegal);
   const year = new Date().getFullYear();
   return (
-    <footer id="site-footer" style={{ borderTop: "1px solid var(--border)" }}>
+    <footer id="site-footer">
       <div className="container">
         <div className="footer-top">
           <div>
-            <div
-              style={{
-                fontFamily: "var(--f-d)",
-                fontWeight: 800,
-                fontSize: 21,
-                letterSpacing: "-.02em",
-                marginBottom: 11,
-              }}
-            >
-              Sahab<span style={{ color: "var(--accent)" }}>.</span>
+            <div className="footer-brand-name">
+              {settings?.siteTitle || "Sahab"}
+              {!settings?.siteTitle && <span className="footer-brand-dot">.</span>}
             </div>
-            <p
-              style={{
-                fontSize: 14,
-                color: "var(--text2)",
-                lineHeight: 1.62,
-                marginBottom: 20,
-                maxWidth: 245,
-              }}
-            >
-              Building digital products that move businesses forward — one pixel
-              at a time.
+            <p className="footer-tagline">
+              {settings?.footerTagline ||
+                "Building digital products that move businesses forward — one pixel at a time."}
             </p>
-            <div style={{ display: "flex", gap: 10 }}>
-              {Object.entries(social || {}).map(
-                ([key, value]) =>
-                  value && (
-                    <a
-                      key={key}
-                      href={value}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={key}
-                      style={{
-                        width: 36,
-                        height: 36,
-                        border: "1px solid var(--border2)",
-                        borderRadius: "50%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: 18,
-                        fontFamily: "var(--f-m)",
-                        color: "var(--text2)",
-                        transition: "border-color .3s, color .3s",
-                      }}
-                    >
-                      {socialIcons[key] ?? key.slice(0, 2).toUpperCase()}
-                    </a>
-                  ),
-              )}
+            <div className="footer-social">
+              {(social || []).map(({ platform, url }) => {
+                if (!url) return null;
+                const { label, icon: Icon } = getSocialPlatform(platform);
+                return (
+                  <a key={platform} href={url} target="_blank" rel="noopener noreferrer" aria-label={label}>
+                    <Icon size={16} />
+                  </a>
+                );
+              })}
             </div>
           </div>
 
-          <div>
-            <h4
-              style={{
-                fontFamily: "var(--f-m)",
-                fontSize: 10,
-                letterSpacing: ".18em",
-                textTransform: "uppercase",
-                color: "var(--muted)",
-                marginBottom: 17,
-              }}
-            >
-              Pages
-            </h4>
-            <ul style={{ display: "flex", flexDirection: "column", gap: 11 }}>
-              {pages.map((p) => (
-                <li key={p.href}>
-                  <Link
-                    href={p.href}
-                    style={{
-                      fontSize: 14,
-                      color: "var(--text2)",
-                      transition: "color .3s",
-                    }}
-                  >
-                    {p.label}
-                  </Link>
+          <div className="footer-col">
+            <h4>Pages</h4>
+            <ul>
+              {pagesCol.map((p) => (
+                <li key={p.href + p.label}>
+                  <Link href={p.href}>{p.label}</Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div>
-            <h4
-              style={{
-                fontFamily: "var(--f-m)",
-                fontSize: 10,
-                letterSpacing: ".18em",
-                textTransform: "uppercase",
-                color: "var(--muted)",
-                marginBottom: 17,
-              }}
-            >
-              Services
-            </h4>
-            <ul style={{ display: "flex", flexDirection: "column", gap: 11 }}>
-              {services.map((s) => (
-                <li key={s}>
-                  <Link
-                    href="/contact"
-                    style={{
-                      fontSize: 14,
-                      color: "var(--text2)",
-                      transition: "color .3s",
-                    }}
-                  >
-                    {s}
-                  </Link>
+          <div className="footer-col">
+            <h4>Services</h4>
+            <ul>
+              {servicesCol.map((s) => (
+                <li key={s.href + s.label}>
+                  <Link href={s.href}>{s.label}</Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div>
-            <h4
-              style={{
-                fontFamily: "var(--f-m)",
-                fontSize: 10,
-                letterSpacing: ".18em",
-                textTransform: "uppercase",
-                color: "var(--muted)",
-                marginBottom: 17,
-              }}
-            >
-              Legal
-            </h4>
-            <ul style={{ display: "flex", flexDirection: "column", gap: 11 }}>
-              <li>
-                <Link
-                  href="/privacy-policy"
-                  style={{ fontSize: 14, color: "var(--text2)" }}
-                >
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/terms"
-                  style={{ fontSize: 14, color: "var(--text2)" }}
-                >
-                  Terms of Service
-                </Link>
-              </li>
+          <div className="footer-col">
+            <h4>Legal</h4>
+            <ul>
+              {legalCol.map((l) => (
+                <li key={l.href + l.label}>
+                  <Link href={l.href}>{l.label}</Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
 
-        <div
-          style={{
-            borderTop: "1px solid var(--border)",
-            padding: "20px 0",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-            gap: 13,
-          }}
-        >
-          <p
-            style={{
-              fontFamily: "var(--f-m)",
-              fontSize: 11,
-              color: "var(--muted)",
-            }}
-          >
-            © {year} Sahab Uddin Mintu. All rights reserved.
-          </p>
-          <p
-            style={{
-              fontFamily: "var(--f-m)",
-              fontSize: 11,
-              color: "var(--muted)",
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-            }}
-          >
-            Built with <span style={{ color: "var(--accent)" }}>♥</span> &
-            strong coffee
+        <div className="footer-bottom">
+          <p>{settings?.footerCopyright || `© ${year} ${settings?.siteTitle || "Sahab Uddin Mintu"}. All rights reserved.`}</p>
+          <p className="footer-credit">
+            Built with <span className="footer-credit-heart">♥</span> & strong coffee
           </p>
         </div>
       </div>

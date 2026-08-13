@@ -6,6 +6,7 @@ import connectDB from "@/lib/mongodb";
 import SiteSettings from "@/models/SiteSettings";
 import type { SiteSettings as ISettings } from "@/types";
 import Image from "next/image";
+import "./about.scss";
 
 export const metadata: Metadata = { title: "About" };
 
@@ -97,26 +98,9 @@ export default async function AboutPage() {
         <div className="ph-dots" aria-hidden="true" />
         <div className="container">
           <AnimatedSection>
-            <div
-              style={{
-                fontFamily: "var(--f-m)",
-                fontSize: 10,
-                letterSpacing: ".14em",
-                textTransform: "uppercase",
-                color: "var(--muted)",
-                marginBottom: 17,
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-              }}
-            >
-              <Link
-                href="/"
-                style={{ color: "var(--muted)", transition: "color .3s" }}
-              >
-                Home
-              </Link>
-              <span style={{ color: "var(--border2)" }}>/</span>
+            <div className="about-breadcrumb">
+              <Link href="/">Home</Link>
+              <span className="about-breadcrumb-sep">/</span>
               <span>About</span>
             </div>
           </AnimatedSection>
@@ -126,15 +110,7 @@ export default async function AboutPage() {
             </h1>
           </AnimatedSection>
           <AnimatedSection from="fade">
-            <p
-              style={{
-                fontSize: 16,
-                color: "var(--text2)",
-                maxWidth: 540,
-                marginTop: 17,
-                lineHeight: 1.72,
-              }}
-            >
+            <p className="about-hero-desc">
               Developer, builder, and detail obsessive based in{" "}
               {s?.location || "Sylhet, Bangladesh"}.
             </p>
@@ -158,57 +134,23 @@ export default async function AboutPage() {
       </div>
 
       {/* SPLIT */}
-      <section
-        className="section-pad"
-        style={{ borderTop: "1px solid var(--border)" }}
-      >
+      <section className="section-pad about-split-section">
         <div className="container">
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: 88,
-              alignItems: "center",
-            }}
-          >
+          <div className="about-split-grid">
             {/* Image side */}
             <AnimatedSection from="left">
-              <div style={{ position: "relative" }}>
-                <div
-                  style={{
-                    position: "relative",
-                    width: "100%",
-                    aspectRatio: "3/4",
-                    overflow: "hidden",
-                    borderRadius: "var(--r)",
-                  }}
-                >
+              <div className="relative">
+                <div className="about-photo-frame">
                   <Image
                     src="/images/profile/shahabuddin.png"
                     alt="Sahab Uddin Mintu"
                     fill
                     priority
-                    style={{
-                      objectFit: "cover",
-                    }}
+                    className="about-photo-img"
                   />
                 </div>
 
-                <div
-                  style={{
-                    position: "absolute",
-                    bottom: -18,
-                    left: -18,
-                    background: "var(--accent)",
-                    color: "var(--bg)",
-                    padding: "18px 22px",
-                    borderRadius: "var(--r)",
-                    fontFamily: "var(--f-m)",
-                    fontSize: 10,
-                    letterSpacing: ".12em",
-                    lineHeight: 1.8,
-                  }}
-                >
+                <div className="about-location-badge">
                   {s?.location || "Sylhet, Bangladesh"}
                   <br />
                   Open to freelance ✦
@@ -222,25 +164,18 @@ export default async function AboutPage() {
                 <span className="s-label">My Story</span>
               </AnimatedSection>
               <AnimatedSection>
-                <h2 className="h-lg" style={{ marginBottom: 20 }}>
+                <h2 className="h-lg about-story-title">
                   I obsess over clean code and experiences that{" "}
                   <span className="accent-word">convert</span>.
                 </h2>
               </AnimatedSection>
               <AnimatedSection from="fade">
-                <div
-                  style={{
-                    fontSize: 15,
-                    color: "var(--text2)",
-                    lineHeight: 1.84,
-                    marginBottom: 24,
-                  }}
-                >
-                  <p style={{ marginBottom: 13 }}>
+                <div className="about-story-text mb-5">
+                  <p>
                     {s?.bio ||
                       "Currently a Professional CMS Developer at PIXELVEGA, I've shipped 100+ projects across WordPress, Webflow, Wix and Framer — pairing pixel-perfect Figma translations with clean, scalable code."}
                   </p>
-                  <p style={{ marginBottom: 13 }}>
+                  <p>
                     I write custom Elementor widgets, build Webflow CMS systems,
                     integrate Memberstack, Stripe, Airtable & Make.com, and ship
                     full-stack MERN apps when needed.
@@ -248,14 +183,7 @@ export default async function AboutPage() {
                 </div>
               </AnimatedSection>
               <AnimatedSection from="fade">
-                <div
-                  style={{
-                    display: "flex",
-                    gap: 9,
-                    flexWrap: "wrap",
-                    marginBottom: 28,
-                  }}
-                >
+                <div className="about-tag-list">
                   {[
                     "WordPress",
                     "Webflow",
@@ -271,7 +199,7 @@ export default async function AboutPage() {
                     </span>
                   ))}
                 </div>
-                <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+                <div className="d-flex flex-wrap gap-3">
                   <Link href="/contact" className="btn btn-accent">
                     Work With Me →
                   </Link>
@@ -286,74 +214,24 @@ export default async function AboutPage() {
       </section>
 
       {/* TIMELINE */}
-      <section
-        style={{ borderTop: "1px solid var(--border)", padding: "80px 0" }}
-      >
+      <section className="about-bordered-section">
         <div className="container">
           <AnimatedSection>
             <span className="s-label">Experience</span>
           </AnimatedSection>
           <AnimatedSection>
-            <h2 className="h-lg" style={{ marginBottom: 44 }}>
+            <h2 className="h-lg about-section-heading">
               My <span className="accent-word">Journey</span>
             </h2>
           </AnimatedSection>
           <div>
             {timeline.map((t) => (
-              <AnimatedSection
-                key={t.year}
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "108px 1fr",
-                  gap: 34,
-                  padding: "30px 0",
-                  borderBottom: "1px solid var(--border)",
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: "var(--f-d)",
-                    fontWeight: 800,
-                    fontSize: 18,
-                    color: "var(--accent)",
-                    letterSpacing: "-.01em",
-                  }}
-                >
-                  {t.year}
-                </div>
+              <AnimatedSection key={t.year} className="about-timeline-item">
+                <div className="about-timeline-year">{t.year}</div>
                 <div>
-                  <h4
-                    style={{
-                      fontFamily: "var(--f-d)",
-                      fontWeight: 600,
-                      fontSize: 18,
-                      letterSpacing: "-.01em",
-                      marginBottom: 4,
-                    }}
-                  >
-                    {t.title}
-                  </h4>
-                  <div
-                    style={{
-                      fontFamily: "var(--f-m)",
-                      fontSize: 10,
-                      letterSpacing: ".1em",
-                      textTransform: "uppercase",
-                      color: "var(--muted)",
-                      marginBottom: 7,
-                    }}
-                  >
-                    {t.company}
-                  </div>
-                  <p
-                    style={{
-                      fontSize: 14,
-                      color: "var(--text2)",
-                      lineHeight: 1.72,
-                    }}
-                  >
-                    {t.desc}
-                  </p>
+                  <h4 className="about-timeline-title mb-1">{t.title}</h4>
+                  <div className="about-timeline-company">{t.company}</div>
+                  <p className="about-timeline-desc">{t.desc}</p>
                 </div>
               </AnimatedSection>
             ))}
@@ -362,77 +240,30 @@ export default async function AboutPage() {
       </section>
 
       {/* SKILLS */}
-      <section
-        style={{
-          background: "var(--surface)",
-          borderTop: "1px solid var(--border)",
-          borderBottom: "1px solid var(--border)",
-          padding: "80px 0",
-        }}
-      >
+      <section className="about-shaded-section">
         <div className="container">
           <AnimatedSection>
             <span className="s-label">Skills</span>
           </AnimatedSection>
           <AnimatedSection>
-            <h2 className="h-lg" style={{ marginBottom: 44 }}>
+            <h2 className="h-lg about-section-heading">
               What I <span className="accent-word">build</span> with
             </h2>
           </AnimatedSection>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(2, 1fr)",
-              gap: 60,
-            }}
-          >
+          <div className="about-skills-grid">
             {skillGroups.map((group) => (
               <AnimatedSection key={group.name}>
-                <h3
-                  style={{
-                    fontFamily: "var(--f-m)",
-                    fontSize: 10,
-                    letterSpacing: ".16em",
-                    textTransform: "uppercase",
-                    color: "var(--muted)",
-                    marginBottom: 20,
-                  }}
-                >
-                  {group.name}
-                </h3>
-                <div
-                  style={{ display: "flex", flexDirection: "column", gap: 14 }}
-                >
+                <h3 className="about-skill-group-title">{group.name}</h3>
+                <div className="d-flex flex-col about-skill-list">
                   {group.skills.map((skill) => (
                     <div key={skill.name}>
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          marginBottom: 6,
-                          fontSize: 14,
-                          fontWeight: 500,
-                        }}
-                      >
+                      <div className="d-flex justify-between about-skill-row-head">
                         <span>{skill.name}</span>
-                        <span
-                          style={{
-                            fontFamily: "var(--f-m)",
-                            fontSize: 11,
-                            color: "var(--accent)",
-                          }}
-                        >
+                        <span className="about-skill-pct">
                           {skill.level}%
                         </span>
                       </div>
-                      <div
-                        style={{
-                          height: 2,
-                          background: "var(--border2)",
-                          borderRadius: 2,
-                          overflow: "hidden",
-                        }}
-                      >
+                      <div className="about-skill-track">
                         <div
                           className="skill-fill"
                           style={
@@ -451,26 +282,15 @@ export default async function AboutPage() {
 
       {/* CTA */}
       <section className="cta-section">
-        <div
-          className="container"
-          style={{ position: "relative", zIndex: 1, textAlign: "center" }}
-        >
+        <div className="container about-cta-inner text-center">
           <AnimatedSection>
-            <span className="s-label" style={{ justifyContent: "center" }}>
+            <span className="s-label justify-center">
               Let's Work Together
             </span>
             <h2 className="cta-title">
               Ready to <span className="accent-word">build</span> something?
             </h2>
-            <div
-              style={{
-                display: "flex",
-                gap: 14,
-                justifyContent: "center",
-                flexWrap: "wrap",
-                marginTop: 36,
-              }}
-            >
+            <div className="d-flex justify-center flex-wrap about-cta-buttons">
               <Link href="/contact" className="btn btn-accent">
                 Get In Touch →
               </Link>

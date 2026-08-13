@@ -11,6 +11,7 @@ import '@/models/Tag'
 import AnimatedSection from '@/components/site/AnimatedSection'
 import { formatDate } from '@/lib/utils'
 import type { BlogPost as IPost } from '@/types'
+import './blog-slug.scss'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   await connection()
@@ -31,30 +32,30 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   return (
     <main>
-      <section className="page-hero" style={{ paddingBottom: 40 }}>
+      <section className="page-hero blog-post-hero">
         <div className="ph-dots" aria-hidden="true" />
         <div className="container">
           <AnimatedSection>
-            <div style={{ fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 18, display: 'flex', gap: 8 }}>
-              <Link href="/" style={{ color: 'var(--muted)' }}>Home</Link><span>/</span>
-              <Link href="/blog" style={{ color: 'var(--muted)' }}>Blog</Link><span>/</span>
+            <div className="blog-post-breadcrumb">
+              <Link href="/">Home</Link><span>/</span>
+              <Link href="/blog">Blog</Link><span>/</span>
               <span>{post.category?.name || 'Uncategorized'}</span>
             </div>
           </AnimatedSection>
           <AnimatedSection>
-            <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 18, flexWrap: 'wrap' }}>
+            <div className="blog-post-meta">
               <span className="tag green">{post.category?.name || 'Uncategorized'}</span>
-              <span style={{ fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--muted)' }}>{post.createdAt ? formatDate(post.createdAt) : ''}</span>
-              <span style={{ fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--muted)' }}>{post.readTime || 5} min read</span>
+              <span className="blog-post-meta-item">{post.createdAt ? formatDate(post.createdAt) : ''}</span>
+              <span className="blog-post-meta-item">{post.readTime || 5} min read</span>
             </div>
           </AnimatedSection>
-          <AnimatedSection><h1 className="h-xl" style={{ maxWidth: 860 }}>{post.title}</h1></AnimatedSection>
+          <AnimatedSection><h1 className="h-xl blog-post-title">{post.title}</h1></AnimatedSection>
           <AnimatedSection from="fade">
-            <div style={{ display: 'flex', alignItems: 'center', gap: 13, marginTop: 28 }}>
-              <div style={{ width: 42, height: 42, borderRadius: '50%', background: 'var(--surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--f-d)', fontWeight: 700, fontSize: 17, color: 'var(--accent)' }}>S</div>
+            <div className="blog-post-author">
+              <div className="blog-post-author-avatar">S</div>
               <div>
-                <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 2 }}>Sahab Uddin Mintu</div>
-                <div style={{ fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--muted)' }}>WordPress & MERN Developer</div>
+                <div className="blog-post-author-name">Sahab Uddin Mintu</div>
+                <div className="blog-post-author-role">WordPress & MERN Developer</div>
               </div>
             </div>
           </AnimatedSection>
@@ -62,49 +63,48 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       </section>
 
       <div className="container">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: 56, padding: '68px 0' }}>
+        <div className="blog-post-layout">
           <article>
             <AnimatedSection>
-              <div style={{ width: '100%', aspectRatio: '16/9', background: 'linear-gradient(135deg, var(--surface), var(--surface2))', borderRadius: 'var(--r)', overflow: 'hidden', marginBottom: 44, position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--f-d)', fontWeight: 800, fontSize: 60, color: 'var(--border2)' }}>
+              <div className="blog-post-cover">
                 {post.coverImage ? (
                   <Image
                     src={post.coverImage}
                     alt={post.title}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 65vw, 800px"
-                    style={{ objectFit: 'cover' }}
+                    className="blog-post-cover-img"
                   />
                 ) : (post.category?.name || '??').slice(0, 2).toUpperCase()}
               </div>
             </AnimatedSection>
             <AnimatedSection>
               <div
-                className="markdown-content"
-                style={{ fontSize: 16, lineHeight: 1.88, color: 'var(--text2)' }}
+                className="markdown-content blog-post-markdown"
                 dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
               />
             </AnimatedSection>
-            <AnimatedSection style={{ marginTop: 44, paddingTop: 30, borderTop: '1px solid var(--border)' }}>
-              <div style={{ fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.15em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 12 }}>Tags</div>
-              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <AnimatedSection className="blog-post-tags-section">
+              <div className="blog-post-tags-label">Tags</div>
+              <div className="d-flex flex-wrap gap-2">
                 {post.tags.map((t: any) => <span key={t._id} className="tag">{t.name}</span>)}
               </div>
             </AnimatedSection>
           </article>
 
-          <aside>
-            <div style={{ position: 'sticky', top: 110 }}>
-              <div style={{ background: 'var(--surface)', padding: 26, borderRadius: 'var(--r)', marginBottom: 24 }}>
-                <div style={{ width: 52, height: 52, borderRadius: '50%', background: 'var(--surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--f-d)', fontWeight: 700, fontSize: 22, color: 'var(--accent)', marginBottom: 13 }}>S</div>
-                <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 3 }}>Sahab Uddin Mintu</div>
-                <div style={{ fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 13 }}>Developer</div>
-                <p style={{ fontSize: 13, color: 'var(--text2)', lineHeight: 1.7, marginBottom: 18 }}>Writing about web dev, WordPress, freelancing and modern dev workflows.</p>
-                <Link href="/about" style={{ fontFamily: 'var(--f-m)', fontSize: 11, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--accent)' }}>Read Full Bio →</Link>
+          <aside className="blog-sidebar">
+            <div className="blog-post-sidebar-sticky">
+              <div className="blog-post-author-card">
+                <div className="blog-post-author-card-avatar">S</div>
+                <div className="blog-post-author-card-name">Sahab Uddin Mintu</div>
+                <div className="blog-post-author-card-role">Developer</div>
+                <p className="blog-post-author-card-bio">Writing about web dev, WordPress, freelancing and modern dev workflows.</p>
+                <Link href="/about" className="blog-post-author-card-link">Read Full Bio →</Link>
               </div>
-              <div style={{ background: 'var(--accent)', color: 'var(--bg)', padding: 26, borderRadius: 'var(--r)', textAlign: 'center' }}>
-                <div style={{ fontFamily: 'var(--f-d)', fontWeight: 800, fontSize: 19, marginBottom: 9 }}>Need a developer?</div>
-                <p style={{ fontSize: 13, marginBottom: 18, lineHeight: 1.6, opacity: .85 }}>Let's build something great together.</p>
-                <Link href="/contact" className="btn btn-outline" style={{ background: 'var(--bg)', color: 'var(--text)', borderColor: 'var(--bg)', width: '100%', justifyContent: 'center' }}>Start a Project →</Link>
+              <div className="blog-post-cta-card">
+                <div className="blog-post-cta-title">Need a developer?</div>
+                <p className="blog-post-cta-text">Let's build something great together.</p>
+                <Link href="/contact" className="btn btn-outline blog-post-cta-btn">Start a Project →</Link>
               </div>
             </div>
           </aside>

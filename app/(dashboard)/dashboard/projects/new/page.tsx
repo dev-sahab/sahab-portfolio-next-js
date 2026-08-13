@@ -3,6 +3,7 @@ import Category from '@/models/Category'
 import Tag from '@/models/Tag'
 import Project from '@/models/Project'
 import ContentForm from '@/components/dashboard/ContentForm'
+import '../projects.scss'
 
 export default async function NewProjectPage() {
   await connectDB()
@@ -36,8 +37,8 @@ export default async function NewProjectPage() {
   ]
 
   return (
-    <div style={{ padding: 32, maxWidth: 1280 }}>
-      <h1 style={{ fontSize: 24, fontWeight: 700, fontFamily: 'var(--f-d)', color: '#f0ede6', letterSpacing: '-.02em', marginBottom: 24 }}>
+    <div className="dashboard-page-wide">
+      <h1 className="crud-form-title crud-form-title--standalone">
         New Project
       </h1>
       <ContentForm

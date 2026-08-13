@@ -1,0 +1,376 @@
+// ── HERO ──
+.gq-hero {
+  padding: 140px 0 60px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.gq-breadcrumb {
+  font-family: var(--f-m);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 17px;
+  display: flex;
+  gap: 8px;
+
+  a {
+    color: var(--muted);
+  }
+}
+.gq-hero-desc {
+  font-size: 16px;
+  color: var(--text2);
+  margin-top: 14px;
+  max-width: 500px;
+  line-height: 1.65;
+}
+
+// ── LAYOUT ──
+.gq-layout-grid {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 56px;
+  align-items: start;
+  padding: 60px 0 100px;
+}
+
+// ── QUESTION BLOCKS ──
+.gq-question-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--f-d);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  margin-bottom: 16px;
+}
+.gq-qnum {
+  font-family: var(--f-m);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  background: rgba(184, 255, 79, 0.1);
+  padding: 3px 9px;
+  border: 1px solid rgba(184, 255, 79, 0.2);
+}
+.gq-hint {
+  font-family: var(--f-m);
+  font-size: 10px;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+// ── OPTION PILLS ──
+.gq-opt {
+  display: flex;
+  align-items: center;
+  padding: 9px 16px;
+  border: 1px solid var(--border2);
+  border-radius: 100px;
+  cursor: pointer;
+  font-size: 13px;
+  background: transparent;
+  color: var(--text2);
+  font-weight: 400;
+  transition: all 0.2s;
+  user-select: none;
+
+  &.small {
+    font-size: 12px;
+  }
+
+  &.selected {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 600;
+  }
+}
+
+// ── CHECK ROWS ──
+.gq-check {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 14px;
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  cursor: pointer;
+  font-size: 13px;
+  background: transparent;
+  color: var(--text2);
+  transition: all 0.2s;
+  user-select: none;
+
+  &.selected {
+    border-color: var(--accent);
+    background: rgba(184, 255, 79, 0.07);
+    color: var(--text);
+  }
+}
+.gq-checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.gq-checkbox {
+  width: 17px;
+  height: 17px;
+  border: 1.5px solid var(--border2);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: var(--bg);
+  background: transparent;
+  flex-shrink: 0;
+  transition: all 0.2s;
+
+  &.selected {
+    border-color: var(--accent);
+    background: var(--accent);
+  }
+}
+
+// ── UI/UX SUB-BOX ──
+.gq-uiux-box {
+  margin-top: 12px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border-radius: var(--r);
+  border: 1px solid var(--border);
+}
+.gq-uiux-label {
+  font-family: var(--f-m);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+// ── PAGES SLIDER ──
+.gq-pages-block {
+  padding: 4px 0;
+}
+.gq-pages-label {
+  font-size: 14px;
+  color: var(--text2);
+}
+.gq-pages-value {
+  font-family: var(--f-m);
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 600;
+}
+.gq-range {
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+.gq-range-ticks {
+  margin-top: 7px;
+  font-family: var(--f-m);
+  font-size: 10px;
+  color: var(--muted);
+}
+
+// ── INPUTS ──
+.gq-input {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  padding: 10px 13px;
+  color: var(--text);
+  font-size: 13px;
+  outline: none;
+  font-family: var(--f-b);
+}
+.gq-textarea {
+  min-height: 110px;
+  resize: vertical;
+  line-height: 1.6;
+}
+.gq-label {
+  display: block;
+  font-family: var(--f-m);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+
+// ── SIDE PANEL ──
+.gq-panel-sticky {
+  position: sticky;
+  top: 100px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.gq-panel-header {
+  background: var(--accent);
+  color: var(--bg);
+  padding: 15px 20px;
+  font-family: var(--f-d);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: -0.01em;
+}
+.gq-panel-body {
+  padding: 20px;
+}
+
+// ── ESTIMATE BOX ──
+.gq-estimate-box {
+  border: 1px solid rgba(184, 255, 79, 0.2);
+  border-radius: var(--r);
+  padding: 14px 16px;
+  margin: 14px 0;
+  background: rgba(184, 255, 79, 0.04);
+}
+.gq-estimate-label {
+  font-family: var(--f-m);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+.gq-estimate-value {
+  font-family: var(--f-d);
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--accent);
+  letter-spacing: -0.01em;
+}
+.gq-estimate-for {
+  font-size: 11px;
+  color: var(--text2);
+  margin-top: 3px;
+}
+
+// ── SUBMIT ──
+.gq-submit-btn {
+  width: 100%;
+  padding: 13px;
+  background: var(--text);
+  color: var(--bg);
+  border: none;
+  border-radius: var(--r);
+  font-family: var(--f-m);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-bottom: 12px;
+  opacity: 1;
+  transition: background 0.28s;
+
+  &.loading {
+    opacity: 0.7;
+  }
+}
+
+// ── ACCEPTS ──
+.gq-accepts {
+  font-family: var(--f-m);
+  font-size: 10px;
+  color: var(--muted);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.gq-accept-pill {
+  padding: 3px 7px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 10px;
+  color: var(--text2);
+}
+
+// ── STATUS MESSAGE ──
+.gq-status-msg {
+  padding: 10px 12px;
+  border-radius: var(--r);
+  margin-bottom: 12px;
+  font-size: 11px;
+  font-family: var(--f-m);
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+
+  &.is-success {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+    border-color: rgba(34, 197, 94, 0.2);
+  }
+}
+
+// ── TRUST LIST ──
+.gq-trust-list {
+  border-top: 1px solid var(--border);
+  margin-bottom: 14px;
+}
+.gq-trust-item {
+  font-size: 12px;
+  color: var(--text2);
+}
+.gq-trust-check {
+  color: var(--accent);
+  font-size: 12px;
+}
+
+// ── MINI TESTIMONIAL ──
+.gq-mini-testi {
+  background: var(--surface2);
+  overflow: hidden;
+}
+.gq-mini-testi-text {
+  font-size: 12px;
+  font-style: italic;
+  color: var(--text2);
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+.gq-mini-testi-row {
+  gap: 9px;
+}
+.gq-mini-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent);
+  font-family: var(--f-d);
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--bg);
+  flex-shrink: 0;
+}
+.gq-mini-name {
+  font-size: 12px;
+  font-weight: 600;
+}
+.gq-mini-role {
+  font-family: var(--f-m);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.gq-mini-stars {
+  margin-left: auto;
+  color: var(--accent);
+  font-size: 10px;
+}

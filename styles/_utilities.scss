@@ -1,0 +1,54 @@
+@use 'variables' as v;
+
+// ── Display ──────────────────────────────────────────
+.d-flex { display: flex; }
+.d-grid { display: grid; }
+.d-block { display: block; }
+.d-inline-flex { display: inline-flex; }
+.d-none { display: none; }
+
+// ── Flex ─────────────────────────────────────────────
+.flex-row { flex-direction: row; }
+.flex-col { flex-direction: column; }
+.flex-wrap { flex-wrap: wrap; }
+.flex-1 { flex: 1; }
+.items-start { align-items: flex-start; }
+.items-center { align-items: center; }
+.items-end { align-items: flex-end; }
+.justify-start { justify-content: flex-start; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-end { justify-content: flex-end; }
+
+// ── Position ─────────────────────────────────────────
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+
+// ── Sizing ───────────────────────────────────────────
+.w-full { width: 100%; }
+.h-full { height: 100%; }
+
+// ── Text ─────────────────────────────────────────────
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+// ── Radius ───────────────────────────────────────────
+.rounded { border-radius: var(--r); }
+.rounded-full { border-radius: 100px; }
+
+// ── Spacing scale (margin / padding / gap) ──────────
+@each $key, $val in v.$spacers {
+  .gap-#{$key} { gap: $val; }
+  .m-#{$key} { margin: $val; }
+  .mt-#{$key} { margin-top: $val; }
+  .mb-#{$key} { margin-bottom: $val; }
+  .ml-#{$key} { margin-left: $val; }
+  .mr-#{$key} { margin-right: $val; }
+  .p-#{$key} { padding: $val; }
+  .pt-#{$key} { padding-top: $val; }
+  .pb-#{$key} { padding-bottom: $val; }
+  .pl-#{$key} { padding-left: $val; }
+  .pr-#{$key} { padding-right: $val; }
+}

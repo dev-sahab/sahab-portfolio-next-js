@@ -1,10 +1,6 @@
 'use client'
 import { useMemo, useRef, useState } from 'react'
-
-const S = {
-  lbl: { display: 'block', fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.14em', textTransform: 'uppercase' as const, color: '#555', marginBottom: 6 },
-  inp: { width: '100%', background: '#111', border: '1px solid #2a2a2a', borderRadius: 6, padding: '10px 14px', color: '#f0ede6', fontSize: 14, outline: 'none', fontFamily: 'inherit' },
-}
+import './CategoryCombobox.scss'
 
 interface CategoryItem { _id: string; name: string; parent?: string | null }
 
@@ -79,13 +75,13 @@ export default function CategoryCombobox({ label, value, onChange, categories, t
   }
 
   return (
-    <div style={{ position: 'relative' }}>
-      <label style={S.lbl}>{label}{required && ' *'}</label>
+    <div className="combobox-wrap">
+      <label className="combobox-label">{label}{required && ' *'}</label>
       <input
         type="text"
         value={query}
         placeholder="Type to search or create…"
-        style={S.inp}
+        className="combobox-input"
         onChange={e => { setQuery(e.target.value); onChange(''); setOpen(true) }}
         onFocus={() => setOpen(true)}
         onBlur={() => { blurTimeout.current = setTimeout(() => setOpen(false), 150) }}
@@ -99,14 +95,13 @@ export default function CategoryCombobox({ label, value, onChange, categories, t
         }}
       />
       {open && (filtered.length > 0 || showCreate) && (
-        <div style={{ position: 'absolute', zIndex: 20, top: '100%', left: 0, right: 0, marginTop: 4, background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: 8, maxHeight: 220, overflowY: 'auto' }}>
+        <div className="combobox-dropdown">
           {filtered.map(({ item, depth }) => (
             <div
               key={item._id}
               onMouseDown={e => { e.preventDefault(); if (blurTimeout.current) clearTimeout(blurTimeout.current); select(item) }}
-              style={{ padding: '8px 14px', paddingLeft: 14 + depth * 16, fontSize: 13, color: '#f0ede6', cursor: 'pointer' }}
-              onMouseEnter={e => (e.currentTarget.style.background = 'rgba(184,255,79,.08)')}
-              onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+              className="combobox-option"
+              style={{ paddingLeft: 14 + depth * 16 }}
             >
               {depth > 0 ? `— ${item.name}` : item.name}
             </div>
@@ -114,16 +109,14 @@ export default function CategoryCombobox({ label, value, onChange, categories, t
           {showCreate && (
             <div
               onMouseDown={e => { e.preventDefault(); if (blurTimeout.current) clearTimeout(blurTimeout.current); create() }}
-              style={{ padding: '8px 14px', fontSize: 13, color: creating ? '#555' : '#b8ff4f', cursor: creating ? 'default' : 'pointer', fontFamily: 'var(--f-m)', borderTop: filtered.length ? '1px solid #2a2a2a' : 'none' }}
-              onMouseEnter={e => !creating && (e.currentTarget.style.background = 'rgba(184,255,79,.08)')}
-              onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+              className={`combobox-option-create ${creating ? 'is-disabled' : ''} ${filtered.length ? 'is-divided' : ''}`}
             >
               {creating ? 'Creating…' : `+ Create “${query.trim()}”`}
             </div>
           )}
         </div>
       )}
-      {error && <p style={{ color: '#ef4444', fontSize: 12, marginTop: 6 }}>{error}</p>}
+      {error && <p className="combobox-error">{error}</p>}
     </div>
   )
 }

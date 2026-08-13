@@ -1,0 +1,29 @@
+@use 'variables' as v;
+
+@mixin respond($bp) {
+  @media (max-width: $bp) {
+    @content;
+  }
+}
+
+@mixin flex($align: stretch, $justify: flex-start, $gap: 0, $dir: row) {
+  display: flex;
+  flex-direction: $dir;
+  align-items: $align;
+  justify-content: $justify;
+  @if $gap != 0 {
+    gap: $gap;
+  }
+}
+
+@mixin circle($size) {
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+}
+
+@mixin uppercase-label {
+  font-family: var(--f-m);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}

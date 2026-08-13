@@ -2,6 +2,7 @@ import connectDB from '@/lib/mongodb'
 import Category from '@/models/Category'
 import Tag from '@/models/Tag'
 import ContentForm from '@/components/dashboard/ContentForm'
+import '../../projects/projects.scss'
 
 export default async function NewBlogPage() {
   await connectDB()
@@ -26,8 +27,8 @@ export default async function NewBlogPage() {
   ]
 
   return (
-    <div style={{ padding: 32, maxWidth: 1280 }}>
-      <h1 style={{ fontSize: 24, fontWeight: 700, fontFamily: 'var(--f-d)', color: '#f0ede6', letterSpacing: '-.02em', marginBottom: 24 }}>
+    <div className="dashboard-page-wide">
+      <h1 className="crud-form-title crud-form-title--standalone">
         New Blog Post
       </h1>
       <ContentForm

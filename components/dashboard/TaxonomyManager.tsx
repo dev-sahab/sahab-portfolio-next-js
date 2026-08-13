@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import DeleteButton from './DeleteButton'
+import './TaxonomyManager.scss'
 
 interface TaxonomyItem {
   _id: string
@@ -15,11 +16,6 @@ interface Props {
   type: 'project' | 'blog'
   items: TaxonomyItem[]
   basePath: string
-}
-
-const S = {
-  input: { width: '100%', padding: '10px 12px', background: '#111', border: '1px solid #2a2a2a', borderRadius: 8, fontSize: 14, color: '#f0ede6', outline: 'none' } as const,
-  label: { fontSize: 12, color: '#9a9a9a', marginBottom: 6, display: 'block', fontFamily: 'var(--f-m)' } as const,
 }
 
 function buildTree(items: TaxonomyItem[]) {
@@ -84,15 +80,15 @@ export default function TaxonomyManager({ kind, type, items, basePath }: Props) 
 
   return (
     <div>
-      <form onSubmit={handleCreate} style={{ display: 'flex', gap: 12, alignItems: 'flex-end', background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: 12, padding: 20, marginBottom: 24 }}>
-        <div style={{ flex: 1 }}>
-          <label style={S.label}>Name</label>
-          <input style={S.input} value={name} onChange={(e) => setName(e.target.value)} placeholder={`New ${kind} name`} />
+      <form onSubmit={handleCreate} className="taxonomy-form">
+        <div className="taxonomy-field">
+          <label className="taxonomy-label">Name</label>
+          <input className="taxonomy-input" value={name} onChange={(e) => setName(e.target.value)} placeholder={`New ${kind} name`} />
         </div>
         {kind === 'category' && (
-          <div style={{ flex: 1 }}>
-            <label style={S.label}>Parent</label>
-            <select style={S.input} value={parent} onChange={(e) => setParent(e.target.value)}>
+          <div className="taxonomy-field">
+            <label className="taxonomy-label">Parent</label>
+            <select className="taxonomy-input" value={parent} onChange={(e) => setParent(e.target.value)}>
               <option value="">— None —</option>
               {rows.map(({ item, depth }) => (
                 <option key={item._id} value={item._id}>{'— '.repeat(depth)}{item.name}</option>
@@ -100,45 +96,45 @@ export default function TaxonomyManager({ kind, type, items, basePath }: Props) 
             </select>
           </div>
         )}
-        <button type="submit" disabled={loading} style={{ background: '#b8ff4f', color: '#0a0a0a', padding: '10px 20px', borderRadius: 8, fontSize: 13, fontWeight: 600, fontFamily: 'var(--f-m)', border: 'none', cursor: 'pointer' }}>
+        <button type="submit" disabled={loading} className="taxonomy-submit">
           {loading ? '…' : `+ Add ${noun}`}
         </button>
       </form>
 
-      {error && <p style={{ color: '#ef4444', fontSize: 13, marginBottom: 16 }}>{error}</p>}
+      {error && <p className="taxonomy-error">{error}</p>}
 
       {rows.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '80px 20px', background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: 12 }}>
-          <p style={{ fontSize: 15, color: '#555' }}>No {kind === 'category' ? 'categories' : 'tags'} yet.</p>
+        <div className="taxonomy-empty">
+          <p className="taxonomy-empty-text">No {kind === 'category' ? 'categories' : 'tags'} yet.</p>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <div className="taxonomy-list">
           {rows.map(({ item, depth }) => (
-            <div key={item._id} style={{ display: 'flex', alignItems: 'center', gap: 16, background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: 8, padding: '12px 18px', paddingLeft: 18 + depth * 24 }}>
-              <div style={{ flex: 1, minWidth: 0 }}>
+            <div key={item._id} className="taxonomy-row" style={{ paddingLeft: 18 + depth * 24 }}>
+              <div className="taxonomy-row-main">
                 {editingId === item._id ? (
                   <input
                     autoFocus
-                    style={{ ...S.input, padding: '6px 10px', fontSize: 13 }}
+                    className="taxonomy-input taxonomy-edit-input"
                     value={editValue}
                     onChange={(e) => setEditValue(e.target.value)}
                     onKeyDown={(e) => { if (e.key === 'Enter') handleRename(item._id); if (e.key === 'Escape') setEditingId(null) }}
                   />
                 ) : (
                   <>
-                    <div style={{ fontWeight: 600, fontSize: 14, color: '#f0ede6' }}>{item.name}</div>
-                    <div style={{ fontSize: 12, color: '#555', fontFamily: 'var(--f-m)' }}>{item.slug}</div>
+                    <div className="taxonomy-item-name">{item.name}</div>
+                    <div className="taxonomy-item-slug">{item.slug}</div>
                   </>
                 )}
               </div>
-              <div style={{ display: 'flex', gap: 8 }}>
+              <div className="taxonomy-actions">
                 {editingId === item._id ? (
                   <>
-                    <button type="button" onClick={() => handleRename(item._id)} style={{ padding: '7px 14px', background: '#b8ff4f', border: 'none', borderRadius: 6, fontSize: 12, color: '#0a0a0a', fontFamily: 'var(--f-m)', cursor: 'pointer' }}>Save</button>
-                    <button type="button" onClick={() => setEditingId(null)} style={{ padding: '7px 14px', background: '#222', border: '1px solid #2a2a2a', borderRadius: 6, fontSize: 12, color: '#9a9a9a', fontFamily: 'var(--f-m)', cursor: 'pointer' }}>Cancel</button>
+                    <button type="button" onClick={() => handleRename(item._id)} className="taxonomy-btn-save">Save</button>
+                    <button type="button" onClick={() => setEditingId(null)} className="taxonomy-btn-secondary">Cancel</button>
                   </>
                 ) : (
-                  <button type="button" onClick={() => { setEditingId(item._id); setEditValue(item.name) }} style={{ padding: '7px 14px', background: '#222', border: '1px solid #2a2a2a', borderRadius: 6, fontSize: 12, color: '#9a9a9a', fontFamily: 'var(--f-m)', cursor: 'pointer' }}>Edit</button>
+                  <button type="button" onClick={() => { setEditingId(item._id); setEditValue(item.name) }} className="taxonomy-btn-secondary">Edit</button>
                 )}
                 <DeleteButton endpoint={`${endpoint}/${item._id}`} redirectTo={basePath} />
               </div>

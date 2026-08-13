@@ -1,0 +1,15 @@
+.lb-thumb-img {
+  object-fit: cover;
+}
+
+.lb-img-fit {
+  flex-shrink: 0;
+  cursor: zoom-in;
+}
+
+.lb-img-zoomed {
+  max-width: none;
+  max-height: none;
+  flex-shrink: 0;
+  cursor: zoom-out;
+}

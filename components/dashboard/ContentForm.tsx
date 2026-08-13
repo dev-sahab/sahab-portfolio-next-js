@@ -7,14 +7,7 @@ import TagsInput from './TagsInput'
 import CategoryCombobox from './CategoryCombobox'
 import RichEditor from './RichEditor'
 import { slugify } from '@/lib/utils'
-
-const S = {
-  lbl: { display: 'block', fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.14em', textTransform: 'uppercase' as const, color: '#555', marginBottom: 6 },
-  inp: { width: '100%', background: '#111', border: '1px solid #2a2a2a', borderRadius: 6, padding: '10px 14px', color: '#f0ede6', fontSize: 14, outline: 'none', fontFamily: 'inherit' },
-  row: { marginBottom: 20 },
-  card: { background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: 12, padding: 24 } as React.CSSProperties,
-  boxTitle: { fontSize: 13, fontWeight: 700, color: '#f0ede6', marginBottom: 14, fontFamily: 'var(--f-d)' } as React.CSSProperties,
-}
+import './ContentForm.scss'
 
 export interface Field {
   name: string; label: string
@@ -169,17 +162,17 @@ export default function ContentForm({ title, endpoint, method = 'POST', fields, 
         onStageUpload={registerPendingUpload} onStageDelete={registerPendingDeletion} />
     }
     if (f.type === 'richtext') {
-      return <><label style={S.lbl}>{f.label}{f.required && ' *'}</label>
+      return <><label className="cf-lbl">{f.label}{f.required && ' *'}</label>
         <RichEditor value={values[f.name] || ''} onChange={v => set(f.name, v)} placeholder={f.placeholder} /></>
     }
     if (f.type === 'textarea') {
-      return <><label style={S.lbl}>{f.label}{f.required && ' *'}</label>
+      return <><label className="cf-lbl">{f.label}{f.required && ' *'}</label>
         <textarea value={values[f.name] || ''} onChange={e => set(f.name, e.target.value)} required={f.required} placeholder={f.placeholder}
-          style={{ ...S.inp, minHeight: 200, resize: 'vertical', lineHeight: 1.6 }} /></>
+          className="cf-inp cf-textarea" /></>
     }
     if (f.type === 'select') {
-      return <><label style={S.lbl}>{f.label}{f.required && ' *'}</label>
-        <select value={values[f.name] || ''} onChange={e => set(f.name, e.target.value)} required={f.required} style={S.inp}>
+      return <><label className="cf-lbl">{f.label}{f.required && ' *'}</label>
+        <select value={values[f.name] || ''} onChange={e => set(f.name, e.target.value)} required={f.required} className="cf-inp">
           <option value="">Select…</option>
           {f.options?.map(o => typeof o === 'string'
             ? <option key={o} value={o}>{o}</option>
@@ -197,9 +190,9 @@ export default function ContentForm({ title, endpoint, method = 'POST', fields, 
       />
     }
     if (f.type === 'checkbox') {
-      return <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
-        <input type="checkbox" checked={!!values[f.name]} onChange={e => set(f.name, e.target.checked)} style={{ width: 16, height: 16, accentColor: '#b8ff4f' }} />
-        <span style={{ fontSize: 14, color: '#9a9a9a' }}>{f.label}</span>
+      return <label className="cf-checkbox-label">
+        <input type="checkbox" checked={!!values[f.name]} onChange={e => set(f.name, e.target.checked)} className="cf-checkbox-input" />
+        <span className="cf-checkbox-text">{f.label}</span>
       </label>
     }
     if (f.type === 'tags') {
@@ -212,14 +205,14 @@ export default function ContentForm({ title, endpoint, method = 'POST', fields, 
       />
     }
     if (f.type === 'number') {
-      return <><label style={S.lbl}>{f.label}{f.required && ' *'}</label>
-        <input type="number" value={values[f.name] ?? ''} onChange={e => set(f.name, Number(e.target.value))} required={f.required} style={S.inp} /></>
+      return <><label className="cf-lbl">{f.label}{f.required && ' *'}</label>
+        <input type="number" value={values[f.name] ?? ''} onChange={e => set(f.name, Number(e.target.value))} required={f.required} className="cf-inp" /></>
     }
     if (f.name === 'slug' && isEdit) {
       return (
         <>
-          <label style={S.lbl}>{f.label}{f.required && ' *'}</label>
-          <div style={{ display: 'flex', gap: 8 }}>
+          <label className="cf-lbl">{f.label}{f.required && ' *'}</label>
+          <div className="cf-slug-row">
             <input
               type="text"
               value={values.slug || ''}
@@ -227,44 +220,44 @@ export default function ContentForm({ title, endpoint, method = 'POST', fields, 
               onChange={e => handleSlugChange(e.target.value)}
               required={f.required}
               placeholder={f.placeholder}
-              style={{ ...S.inp, opacity: slugEditing ? 1 : 0.55, cursor: slugEditing ? 'text' : 'not-allowed' }}
+              className={`cf-inp cf-slug-input ${slugEditing ? '' : 'is-locked'}`}
             />
             {slugEditing ? (
               <button type="button" onClick={() => { setSlugEditing(false); set('slug', originalSlug.current) }}
-                style={{ background: 'transparent', color: '#9a9a9a', border: '1px solid #2a2a2a', borderRadius: 6, padding: '0 16px', fontSize: 12, fontFamily: 'var(--f-m)', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                className="cf-slug-btn cf-slug-btn-cancel">
                 Cancel
               </button>
             ) : !confirmingSlugEdit ? (
               <button type="button" onClick={() => setConfirmingSlugEdit(true)}
-                style={{ background: 'transparent', color: '#b8ff4f', border: '1px solid rgba(184,255,79,.3)', borderRadius: 6, padding: '0 16px', fontSize: 12, fontFamily: 'var(--f-m)', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                className="cf-slug-btn cf-slug-btn-edit">
                 Edit
               </button>
             ) : null}
           </div>
           {confirmingSlugEdit && !slugEditing && (
-            <div style={{ marginTop: 8, padding: '8px 12px', background: 'rgba(239,68,68,.06)', border: '1px solid rgba(239,68,68,.2)', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, flexWrap: 'wrap' }}>
-              <span style={{ fontSize: 12, color: '#9a9a9a' }}>
+            <div className="cf-slug-confirm">
+              <span className="cf-slug-confirm-text">
                 Changing the slug may break existing links to this page. Continue?
               </span>
-              <div style={{ display: 'flex', gap: 8 }}>
+              <div className="cf-slug-confirm-actions">
                 <button type="button" onClick={() => { setSlugEditing(true); setConfirmingSlugEdit(false) }}
-                  style={{ background: '#ef4444', color: '#fff', border: 'none', borderRadius: 4, padding: '5px 12px', fontSize: 11, fontWeight: 700, fontFamily: 'var(--f-m)', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                  className="cf-slug-mini-btn cf-slug-btn-danger">
                   Yes, edit slug
                 </button>
                 <button type="button" onClick={() => setConfirmingSlugEdit(false)}
-                  style={{ background: 'transparent', color: '#9a9a9a', border: '1px solid #2a2a2a', borderRadius: 4, padding: '5px 12px', fontSize: 11, fontFamily: 'var(--f-m)', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                  className="cf-slug-mini-btn cf-slug-btn-muted">
                   Cancel
                 </button>
               </div>
             </div>
           )}
           {slugEditing && slugSuggestion && (
-            <div style={{ marginTop: 8, padding: '8px 12px', background: 'rgba(184,255,79,.06)', border: '1px solid rgba(184,255,79,.2)', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, flexWrap: 'wrap' }}>
-              <span style={{ fontSize: 12, color: '#9a9a9a' }}>
-                Slug is empty — generate from title: <strong style={{ color: '#f0ede6' }}>{slugSuggestion}</strong>?
+            <div className="cf-slug-suggest">
+              <span className="cf-slug-suggest-text">
+                Slug is empty — generate from title: <strong>{slugSuggestion}</strong>?
               </span>
               <button type="button" onClick={() => { setSlugManuallyEdited(true); set('slug', slugSuggestion) }}
-                style={{ background: '#b8ff4f', color: '#0a0a0a', border: 'none', borderRadius: 4, padding: '5px 12px', fontSize: 11, fontWeight: 700, fontFamily: 'var(--f-m)', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                className="cf-slug-mini-btn cf-slug-btn-accent">
                 Use this slug
               </button>
             </div>
@@ -272,14 +265,14 @@ export default function ContentForm({ title, endpoint, method = 'POST', fields, 
         </>
       )
     }
-    return <><label style={S.lbl}>{f.label}{f.required && ' *'}</label>
+    return <><label className="cf-lbl">{f.label}{f.required && ' *'}</label>
       <input type={f.type || 'text'} value={values[f.name] || ''}
         onChange={e => {
           if (f.name === 'title') return handleTitleChange(e.target.value)
           if (f.name === 'slug') return handleSlugChange(e.target.value)
           set(f.name, e.target.value)
         }}
-        required={f.required} placeholder={f.placeholder} style={S.inp} /></>
+        required={f.required} placeholder={f.placeholder} className="cf-inp" /></>
   }
 
   const mainFields = fields.filter(f => (f.section ?? 'main') === 'main')
@@ -297,49 +290,49 @@ export default function ContentForm({ title, endpoint, method = 'POST', fields, 
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="cf-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: 24, alignItems: 'start' }}>
+      <div className="cf-grid">
         {/* MAIN COLUMN */}
-        <div style={S.card}>
-          <h2 style={{ fontSize: 16, fontWeight: 700, color: '#f0ede6', marginBottom: 20, fontFamily: 'var(--f-d)' }}>{title}</h2>
+        <div className="cf-card">
+          <h2 className="cf-title">{title}</h2>
 
           {error && (
-            <div style={{ background: 'rgba(239,68,68,.1)', color: '#ef4444', border: '1px solid rgba(239,68,68,.2)', borderRadius: 6, padding: '10px 14px', marginBottom: 16, fontSize: 13 }}>
+            <div className="cf-error">
               {error}
             </div>
           )}
 
           {mainFields.map(f => (
-            <div key={f.name} style={S.row}>
+            <div key={f.name} className="cf-row">
               {renderField(f)}
             </div>
           ))}
         </div>
 
         {/* SIDEBAR COLUMN */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <div style={S.card}>
-            <h3 style={S.boxTitle}>Publish</h3>
+        <div className="cf-sidebar">
+          <div className="cf-card">
+            <h3 className="cf-box-title">Publish</h3>
             {publishFields.length > 0 && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 16 }}>
+              <div className="cf-publish-fields">
                 {publishFields.map(f => <div key={f.name}>{renderField(f)}</div>)}
               </div>
             )}
-            <div style={{ display: 'flex', gap: 10 }}>
+            <div className="cf-actions">
               <button type="submit" disabled={loading}
-                style={{ flex: 1, background: '#b8ff4f', color: '#0a0a0a', border: 'none', padding: '11px 20px', borderRadius: 8, fontSize: 13, fontWeight: 700, fontFamily: 'var(--f-m)', cursor: 'pointer', opacity: loading ? .6 : 1 }}>
+                className={`cf-btn-save ${loading ? 'is-loading' : ''}`}>
                 {stage === 'uploading' ? 'Uploading images…' : stage === 'saving' ? 'Saving…' : 'Save'}
               </button>
               <button type="button" onClick={() => router.back()}
-                style={{ background: 'transparent', color: '#9a9a9a', border: '1px solid #2a2a2a', padding: '11px 16px', borderRadius: 8, fontSize: 13, fontFamily: 'var(--f-m)', cursor: 'pointer' }}>
+                className="cf-btn-cancel">
                 Cancel
               </button>
             </div>
           </div>
 
           {sideBoxes.map(box => (
-            <div key={box.title} style={S.card}>
-              <h3 style={S.boxTitle}>{box.title}</h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <div key={box.title} className="cf-card">
+              <h3 className="cf-box-title">{box.title}</h3>
+              <div className="cf-box-fields">
                 {box.fields.map(f => <div key={f.name}>{renderField(f)}</div>)}
               </div>
             </div>

@@ -3,29 +3,30 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import PageHeader from '@/components/dashboard/PageHeader'
 import type { Testimonial } from '@/types'
+import './page.scss'
 
 function TestimonialCard({ t, onDelete, onToggle }: { t: Testimonial; onDelete: () => void; onToggle: () => void }) {
   return (
-    <div style={{ background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: 8, padding: '16px 18px' }}>
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
-        <div style={{ width: 40, height: 40, borderRadius: '50%', overflow: 'hidden', position: 'relative', background: '#222', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--f-d)', fontWeight: 700, fontSize: 16, color: '#fbbf24', flexShrink: 0 }}>
+    <div className="testimonial-card">
+      <div className="testimonial-card-row">
+        <div className="testimonial-avatar">
           {t.avatar ? (
-            <Image src={t.avatar} alt={t.name} fill sizes="40px" style={{ objectFit: 'cover' }} />
+            <Image src={t.avatar} alt={t.name} fill sizes="40px" className="testimonial-avatar-img" />
           ) : t.name[0]}
         </div>
-        <div style={{ flex: 1 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-            <span style={{ fontWeight: 600, fontSize: 14, color: '#f0ede6' }}>{t.name}</span>
-            <span style={{ fontSize: 11, color: '#555', fontFamily: 'var(--f-m)' }}>{t.role}{t.company ? `, ${t.company}` : ''}</span>
-            <span style={{ fontSize: 12, color: '#fbbf24' }}>{'★'.repeat(t.rating)}</span>
+        <div className="testimonial-content">
+          <div className="testimonial-header">
+            <span className="testimonial-name">{t.name}</span>
+            <span className="testimonial-role">{t.role}{t.company ? `, ${t.company}` : ''}</span>
+            <span className="testimonial-rating">{'★'.repeat(t.rating)}</span>
           </div>
-          <p style={{ fontSize: 13, color: '#9a9a9a', lineHeight: 1.6, fontStyle: 'italic' }}>"{t.content.slice(0, 120)}{t.content.length > 120 ? '…' : ''}"</p>
+          <p className="testimonial-text">"{t.content.slice(0, 120)}{t.content.length > 120 ? '…' : ''}"</p>
         </div>
-        <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
-          <button type="button" onClick={onToggle} style={{ padding: '6px 12px', background: t.featured ? 'rgba(184,255,79,.12)' : '#222', border: `1px solid ${t.featured ? '#b8ff4f33' : '#2a2a2a'}`, borderRadius: 6, fontSize: 11, color: t.featured ? '#b8ff4f' : '#9a9a9a', cursor: 'pointer', fontFamily: 'var(--f-m)' }}>
+        <div className="testimonial-actions">
+          <button type="button" onClick={onToggle} className={`testimonial-feature-btn${t.featured ? ' is-featured' : ''}`}>
             {t.featured ? 'Featured' : 'Feature'}
           </button>
-          <button type="button" onClick={onDelete} style={{ padding: '6px 12px', background: 'transparent', border: '1px solid #ef444433', borderRadius: 6, fontSize: 11, color: '#ef4444', cursor: 'pointer', fontFamily: 'var(--f-m)' }}>Delete</button>
+          <button type="button" onClick={onDelete} className="testimonial-delete-btn">Delete</button>
         </div>
       </div>
     </div>
@@ -45,34 +46,31 @@ function AddForm({ onAdd }: { onAdd: (t: Testimonial) => void }) {
     setLoading(false)
   }
 
-  const inp = { width: '100%', background: '#111', border: '1px solid #2a2a2a', borderRadius: 6, padding: '9px 13px', color: '#f0ede6', fontSize: 13, outline: 'none' } as React.CSSProperties
-  const lbl = { display: 'block', fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.14em', textTransform: 'uppercase' as const, color: '#555', marginBottom: 5 }
-
   if (!open) return (
-    <button type="button" onClick={() => setOpen(true)} style={{ display: 'flex', alignItems: 'center', gap: 8, background: '#b8ff4f', color: '#0a0a0a', padding: '10px 20px', borderRadius: 8, fontSize: 13, fontWeight: 600, fontFamily: 'var(--f-m)', border: 'none', cursor: 'pointer' }}>
+    <button type="button" onClick={() => setOpen(true)} className="testimonial-add-btn">
       + Add Testimonial
     </button>
   )
 
   return (
-    <form onSubmit={submit} style={{ background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: 12, padding: 24, marginBottom: 16 }}>
-      <h3 style={{ fontSize: 15, fontWeight: 700, color: '#f0ede6', marginBottom: 16 }}>Add Testimonial</h3>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 14 }}>
-        <div><label style={lbl}>Name *</label><input required value={v.name} onChange={(e) => setV((p) => ({ ...p, name: e.target.value }))} style={inp} /></div>
-        <div><label style={lbl}>Role *</label><input required value={v.role} onChange={(e) => setV((p) => ({ ...p, role: e.target.value }))} style={inp} /></div>
-        <div><label style={lbl}>Company</label><input value={v.company} onChange={(e) => setV((p) => ({ ...p, company: e.target.value }))} style={inp} /></div>
-        <div><label style={lbl}>Rating (1-5)</label><input type="number" min={1} max={5} value={v.rating} onChange={(e) => setV((p) => ({ ...p, rating: Number(e.target.value) }))} style={inp} /></div>
+    <form onSubmit={submit} className="testimonial-form">
+      <h3 className="testimonial-form-title">Add Testimonial</h3>
+      <div className="testimonial-form-grid">
+        <div><label className="testimonial-form-label">Name *</label><input required value={v.name} onChange={(e) => setV((p) => ({ ...p, name: e.target.value }))} className="testimonial-form-input" /></div>
+        <div><label className="testimonial-form-label">Role *</label><input required value={v.role} onChange={(e) => setV((p) => ({ ...p, role: e.target.value }))} className="testimonial-form-input" /></div>
+        <div><label className="testimonial-form-label">Company</label><input value={v.company} onChange={(e) => setV((p) => ({ ...p, company: e.target.value }))} className="testimonial-form-input" /></div>
+        <div><label className="testimonial-form-label">Rating (1-5)</label><input type="number" min={1} max={5} value={v.rating} onChange={(e) => setV((p) => ({ ...p, rating: Number(e.target.value) }))} className="testimonial-form-input" /></div>
       </div>
-      <div style={{ marginBottom: 14 }}><label style={lbl}>Testimonial Content *</label><textarea required value={v.content} onChange={(e) => setV((p) => ({ ...p, content: e.target.value }))} style={{ ...inp, minHeight: 100, resize: 'vertical' }} /></div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16 }}>
-        <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 13, color: '#9a9a9a' }}>
-          <input type="checkbox" checked={v.featured} onChange={(e) => setV((p) => ({ ...p, featured: e.target.checked }))} style={{ accentColor: '#b8ff4f' }} />
+      <div className="testimonial-form-field"><label className="testimonial-form-label">Testimonial Content *</label><textarea required value={v.content} onChange={(e) => setV((p) => ({ ...p, content: e.target.value }))} className="testimonial-form-input testimonial-form-textarea" /></div>
+      <div className="testimonial-form-checkbox-row">
+        <label className="testimonial-form-checkbox-label">
+          <input type="checkbox" checked={v.featured} onChange={(e) => setV((p) => ({ ...p, featured: e.target.checked }))} className="testimonial-form-checkbox" />
           Featured
         </label>
       </div>
-      <div style={{ display: 'flex', gap: 10 }}>
-        <button type="submit" disabled={loading} style={{ background: '#b8ff4f', color: '#0a0a0a', border: 'none', padding: '9px 20px', borderRadius: 8, fontSize: 13, fontWeight: 700, cursor: 'pointer', fontFamily: 'var(--f-m)' }}>{loading ? 'Saving…' : 'Save'}</button>
-        <button type="button" onClick={() => setOpen(false)} style={{ background: 'transparent', border: '1px solid #2a2a2a', color: '#9a9a9a', padding: '9px 20px', borderRadius: 8, fontSize: 13, cursor: 'pointer', fontFamily: 'var(--f-m)' }}>Cancel</button>
+      <div className="testimonial-form-actions">
+        <button type="submit" disabled={loading} className="testimonial-form-submit">{loading ? 'Saving…' : 'Save'}</button>
+        <button type="button" onClick={() => setOpen(false)} className="testimonial-form-cancel">Cancel</button>
       </div>
     </form>
   )
@@ -98,16 +96,16 @@ export default function TestimonialsPage() {
   }
 
   return (
-    <div style={{ padding: 32 }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
+    <div className="testimonials-page">
+      <div className="testimonials-header">
         <div>
-          <h1 style={{ fontSize: 24, fontWeight: 700, fontFamily: 'var(--f-d)', color: '#f0ede6', letterSpacing: '-.02em', marginBottom: 4 }}>Testimonials</h1>
-          <p style={{ fontSize: 14, color: '#9a9a9a' }}>{items.length} total</p>
+          <h1 className="testimonials-title">Testimonials</h1>
+          <p className="testimonials-subtitle">{items.length} total</p>
         </div>
       </div>
       <AddForm onAdd={(t) => setItems((p) => [t, ...p])} />
-      {loading ? <p style={{ color: '#555' }}>Loading…</p> : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 12 }}>
+      {loading ? <p className="testimonials-loading">Loading…</p> : (
+        <div className="testimonials-list">
           {items.map((t) => <TestimonialCard key={t._id} t={t} onDelete={() => del(t._id!)} onToggle={() => toggle(t)} />)}
         </div>
       )}

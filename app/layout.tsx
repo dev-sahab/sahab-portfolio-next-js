@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 import { Syne, Outfit, JetBrains_Mono } from 'next/font/google'
+import connectDB from '@/lib/mongodb'
+import SiteSettingsModel from '@/models/SiteSettings'
 import './globals.css'
+import '../styles/main.scss'
 
 const syne = Syne({
   subsets: ['latin'],
@@ -23,17 +26,33 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ['300', '400'],
 })
 
-export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://shahabweb.vercel.app'),
-  title: { default: 'Sahab Uddin Mintu — WordPress & MERN Developer', template: '%s — Sahab Uddin Mintu' },
-  description: 'WordPress & MERN developer turning Figma into pixel-perfect, high-converting websites.',
-  keywords: ['WordPress', 'MERN', 'Webflow', 'Framer', 'Developer', 'Freelance'],
-  authors: [{ name: 'Sahab Uddin Mintu' }],
-  openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    siteName: 'Sahab Uddin Mintu',
-  },
+async function getSettings() {
+  try {
+    await connectDB()
+    return await SiteSettingsModel.findOne().lean() as { siteTitle?: string; siteDescription?: string; favicon?: string } | null
+  } catch (error) {
+    console.error('Error fetching site settings:', error)
+    return null
+  }
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSettings()
+  const title = settings?.siteTitle || 'Sahab Uddin Mintu'
+  const description = settings?.siteDescription || 'WordPress & MERN developer turning Figma into pixel-perfect, high-converting websites.'
+  return {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://shahabweb.vercel.app'),
+    title: { default: `${title} — WordPress & MERN Developer`, template: `%s — ${title}` },
+    description,
+    keywords: ['WordPress', 'MERN', 'Webflow', 'Framer', 'Developer', 'Freelance'],
+    authors: [{ name: title }],
+    openGraph: {
+      type: 'website',
+      locale: 'en_US',
+      siteName: title,
+    },
+    icons: settings?.favicon ? { icon: settings.favicon } : undefined,
+  }
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -44,8 +63,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           __html: `(function(){try{var t=localStorage.getItem('sahab-theme')||'dark';document.documentElement.setAttribute('data-theme',t)}catch(e){}})()`,
         }} />
       </head>
-      <body className={`${syne.variable} ${outfit.variable} ${jetbrainsMono.variable}`}
-        style={{ fontFamily: 'var(--font-outfit, Outfit, sans-serif)' }}>
+      <body className={`${syne.variable} ${outfit.variable} ${jetbrainsMono.variable}`}>
         {children}
       </body>
     </html>

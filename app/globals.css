@@ -47,7 +47,7 @@ html {
   -webkit-font-smoothing: antialiased;
 }
 body {
-  font-family: var(--f-b);
+  font-family: var(--font-outfit, Outfit, sans-serif);
   background: var(--bg);
   overflow-x: hidden;
   line-height: 1.6;

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import './EmptyState.scss'
 
 interface Props {
   message: string
@@ -7,10 +8,10 @@ interface Props {
 
 export default function EmptyState({ message, action }: Props) {
   return (
-    <div style={{ textAlign: 'center', padding: '80px 20px', background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: 12 }}>
-      <p style={{ fontSize: 15, color: '#555', marginBottom: action ? 20 : 0 }}>{message}</p>
+    <div className="empty-state">
+      <p className={`empty-state-message${action ? ' has-action' : ''}`}>{message}</p>
       {action && (
-        <Link href={action.href} style={{ display: 'inline-flex', background: '#b8ff4f', color: '#0a0a0a', padding: '10px 20px', borderRadius: 8, fontSize: 13, fontWeight: 600, fontFamily: 'var(--f-m)', textDecoration: 'none' }}>
+        <Link href={action.href} className="empty-state-action">
           + {action.label}
         </Link>
       )}

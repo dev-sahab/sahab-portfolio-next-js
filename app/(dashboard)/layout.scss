@@ -1,0 +1,11 @@
+.dashboard-shell {
+  display: flex;
+  min-height: 100vh;
+  background: #0d0d0d;
+}
+
+.dashboard-main {
+  flex: 1;
+  overflow: auto;
+  min-width: 0;
+}

@@ -86,6 +86,21 @@ export interface Stat {
   suffix?: string
 }
 
+export interface MenuItem {
+  label: string
+  href: string
+  order?: number
+}
+
+export interface FooterMenuItem extends MenuItem {
+  column?: string
+}
+
+export interface SocialLink {
+  platform: string
+  url: string
+}
+
 export interface SiteSettings {
   _id?: string
   name: string
@@ -97,15 +112,22 @@ export interface SiteSettings {
   company?: string
   availability: boolean
   availabilityText?: string
-  social: {
-    github?: string
-    linkedin?: string
-    twitter?: string
-    upwork?: string
-  }
+  social: SocialLink[]
   services: Service[]
   skills: SkillGroup[]
   stats: Stat[]
+
+  siteTitle?: string
+  siteDescription?: string
+  favicon?: string
+  logo?: string
+  headerMenu?: MenuItem[]
+  footerMenu?: FooterMenuItem[]
+  footerTagline?: string
+  footerCopyright?: string
+  contactEmail?: string
+  contactPhone?: string
+
   updatedAt?: string
 }
 

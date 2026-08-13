@@ -3,6 +3,7 @@ import { useState, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { Project, Category } from '@/types'
+import './PortfolioFilter.scss'
 
 export default function PortfolioFilter({ projects, categories }: { projects: Project[]; categories: Category[] }) {
   const [active,    setActive]    = useState('*')
@@ -32,7 +33,7 @@ export default function PortfolioFilter({ projects, categories }: { projects: Pr
   return (
     <>
       {/* Filter bar */}
-      <div className="portfolio-filter-wrap" style={{ display: 'flex', gap: 10, flexWrap: 'wrap', padding: '26px 0', borderBottom: '1px solid var(--border)' }}>
+      <div className="portfolio-filter-wrap">
         {filters.map(f => (
           <button key={f.value} className={`filter-btn${active === f.value ? ' active' : ''}`} onClick={() => handleFilter(f.value)}>
             {f.label}
@@ -48,21 +49,21 @@ export default function PortfolioFilter({ projects, categories }: { projects: Pr
             {p.coverImage ? (
               <Image
                 src={p.coverImage} alt={p.title}
-                fill style={{ objectFit: 'cover' }}
+                fill className="pf-cover-img"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             ) : (
-              <div style={{ width: '100%', height: '100%', background: 'var(--surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--f-d)', fontWeight: 800, fontSize: 42, color: 'var(--border2)', letterSpacing: '-.04em' }}>
+              <div className="pf-cover-fallback">
                 {(p.category?.name || '??').slice(0, 2).toUpperCase()}
               </div>
             )}
             <div className="pf-overlay">
-              <div style={{ fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: 7 }}>
+              <div className="pf-overlay-meta">
                 {p.category?.name || 'Uncategorized'} · {p.year}
               </div>
-              <h3 style={{ fontFamily: 'var(--f-d)', fontWeight: 700, fontSize: 19, letterSpacing: '-.01em', color: 'var(--text)', marginBottom: 7 }}>{p.title}</h3>
-              <p style={{ fontSize: 13, color: 'var(--text2)', lineHeight: 1.5, marginBottom: 14 }}>{p.excerpt}</p>
-              <span className="btn btn-accent" style={{ padding: '8px 16px', fontSize: 10 }}>Case Study →</span>
+              <h3 className="pf-overlay-title">{p.title}</h3>
+              <p className="pf-overlay-desc">{p.excerpt}</p>
+              <span className="btn btn-accent pf-overlay-cta">Case Study →</span>
             </div>
           </Link>
         ))}

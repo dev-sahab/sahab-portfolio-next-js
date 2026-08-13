@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import type { Media } from '@/types'
+import './MediaPicker.scss'
 
 interface Props {
   multiple?: boolean
@@ -81,29 +82,24 @@ export default function MediaPicker({ multiple = false, folder = 'sahab-portfoli
     if (multiple && uploaded.length) { onSelect(uploaded); onClose() }
   }
 
-  const tabStyle = (active: boolean) => ({
-    padding: '10px 18px', fontSize: 13, fontFamily: 'var(--f-m)', cursor: 'pointer', background: 'none', border: 'none',
-    color: active ? '#b8ff4f' : '#9a9a9a', borderBottom: `2px solid ${active ? '#b8ff4f' : 'transparent'}`,
-  })
-
   return (
     <div
       onClick={onClose}
-      style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(0,0,0,.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}
+      className="mp-overlay"
     >
       <div
         onClick={e => e.stopPropagation()}
-        style={{ background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: 12, width: '100%', maxWidth: 900, maxHeight: '86vh', display: 'flex', flexDirection: 'column' }}
+        className="mp-modal"
       >
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #2a2a2a', padding: '0 20px' }}>
-          <div style={{ display: 'flex' }}>
-            <button type="button" onClick={() => setTab('library')} style={tabStyle(tab === 'library')}>Media Library</button>
-            <button type="button" onClick={() => setTab('upload')} style={tabStyle(tab === 'upload')}>Upload New</button>
+        <div className="mp-header">
+          <div className="mp-tabs">
+            <button type="button" onClick={() => setTab('library')} className={`mp-tab ${tab === 'library' ? 'is-active' : ''}`}>Media Library</button>
+            <button type="button" onClick={() => setTab('upload')} className={`mp-tab ${tab === 'upload' ? 'is-active' : ''}`}>Upload New</button>
           </div>
-          <button type="button" onClick={onClose} aria-label="Close" style={{ background: 'none', border: 'none', color: '#9a9a9a', fontSize: 20, cursor: 'pointer', padding: 8 }}>×</button>
+          <button type="button" onClick={onClose} aria-label="Close" className="mp-close-btn">×</button>
         </div>
 
-        <div style={{ flex: 1, overflow: 'auto', padding: 20 }}>
+        <div className="mp-body">
           {tab === 'library' ? (
             <>
               <input
@@ -111,14 +107,14 @@ export default function MediaPicker({ multiple = false, folder = 'sahab-portfoli
                 value={search}
                 onChange={e => { setSearch(e.target.value); load(e.target.value) }}
                 placeholder="Search by filename…"
-                style={{ width: '100%', maxWidth: 320, background: '#111', border: '1px solid #2a2a2a', borderRadius: 6, padding: '9px 13px', color: '#f0ede6', fontSize: 13, outline: 'none', marginBottom: 16 }}
+                className="mp-search-input"
               />
               {loading ? (
-                <p style={{ color: '#555' }}>Loading…</p>
+                <p className="mp-loading-text">Loading…</p>
               ) : items.length === 0 ? (
-                <p style={{ color: '#555', textAlign: 'center', padding: '40px 0' }}>No media yet — switch to "Upload New" to add some.</p>
+                <p className="mp-empty-text">No media yet — switch to "Upload New" to add some.</p>
               ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: 10 }}>
+                <div className="mp-library-grid">
                   {items.map(item => {
                     const isSelected = selectedIds.includes(item._id)
                     return (
@@ -126,15 +122,12 @@ export default function MediaPicker({ multiple = false, folder = 'sahab-portfoli
                         key={item._id}
                         type="button"
                         onClick={() => toggle(item)}
-                        style={{
-                          aspectRatio: '1/1', borderRadius: 8, overflow: 'hidden', cursor: 'pointer', padding: 0, position: 'relative',
-                          border: `2px solid ${isSelected ? '#b8ff4f' : '#2a2a2a'}`, background: '#111',
-                        }}
+                        className={`mp-library-item ${isSelected ? 'is-selected' : ''}`}
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={item.url} alt={item.altText || item.filename} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <img src={item.url} alt={item.altText || item.filename} className="mp-library-item-img" />
                         {multiple && isSelected && (
-                          <div style={{ position: 'absolute', top: 6, right: 6, width: 22, height: 22, borderRadius: '50%', background: '#b8ff4f', color: '#0a0a0a', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700 }}>✓</div>
+                          <div className="mp-selected-check">✓</div>
                         )}
                       </button>
                     )
@@ -144,39 +137,39 @@ export default function MediaPicker({ multiple = false, folder = 'sahab-portfoli
             </>
           ) : (
             <>
-              <input ref={inputRef} type="file" accept="image/*" multiple={multiple} style={{ display: 'none' }}
+              <input ref={inputRef} type="file" accept="image/*" multiple={multiple} className="mp-file-input"
                 onChange={e => { const files = Array.from(e.target.files || []); if (files.length) uploadFiles(files); e.target.value = '' }} />
               <div
                 onClick={() => inputRef.current?.click()}
                 onDrop={e => { e.preventDefault(); const files = Array.from(e.dataTransfer.files || []); if (files.length) uploadFiles(multiple ? files : [files[0]]) }}
                 onDragOver={e => e.preventDefault()}
-                style={{ border: '2px dashed #2a2a2a', borderRadius: 8, padding: 60, textAlign: 'center', cursor: 'pointer', background: '#111' }}
+                className="mp-dropzone"
               >
                 {uploading ? (
-                  <div style={{ color: '#b8ff4f', fontFamily: 'var(--f-m)', fontSize: 13 }}>
-                    <div style={{ fontSize: 32, marginBottom: 10 }}>⏳</div>
+                  <div className="mp-uploading">
+                    <div className="mp-uploading-icon">⏳</div>
                     Uploading to Cloudinary…
                   </div>
                 ) : (
                   <>
-                    <div style={{ fontSize: 40, marginBottom: 10 }}>📷</div>
-                    <div style={{ fontSize: 14, color: '#9a9a9a', marginBottom: 4 }}>Click or drag {multiple ? 'images' : 'an image'} here</div>
-                    <div style={{ fontSize: 11, color: '#555', fontFamily: 'var(--f-m)' }}>JPG · PNG · WebP · GIF — max 10 MB</div>
+                    <div className="mp-dropzone-icon">📷</div>
+                    <div className="mp-dropzone-title">Click or drag {multiple ? 'images' : 'an image'} here</div>
+                    <div className="mp-dropzone-hint">JPG · PNG · WebP · GIF — max 10 MB</div>
                   </>
                 )}
               </div>
-              {error && <p style={{ fontSize: 12, color: '#ef4444', marginTop: 10 }}>{error}</p>}
+              {error && <p className="mp-error">{error}</p>}
             </>
           )}
         </div>
 
         {tab === 'library' && multiple && (
-          <div style={{ borderTop: '1px solid #2a2a2a', padding: '14px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: 12, color: '#9a9a9a', fontFamily: 'var(--f-m)' }}>{selectedIds.length} selected</span>
-            <div style={{ display: 'flex', gap: 8 }}>
-              <button type="button" onClick={onClose} style={{ background: 'transparent', border: '1px solid #2a2a2a', color: '#9a9a9a', padding: '9px 18px', borderRadius: 6, fontSize: 12, fontFamily: 'var(--f-m)', cursor: 'pointer' }}>Cancel</button>
+          <div className="mp-footer">
+            <span className="mp-footer-count">{selectedIds.length} selected</span>
+            <div className="mp-footer-actions">
+              <button type="button" onClick={onClose} className="mp-footer-cancel-btn">Cancel</button>
               <button type="button" onClick={confirmSelection} disabled={!selectedIds.length}
-                style={{ background: '#b8ff4f', color: '#0a0a0a', border: 'none', padding: '9px 18px', borderRadius: 6, fontSize: 12, fontWeight: 700, fontFamily: 'var(--f-m)', cursor: 'pointer', opacity: selectedIds.length ? 1 : .5 }}>
+                className="mp-footer-confirm-btn">
                 Add {selectedIds.length || ''} Image{selectedIds.length === 1 ? '' : 's'}
               </button>
             </div>

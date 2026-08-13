@@ -8,6 +8,7 @@ import PortfolioFilter from "@/components/site/PortfolioFilter";
 import AnimatedSection from "@/components/site/AnimatedSection";
 import Link from "next/link";
 import type { Project as IProject, Category as ICategory } from "@/types";
+import "./portfolio.scss";
 
 export const metadata: Metadata = { title: "Portfolio" };
 
@@ -38,22 +39,11 @@ export default async function PortfolioPage() {
         <div className="ph-dots" aria-hidden="true" />
         <div className="container">
           <AnimatedSection>
-            <div
-              style={{
-                fontFamily: "var(--f-m)",
-                fontSize: 10,
-                letterSpacing: ".14em",
-                textTransform: "uppercase",
-                color: "var(--muted)",
-                marginBottom: 17,
-                display: "flex",
-                gap: 8,
-              }}
-            >
-              <Link href="/" style={{ color: "var(--muted)" }}>
+            <div className="pf-breadcrumb">
+              <Link href="/">
                 Home
               </Link>
-              <span style={{ color: "var(--border2)" }}>/</span>
+              <span className="pf-breadcrumb-sep">/</span>
               <span>Portfolio</span>
             </div>
           </AnimatedSection>
@@ -63,15 +53,7 @@ export default async function PortfolioPage() {
             </h1>
           </AnimatedSection>
           <AnimatedSection from="fade">
-            <p
-              style={{
-                fontSize: 16,
-                color: "var(--text2)",
-                maxWidth: 540,
-                marginTop: 17,
-                lineHeight: 1.72,
-              }}
-            >
+            <p className="pf-hero-desc">
               A curated collection — WordPress, Webflow, MERN and more.
             </p>
           </AnimatedSection>
@@ -80,14 +62,8 @@ export default async function PortfolioPage() {
 
       <div className="container">
         {projects.length === 0 ? (
-          <div
-            style={{
-              textAlign: "center",
-              padding: "100px 0",
-              color: "var(--muted)",
-            }}
-          >
-            <p style={{ fontSize: 16 }}>
+          <div className="pf-empty">
+            <p>
               Projects coming soon. Check back later!
             </p>
           </div>
@@ -99,32 +75,16 @@ export default async function PortfolioPage() {
         )}
       </div>
 
-      <section
-        style={{
-          padding: "80px 0",
-          textAlign: "center",
-          borderTop: "1px solid var(--border)",
-          background: "var(--surface)",
-          marginTop: 60,
-        }}
-      >
+      <section className="pf-cta-section">
         <div className="container">
           <AnimatedSection>
-            <span className="s-label" style={{ justifyContent: "center" }}>
+            <span className="s-label">
               Your project next
             </span>
             <h2 className="h-xl">
               Got an <span className="accent-word">idea?</span>
             </h2>
-            <p
-              style={{
-                color: "var(--text2)",
-                maxWidth: 420,
-                margin: "18px auto 36px",
-                fontSize: 16,
-                lineHeight: 1.7,
-              }}
-            >
+            <p className="pf-cta-desc">
               Let's turn your vision into a live, high-performance product.
             </p>
             <Link href="/contact" className="btn btn-accent">

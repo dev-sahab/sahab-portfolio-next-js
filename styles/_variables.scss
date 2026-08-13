@@ -1,0 +1,32 @@
+// Compile-time constants only. Colors/fonts/spacing that need to react to the
+// dark/light theme toggle live as CSS custom properties in app/globals.css
+// (var(--accent), var(--px), etc.) instead — SCSS variables can't do that
+// since they're resolved once at build time, not per data-theme attribute.
+
+// Breakpoints (media queries can't read CSS custom properties)
+$bp-xl: 1280px;
+$bp-lg: 1024px;
+$bp-md: 960px;
+$bp-sm: 768px;
+$bp-xs: 640px;
+$bp-2xs: 480px;
+
+// Z-index scale
+$z-cursor: 9999;
+$z-nav: 400;
+$z-drawer: 350;
+$z-overlay: 300;
+$z-dashboard-sidebar: 500;
+
+// Spacing scale used by the utilities partial (px)
+$spacers: (
+  0: 0,
+  1: 4px,
+  2: 8px,
+  3: 12px,
+  4: 16px,
+  5: 24px,
+  6: 32px,
+  7: 48px,
+  8: 64px,
+);

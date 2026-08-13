@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import MediaPicker from './MediaPicker'
+import './ImageUpload.scss'
 
 interface Props {
   value?: string
@@ -15,8 +16,6 @@ interface Props {
 
 export default function ImageUpload({ value, onChange, folder = 'sahab-portfolio', label = 'Image', onStageUpload, onStageDelete }: Props) {
   const [pickerOpen, setPickerOpen] = useState(false)
-
-  const lbl = { display: 'block', fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.14em', textTransform: 'uppercase' as const, color: '#555', marginBottom: 8 }
 
   const stageOldValueForDeletion = (old: string) => {
     if (!old || old.startsWith('blob:')) return
@@ -35,36 +34,32 @@ export default function ImageUpload({ value, onChange, folder = 'sahab-portfolio
 
   return (
     <div>
-      <label style={lbl}>{label}</label>
+      <label className="iu-lbl">{label}</label>
 
       {value ? (
-        <div style={{ position: 'relative' }}>
+        <div className="iu-preview">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={value} alt="Preview" style={{ width: '100%', maxHeight: 240, objectFit: 'cover', borderRadius: 6 }} />
+          <img src={value} alt="Preview" className="iu-preview-img" />
           {value.startsWith('blob:') && (
-            <div style={{ position: 'absolute', top: 8, left: 8, background: 'rgba(184,255,79,.9)', color: '#0a0a0a', borderRadius: 4, padding: '3px 8px', fontSize: 10, fontWeight: 700, fontFamily: 'var(--f-m)' }}>
+            <div className="iu-pending-badge">
               Pending — saves with post
             </div>
           )}
-          <button onClick={remove} type="button"
-            style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(0,0,0,.75)', color: '#fff', border: 'none', borderRadius: '50%', width: 28, height: 28, cursor: 'pointer', fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <button onClick={remove} type="button" className="iu-remove-btn">
             ×
           </button>
-          <button onClick={() => setPickerOpen(true)} type="button"
-            style={{ position: 'absolute', bottom: 8, right: 8, background: 'rgba(0,0,0,.75)', color: '#fff', border: 'none', borderRadius: 6, padding: '6px 12px', cursor: 'pointer', fontSize: 11, fontFamily: 'var(--f-m)' }}>
+          <button onClick={() => setPickerOpen(true)} type="button" className="iu-replace-btn">
             Replace
           </button>
         </div>
       ) : (
         <div
           onClick={() => setPickerOpen(true)}
-          style={{ border: '2px dashed #2a2a2a', borderRadius: 8, padding: 24, textAlign: 'center', cursor: 'pointer', background: '#111', transition: 'border-color .2s' }}
-          onMouseEnter={e => (e.currentTarget.style.borderColor = '#b8ff4f')}
-          onMouseLeave={e => (e.currentTarget.style.borderColor = '#2a2a2a')}
+          className="iu-dropzone"
         >
-          <div style={{ fontSize: 32, marginBottom: 8 }}>📷</div>
-          <div style={{ fontSize: 13, color: '#9a9a9a', marginBottom: 4 }}>Choose Image</div>
-          <div style={{ fontSize: 11, color: '#555', fontFamily: 'var(--f-m)' }}>Upload new or select from Media Library</div>
+          <div className="iu-dropzone-icon">📷</div>
+          <div className="iu-dropzone-title">Choose Image</div>
+          <div className="iu-dropzone-hint">Upload new or select from Media Library</div>
         </div>
       )}
 

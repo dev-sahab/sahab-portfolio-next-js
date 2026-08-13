@@ -2,6 +2,7 @@ import { auth } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import DashboardSidebar from '@/components/dashboard/Sidebar'
 import SessionProviderWrapper from '@/components/dashboard/SessionProvider'
+import './layout.scss'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const session = await auth()
@@ -9,9 +10,9 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   return (
     <SessionProviderWrapper session={session}>
-      <div style={{ display: 'flex', minHeight: '100vh', background: '#0d0d0d' }}>
+      <div className="dashboard-shell">
         <DashboardSidebar />
-        <main style={{ flex: 1, overflow: 'auto', minWidth: 0 }}>
+        <main className="dashboard-main">
           {children}
         </main>
       </div>

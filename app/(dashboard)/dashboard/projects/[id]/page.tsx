@@ -5,6 +5,7 @@ import Tag from '@/models/Tag'
 import ContentForm from '@/components/dashboard/ContentForm'
 import DeleteButton from '@/components/dashboard/DeleteButton'
 import { notFound } from 'next/navigation'
+import '../projects.scss'
 
 export default async function EditProjectPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -42,9 +43,9 @@ export default async function EditProjectPage({ params }: { params: Promise<{ id
   ]
 
   return (
-    <div style={{ padding: 32, maxWidth: 1280 }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
-        <h1 style={{ fontSize: 24, fontWeight: 700, fontFamily: 'var(--f-d)', color: '#f0ede6', letterSpacing: '-.02em' }}>Edit Project</h1>
+    <div className="dashboard-page-wide">
+      <div className="crud-form-header">
+        <h1 className="crud-form-title">Edit Project</h1>
         <DeleteButton endpoint={`/api/projects/${id}`} redirectTo="/dashboard/projects" />
       </div>
       <ContentForm

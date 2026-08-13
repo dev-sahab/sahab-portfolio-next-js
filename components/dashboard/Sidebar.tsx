@@ -7,6 +7,7 @@ import {
   LayoutDashboard, FolderKanban, FileText, Star, Image as ImageIcon,
   Settings, MessageSquare, FileQuestion, LogOut, ExternalLink, ChevronDown, type LucideIcon
 } from 'lucide-react'
+import './Sidebar.scss'
 
 const LEAF_SEGMENTS = ['new', 'categories', 'tags']
 
@@ -48,40 +49,30 @@ function isChildActive(pathname: string, base: string, href: string) {
   return !LEAF_SEGMENTS.includes(nextSegment)
 }
 
-const linkStyle = (active: boolean) => ({
-  display: 'flex', alignItems: 'center', gap: 10, padding: '9px 12px',
-  borderRadius: 8, fontSize: 14, fontWeight: 500, transition: 'background .2s, color .2s',
-  background: active ? 'rgba(184,255,79,.12)' : 'transparent',
-  color: active ? '#b8ff4f' : '#9a9a9a',
-})
-
 export default function DashboardSidebar() {
   const pathname = usePathname()
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({})
 
   return (
-    <aside style={{
-      width: 240, background: '#111', borderRight: '1px solid #1f1f1f',
-      display: 'flex', flexDirection: 'column', position: 'sticky', top: 0, height: '100vh', flexShrink: 0
-    }}>
+    <aside className="dashboard-sidebar">
       {/* Logo */}
-      <div style={{ padding: '24px 20px', borderBottom: '1px solid #1f1f1f' }}>
-        <div style={{ fontFamily: 'var(--f-d)', fontWeight: 800, fontSize: 20, letterSpacing: '-.02em' }}>
-          Sahab<span style={{ color: 'var(--accent)' }}>.</span>
+      <div className="sidebar-logo">
+        <div className="sidebar-logo-text">
+          Sahab<span className="sidebar-logo-dot">.</span>
         </div>
-        <div style={{ fontFamily: 'var(--f-m)', fontSize: 10, letterSpacing: '.12em', textTransform: 'uppercase', color: '#555', marginTop: 4 }}>
+        <div className="sidebar-logo-sub">
           Dashboard
         </div>
       </div>
 
       {/* Nav */}
-      <nav style={{ flex: 1, padding: '12px 10px', display: 'flex', flexDirection: 'column', gap: 2, overflowY: 'auto' }}>
+      <nav className="sidebar-nav">
         {nav.map((item) => {
           if (!('children' in item)) {
             const { href, icon: Icon, label } = item
             const active = href === '/dashboard' ? pathname === href : pathname.startsWith(href)
             return (
-              <Link key={href} href={href} style={linkStyle(active)}>
+              <Link key={href} href={href} className={`sidebar-nav-link${active ? ' active' : ''}`}>
                 <Icon size={16} />
                 {label}
               </Link>
@@ -96,22 +87,18 @@ export default function DashboardSidebar() {
             <div key={base}>
               <button
                 onClick={() => setOpenGroups((s) => ({ ...s, [base]: !isOpen }))}
-                style={{
-                  ...linkStyle(groupActive && !isOpen),
-                  width: '100%', background: 'none', border: 'none', cursor: 'pointer',
-                  color: groupActive ? '#b8ff4f' : '#9a9a9a',
-                }}
+                className={`sidebar-nav-group-btn${groupActive ? ' active' : ''}`}
               >
                 <Icon size={16} />
-                <span style={{ flex: 1, textAlign: 'left' }}>{label}</span>
-                <ChevronDown size={14} style={{ transition: 'transform .2s', transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+                <span className="sidebar-nav-group-label">{label}</span>
+                <ChevronDown size={14} className={`sidebar-nav-chevron${isOpen ? ' open' : ''}`} />
               </button>
               {isOpen && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 2, marginTop: 2, marginLeft: 14, paddingLeft: 12, borderLeft: '1px solid #1f1f1f' }}>
+                <div className="sidebar-nav-children">
                   {children.map((c) => {
                     const active = isChildActive(pathname, base, c.href)
                     return (
-                      <Link key={c.href} href={c.href} style={{ ...linkStyle(active), padding: '7px 12px', fontSize: 13 }}>
+                      <Link key={c.href} href={c.href} className={`sidebar-nav-link sidebar-nav-link--sub${active ? ' active' : ''}`}>
                         {c.label}
                       </Link>
                     )
@@ -124,19 +111,19 @@ export default function DashboardSidebar() {
       </nav>
 
       {/* Bottom */}
-      <div style={{ padding: '12px 10px', borderTop: '1px solid #1f1f1f', display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <div className="sidebar-bottom">
         <a
           href="/"
           target="_blank"
           rel="noopener"
-          style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '9px 12px', borderRadius: 8, fontSize: 14, color: '#9a9a9a', transition: 'color .2s' }}
+          className="sidebar-bottom-link"
         >
           <ExternalLink size={16} />
           View Site
         </a>
         <button
           onClick={() => signOut({ callbackUrl: '/login' })}
-          style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '9px 12px', borderRadius: 8, fontSize: 14, color: '#9a9a9a', background: 'none', border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left', transition: 'color .2s' }}
+          className="sidebar-bottom-link sidebar-signout-btn"
         >
           <LogOut size={16} />
           Sign Out

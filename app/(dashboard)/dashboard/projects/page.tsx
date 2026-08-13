@@ -7,39 +7,40 @@ import EmptyState from '@/components/dashboard/EmptyState'
 import DeleteButton from '@/components/dashboard/DeleteButton'
 import Link from 'next/link'
 import type { Project as IProject } from '@/types'
+import './projects.scss'
 
 export default async function ProjectsPage() {
   await connectDB()
   const projects = await Project.find().sort({ createdAt: -1 }).populate('category').lean() as unknown as IProject[]
 
   return (
-    <div style={{ padding: 32 }}>
+    <div className="dashboard-page">
       <PageHeader title="Projects" subtitle={`${projects.length} total`} action={{ label: 'New Project', href: '/dashboard/projects/new' }} />
 
       {projects.length === 0 ? (
         <EmptyState message="No projects yet." action={{ label: 'Add First Project', href: '/dashboard/projects/new' }} />
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <div className="crud-list">
           {projects.map((p) => (
-            <div key={p._id} style={{ display: 'flex', alignItems: 'center', gap: 16, background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: 8, padding: '14px 18px' }}>
-              <div style={{ width: 48, height: 48, background: '#222', borderRadius: 6, overflow: 'hidden', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--f-d)', fontWeight: 800, fontSize: 14, color: '#b8ff4f', flexShrink: 0 }}>
+            <div key={p._id} className="crud-row">
+              <div className="crud-thumb">
                 {p.coverImage ? (
-                  <Image src={p.coverImage} alt={p.title} fill sizes="48px" style={{ objectFit: 'cover' }} />
+                  <Image src={p.coverImage} alt={p.title} fill sizes="48px" className="crud-thumb-img" />
                 ) : (p.category?.name || '??').slice(0, 2).toUpperCase()}
               </div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontWeight: 600, fontSize: 14, color: '#f0ede6', marginBottom: 2 }}>{p.title}</div>
-                <div style={{ fontSize: 12, color: '#555', display: 'flex', gap: 12 }}>
+              <div className="crud-info">
+                <div className="crud-title">{p.title}</div>
+                <div className="crud-meta">
                   <span>{p.category?.name || 'Uncategorized'}</span>
                   <span>·</span>
                   <span>{p.year}</span>
                   <span>·</span>
-                  <span style={{ color: p.published ? '#22c55e' : '#f59e0b' }}>{p.published ? 'Published' : 'Draft'}</span>
-                  {p.featured && <><span>·</span><span style={{ color: '#b8ff4f' }}>Featured</span></>}
+                  <span className={`crud-status ${p.published ? 'published' : 'draft'}`}>{p.published ? 'Published' : 'Draft'}</span>
+                  {p.featured && <><span>·</span><span className="crud-featured">Featured</span></>}
                 </div>
               </div>
-              <div style={{ display: 'flex', gap: 8 }}>
-                <Link href={`/dashboard/projects/${p._id}`} style={{ padding: '7px 14px', background: '#222', border: '1px solid #2a2a2a', borderRadius: 6, fontSize: 12, color: '#9a9a9a', fontFamily: 'var(--f-m)', textDecoration: 'none' }}>Edit</Link>
+              <div className="crud-actions">
+                <Link href={`/dashboard/projects/${p._id}`} className="crud-edit-btn">Edit</Link>
                 <DeleteButton endpoint={`/api/projects/${p._id}`} redirectTo="/dashboard/projects" />
               </div>
             </div>
