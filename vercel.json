@@ -1,7 +1,7 @@
 {
   "framework": "nextjs",
-  "buildCommand": "next build",
-  "devCommand": "next dev",
+  "buildCommand": "next build --webpack",
+  "devCommand": "next dev --webpack",
   "installCommand": "npm install",
   "regions": ["sin1"],
   "env": {
