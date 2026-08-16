@@ -215,7 +215,7 @@ export default async function HomePage() {
                   <h3 className="home-service-title">{svc.title}</h3>
                   <p className="home-service-desc">{svc.description}</p>
                   <div className="home-tag-row">
-                    {svc.tags.map((t) => (
+                    {(svc.tags || []).map((t) => (
                       <span key={t} className="tag">
                         {t}
                       </span>
@@ -272,7 +272,7 @@ export default async function HomePage() {
                     <p className="home-project-excerpt">{p.excerpt}</p>
                     <div className="home-project-footer">
                       <div className="home-tag-row">
-                        {p.tags.slice(0, 2).map((t: any) => (
+                        {(p.tags || []).slice(0, 2).map((t: any) => (
                           <span key={t._id} className="tag">
                             {t.name}
                           </span>

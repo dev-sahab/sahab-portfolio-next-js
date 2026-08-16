@@ -49,25 +49,17 @@ export default function Cursor() {
         if (!target.closest(HOVER)) return
         gsap.to(cur,   { width: 44, height: 44, duration: 0.3, ease: 'power2.out', overwrite: true })
         gsap.to(trail, { width: 68, height: 68, duration: 0.35, ease: 'power2.out', overwrite: true })
-        // Light mode: also update border color
-        const theme = document.documentElement.getAttribute('data-theme')
-        if (theme === 'light') {
-          gsap.to(trail, { borderColor: 'rgba(92,159,0,0.8)', duration: 0.2, overwrite: 'auto' })
-        } else {
-          gsap.to(trail, { borderColor: 'rgba(184,255,79,0.8)', duration: 0.2, overwrite: 'auto' })
-        }
+        // Border color is driven by CSS ([data-theme] .cursor-trail.is-hover), not JS —
+        // this keeps it in sync even if the theme is toggled while hovering.
+        trail.classList.add('is-hover')
       }
 
       const onOut = (e: MouseEvent) => {
         const target = e.target as Element
         if (!target.closest(HOVER)) return
         gsap.to(cur,   { width: 10, height: 10, duration: 0.3, ease: 'power2.out', overwrite: true })
-        const theme = document.documentElement.getAttribute('data-theme')
-        gsap.to(trail, {
-          width: 38, height: 38,
-          borderColor: theme === 'light' ? 'rgba(92,159,0,0.5)' : 'rgba(184,255,79,0.5)',
-          duration: 0.35, ease: 'power2.out', overwrite: true
-        })
+        gsap.to(trail, { width: 38, height: 38, duration: 0.35, ease: 'power2.out', overwrite: true })
+        trail.classList.remove('is-hover')
       }
 
       const onLeave = () => gsap.to([cur, trail], { opacity: 0, duration: 0.3 })

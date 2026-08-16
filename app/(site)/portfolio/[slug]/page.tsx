@@ -111,7 +111,7 @@ export default async function ProjectPage({
           </AnimatedSection>
           <AnimatedSection from="fade">
             <div className="sp-stack-row">
-              {project.stack.map((s) => (
+              {(project.stack || []).map((s) => (
                 <span key={s} className="tag">
                   {s}
                 </span>

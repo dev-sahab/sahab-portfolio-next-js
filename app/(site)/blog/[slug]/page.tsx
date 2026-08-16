@@ -87,7 +87,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <AnimatedSection className="blog-post-tags-section">
               <div className="blog-post-tags-label">Tags</div>
               <div className="d-flex flex-wrap gap-2">
-                {post.tags.map((t: any) => <span key={t._id} className="tag">{t.name}</span>)}
+                {(post.tags || []).map((t: any) => <span key={t._id} className="tag">{t.name}</span>)}
               </div>
             </AnimatedSection>
           </article>

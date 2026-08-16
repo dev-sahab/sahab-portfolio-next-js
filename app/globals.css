@@ -115,6 +115,10 @@ button {
   pointer-events: none;
   z-index: 9998;
   transform: translate(-50%, -50%);
+  transition: border-color 0.2s;
+}
+.cursor-trail.is-hover {
+  border-color: rgba(184, 255, 79, 0.8);
 }
 /* Light mode fix: exclusion makes cursor invisible on white */
 [data-theme="light"] .cursor {
@@ -123,6 +127,9 @@ button {
 }
 [data-theme="light"] .cursor-trail {
   border-color: rgba(92, 159, 0, 0.5);
+}
+[data-theme="light"] .cursor-trail.is-hover {
+  border-color: rgba(92, 159, 0, 0.8);
 }
 
 /* ── LAYOUT ── */
