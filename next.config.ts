@@ -2,6 +2,11 @@ import type { NextConfig } from 'next'
 import path from 'node:path'
 
 const nextConfig: NextConfig = {
+  // jsdom (pulled in by isomorphic-dompurify, used to sanitize post/project
+  // HTML) has a transitive ESM-only dependency (html-encoding-sniffer ->
+  // @exodus/bytes-encoding-lite). Bundling it triggers ERR_REQUIRE_ESM at
+  // runtime on Vercel — leave it unbundled so Node's own resolver handles it.
+  serverExternalPackages: ['jsdom', 'isomorphic-dompurify'],
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'res.cloudinary.com' },
