@@ -4,7 +4,7 @@ import Link from 'next/link'
 import AnimatedSection from '@/components/site/AnimatedSection'
 import { getSocialPlatform } from '@/components/site/socialIcons'
 import type { SocialLink } from '@/types'
-import './contact.scss'
+import '@/styles/pages/(site)/contact/contact.scss'
 
 const defaultSocial: SocialLink[] = [
   { platform: 'github', url: 'https://github.com/dev-sahab' },

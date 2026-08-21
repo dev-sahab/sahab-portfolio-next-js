@@ -1,7 +1,7 @@
 import type { SiteSettings as ISettings } from "@/types";
 import Link from "next/link";
 import { getSocialPlatform } from "./socialIcons";
-import "./Footer.scss";
+import "@/styles/components/site/Footer.scss";
 
 const defaultPages = [
   { href: "/", label: "Home" },

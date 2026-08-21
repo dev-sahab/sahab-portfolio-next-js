@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import './get-quote.scss'
+import '@/styles/pages/(site)/get-quote/get-quote.scss'
 
 const DATA = {
   services: {

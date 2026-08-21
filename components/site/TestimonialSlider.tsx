@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import type { Testimonial } from "@/types";
-import "./TestimonialSlider.scss";
+import "@/styles/components/site/TestimonialSlider.scss";
 
 export default function TestimonialSlider({
   testimonials,

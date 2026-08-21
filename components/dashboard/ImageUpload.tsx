@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import MediaPicker from './MediaPicker'
-import './ImageUpload.scss'
+import '@/styles/components/dashboard/ImageUpload.scss'
 
 interface Props {
   value?: string

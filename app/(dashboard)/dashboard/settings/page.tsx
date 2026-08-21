@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import type { SiteSettings, MenuItem, FooterMenuItem } from '@/types'
 import ImageUpload from '@/components/dashboard/ImageUpload'
 import SocialLinksEditor from '@/components/dashboard/SocialLinksEditor'
-import './settings.scss'
+import '@/styles/pages/(dashboard)/dashboard/settings/settings.scss'
 
 const TABS = ['General', 'Profile', 'Header Menu', 'Footer Menu', 'Footer', 'Hero Stats'] as const
 type Tab = typeof TABS[number]

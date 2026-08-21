@@ -6,7 +6,7 @@ import connectDB from "@/lib/mongodb";
 import SiteSettings from "@/models/SiteSettings";
 import type { SiteSettings as ISettings } from "@/types";
 import Image from "next/image";
-import "./about.scss";
+import "@/styles/pages/(site)/about/about.scss";
 
 export const metadata: Metadata = { title: "About" };
 

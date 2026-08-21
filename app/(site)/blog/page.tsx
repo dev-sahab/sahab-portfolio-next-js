@@ -9,7 +9,7 @@ import "@/models/Category";
 import "@/models/Tag";
 import { formatDate } from "@/lib/utils";
 import type { BlogPost as IPost } from "@/types";
-import "./blog.scss";
+import "@/styles/pages/(site)/blog/blog.scss";
 
 export const metadata: Metadata = { title: "Blog" };
 

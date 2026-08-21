@@ -7,7 +7,7 @@ import TagsInput from './TagsInput'
 import CategoryCombobox from './CategoryCombobox'
 import RichEditor from './RichEditor'
 import { slugify } from '@/lib/utils'
-import './ContentForm.scss'
+import '@/styles/components/dashboard/ContentForm.scss'
 
 export interface Field {
   name: string; label: string

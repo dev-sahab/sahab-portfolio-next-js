@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import type { Media, MediaReference } from '@/types'
-import './MediaLibrary.scss'
+import '@/styles/components/dashboard/MediaLibrary.scss'
 
 const TYPE_OPTIONS = [
   { value: '', label: 'All media items' },

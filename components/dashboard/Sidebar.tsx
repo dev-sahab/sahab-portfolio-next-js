@@ -7,7 +7,7 @@ import {
   LayoutDashboard, FolderKanban, FileText, Star, Image as ImageIcon,
   Settings, MessageSquare, FileQuestion, LogOut, ExternalLink, ChevronDown, type LucideIcon
 } from 'lucide-react'
-import './Sidebar.scss'
+import '@/styles/components/dashboard/Sidebar.scss'
 
 const LEAF_SEGMENTS = ['new', 'categories', 'tags']
 

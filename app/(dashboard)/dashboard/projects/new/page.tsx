@@ -3,7 +3,7 @@ import Category from '@/models/Category'
 import Tag from '@/models/Tag'
 import Project from '@/models/Project'
 import ContentForm from '@/components/dashboard/ContentForm'
-import '../projects.scss'
+import '@/styles/pages/(dashboard)/dashboard/projects/projects.scss'
 
 export default async function NewProjectPage() {
   await connectDB()

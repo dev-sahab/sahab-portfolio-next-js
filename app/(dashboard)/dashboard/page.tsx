@@ -6,7 +6,7 @@ import Contact from '@/models/Contact'
 import QuoteRequest from '@/models/QuoteRequest'
 import Link from 'next/link'
 import { FolderKanban, FileText, Star, MessageSquare, FileQuestion, TrendingUp } from 'lucide-react'
-import './dashboard-overview.scss'
+import '@/styles/pages/(dashboard)/dashboard/dashboard-overview.scss'
 
 async function getStats() {
   try {

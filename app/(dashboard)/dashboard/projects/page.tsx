@@ -7,7 +7,7 @@ import EmptyState from '@/components/dashboard/EmptyState'
 import DeleteButton from '@/components/dashboard/DeleteButton'
 import Link from 'next/link'
 import type { Project as IProject } from '@/types'
-import './projects.scss'
+import '@/styles/pages/(dashboard)/dashboard/projects/projects.scss'
 
 export default async function ProjectsPage() {
   await connectDB()

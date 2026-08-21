@@ -2,7 +2,7 @@ import connectDB from '@/lib/mongodb'
 import Category from '@/models/Category'
 import PageHeader from '@/components/dashboard/PageHeader'
 import TaxonomyManager from '@/components/dashboard/TaxonomyManager'
-import '../../projects/projects.scss'
+import '@/styles/pages/(dashboard)/dashboard/projects/projects.scss'
 
 export default async function BlogCategoriesPage() {
   await connectDB()

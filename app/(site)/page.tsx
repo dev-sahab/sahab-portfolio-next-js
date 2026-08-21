@@ -17,7 +17,7 @@ import type {
   Testimonial as ITestimonial,
   SiteSettings as ISettings,
 } from "@/types";
-import "./page.scss";
+import "@/styles/pages/(site)/page.scss";
 
 async function getData() {
   try {

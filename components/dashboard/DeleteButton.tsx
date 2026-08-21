@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import './DeleteButton.scss'
+import '@/styles/components/dashboard/DeleteButton.scss'
 
 interface Props { endpoint: string; redirectTo: string; label?: string }
 

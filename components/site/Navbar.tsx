@@ -7,7 +7,7 @@ import ThemeToggle from './ThemeToggle'
 import { Menu, X } from 'lucide-react'
 import type { SiteSettings } from '@/types'
 import { getSocialPlatform } from './socialIcons'
-import './Navbar.scss'
+import '@/styles/components/site/Navbar.scss'
 
 const defaultLinks = [
   { href: '/',          label: 'Home' },

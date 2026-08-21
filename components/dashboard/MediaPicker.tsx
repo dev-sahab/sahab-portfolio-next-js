@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import type { Media } from '@/types'
-import './MediaPicker.scss'
+import '@/styles/components/dashboard/MediaPicker.scss'
 
 interface Props {
   multiple?: boolean

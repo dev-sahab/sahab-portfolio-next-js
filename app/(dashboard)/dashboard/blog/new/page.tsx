@@ -2,7 +2,7 @@ import connectDB from '@/lib/mongodb'
 import Category from '@/models/Category'
 import Tag from '@/models/Tag'
 import ContentForm from '@/components/dashboard/ContentForm'
-import '../../projects/projects.scss'
+import '@/styles/pages/(dashboard)/dashboard/projects/projects.scss'
 
 export default async function NewBlogPage() {
   await connectDB()

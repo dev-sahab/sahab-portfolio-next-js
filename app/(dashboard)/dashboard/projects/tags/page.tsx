@@ -2,7 +2,7 @@ import connectDB from '@/lib/mongodb'
 import Tag from '@/models/Tag'
 import PageHeader from '@/components/dashboard/PageHeader'
 import TaxonomyManager from '@/components/dashboard/TaxonomyManager'
-import '../projects.scss'
+import '@/styles/pages/(dashboard)/dashboard/projects/projects.scss'
 
 export default async function ProjectTagsPage() {
   await connectDB()

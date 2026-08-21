@@ -11,7 +11,7 @@ import "@/models/Tag";
 import AnimatedSection from "@/components/site/AnimatedSection";
 import Lightbox from "@/components/site/Lightbox";
 import type { Project as IProject } from "@/types";
-import "./portfolio-slug.scss";
+import "@/styles/pages/(site)/portfolio/[slug]/portfolio-slug.scss";
 
 export async function generateMetadata({
   params,

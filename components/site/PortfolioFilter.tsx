@@ -3,7 +3,7 @@ import { useState, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { Project, Category } from '@/types'
-import './PortfolioFilter.scss'
+import '@/styles/components/site/PortfolioFilter.scss'
 
 export default function PortfolioFilter({ projects, categories }: { projects: Project[]; categories: Category[] }) {
   const [active,    setActive]    = useState('*')

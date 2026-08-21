@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import PageHeader from '@/components/dashboard/PageHeader'
 import type { Testimonial } from '@/types'
-import './page.scss'
+import '@/styles/pages/(dashboard)/dashboard/testimonials/page.scss'
 
 function TestimonialCard({ t, onDelete, onToggle }: { t: Testimonial; onDelete: () => void; onToggle: () => void }) {
   return (

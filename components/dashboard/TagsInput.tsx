@@ -1,6 +1,6 @@
 'use client'
 import { useState, useRef } from 'react'
-import './TagsInput.scss'
+import '@/styles/components/dashboard/TagsInput.scss'
 
 interface Props {
   label: string

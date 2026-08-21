@@ -5,7 +5,7 @@ import Tag from '@/models/Tag'
 import ContentForm from '@/components/dashboard/ContentForm'
 import DeleteButton from '@/components/dashboard/DeleteButton'
 import { notFound } from 'next/navigation'
-import '../../projects/projects.scss'
+import '@/styles/pages/(dashboard)/dashboard/projects/projects.scss'
 
 export default async function EditBlogPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params

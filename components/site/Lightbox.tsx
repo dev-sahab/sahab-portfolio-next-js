@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import Image from 'next/image'
-import './Lightbox.scss'
+import '@/styles/components/site/Lightbox.scss'
 
 // 'fit' = scaled to fit the viewport (the opening view). The rest are exact
 // percentages of the image's real/native pixel dimensions — 200% genuinely

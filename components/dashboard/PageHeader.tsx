@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import './PageHeader.scss'
+import '@/styles/components/dashboard/PageHeader.scss'
 
 interface Props {
   title: string

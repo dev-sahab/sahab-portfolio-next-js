@@ -3,7 +3,7 @@ import QuoteRequest from '@/models/QuoteRequest'
 import PageHeader from '@/components/dashboard/PageHeader'
 import { formatDate } from '@/lib/utils'
 import type { QuoteRequest as IQuote } from '@/types'
-import './page.scss'
+import '@/styles/pages/(dashboard)/dashboard/quotes/page.scss'
 
 export default async function QuotesPage() {
   await connectDB()

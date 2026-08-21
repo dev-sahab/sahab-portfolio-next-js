@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import './EmptyState.scss'
+import '@/styles/components/dashboard/EmptyState.scss'
 
 interface Props {
   message: string

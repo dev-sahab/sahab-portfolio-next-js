@@ -7,7 +7,7 @@ import DeleteButton from '@/components/dashboard/DeleteButton'
 import Link from 'next/link'
 import { formatDate } from '@/lib/utils'
 import type { BlogPost as IPost } from '@/types'
-import '../projects/projects.scss'
+import '@/styles/pages/(dashboard)/dashboard/projects/projects.scss'
 
 export default async function BlogPage() {
   await connectDB()

@@ -3,7 +3,7 @@ import Contact from '@/models/Contact'
 import PageHeader from '@/components/dashboard/PageHeader'
 import { formatDate } from '@/lib/utils'
 import type { ContactSubmission } from '@/types'
-import './page.scss'
+import '@/styles/pages/(dashboard)/dashboard/contacts/page.scss'
 
 export default async function ContactsPage() {
   await connectDB()

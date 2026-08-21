@@ -1,6 +1,6 @@
 import PageHeader from '@/components/dashboard/PageHeader'
 import MediaLibrary from '@/components/dashboard/MediaLibrary'
-import './page.scss'
+import '@/styles/pages/(dashboard)/dashboard/media/page.scss'
 
 export default function MediaPage() {
   return (

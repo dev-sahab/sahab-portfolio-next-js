@@ -1,6 +1,6 @@
 'use client'
 import { useMemo, useRef, useState } from 'react'
-import './CategoryCombobox.scss'
+import '@/styles/components/dashboard/CategoryCombobox.scss'
 
 interface CategoryItem { _id: string; name: string; parent?: string | null }
 

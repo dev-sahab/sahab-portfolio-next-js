@@ -8,7 +8,7 @@ import PortfolioFilter from "@/components/site/PortfolioFilter";
 import AnimatedSection from "@/components/site/AnimatedSection";
 import Link from "next/link";
 import type { Project as IProject, Category as ICategory } from "@/types";
-import "./portfolio.scss";
+import "@/styles/pages/(site)/portfolio/portfolio.scss";
 
 export const metadata: Metadata = { title: "Portfolio" };
 

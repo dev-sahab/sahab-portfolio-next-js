@@ -11,7 +11,7 @@ import '@/models/Tag'
 import AnimatedSection from '@/components/site/AnimatedSection'
 import { formatDate } from '@/lib/utils'
 import type { BlogPost as IPost } from '@/types'
-import './blog-slug.scss'
+import '@/styles/pages/(site)/blog/[slug]/blog-slug.scss'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   await connection()

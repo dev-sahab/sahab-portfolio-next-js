@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import './login.scss'
+import '@/styles/pages/login/login.scss'
 
 export default function LoginPage() {
   const router = useRouter()

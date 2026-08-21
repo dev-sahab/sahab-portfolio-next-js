@@ -2,7 +2,7 @@
 import { useRef, useState } from 'react'
 import { SOCIAL_PLATFORMS, getSocialPlatform } from '@/components/site/socialIcons'
 import type { SocialLink } from '@/types'
-import './SocialLinksEditor.scss'
+import '@/styles/components/dashboard/SocialLinksEditor.scss'
 
 function PlatformPicker({ value, onChange }: { value: string; onChange: (key: string) => void }) {
   const current = value ? getSocialPlatform(value) : null

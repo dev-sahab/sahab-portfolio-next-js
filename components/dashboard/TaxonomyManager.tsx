@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import DeleteButton from './DeleteButton'
-import './TaxonomyManager.scss'
+import '@/styles/components/dashboard/TaxonomyManager.scss'
 
 interface TaxonomyItem {
   _id: string
