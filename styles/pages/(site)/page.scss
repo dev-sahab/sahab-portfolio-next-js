@@ -260,6 +260,61 @@
   font-size: 15px;
 }
 
+/* ── ABOUT ── */
+.home-about-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 90px;
+  align-items: center;
+}
+.home-about-img-wrap {
+  position: relative;
+}
+.home-about-img-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: var(--r);
+}
+.home-about-img {
+  object-fit: cover;
+  filter: grayscale(0.12);
+}
+.home-about-badge {
+  background: var(--accent);
+  color: var(--bg);
+  padding: 18px 22px;
+  border-radius: var(--r);
+  font-family: var(--f-m);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  line-height: 1.8;
+  position: absolute;
+  bottom: -18px;
+  left: -18px;
+}
+.home-about-bio {
+  font-family: var(--f-d);
+  font-weight: 600;
+  font-size: clamp(19px, 2.3vw, 27px);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  margin-bottom: 20px;
+}
+.home-about-text {
+  font-size: 15px;
+  color: var(--text2);
+  line-height: 1.82;
+  margin-bottom: 26px;
+}
+.home-about-chips {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
 /* ── TESTIMONIALS ── */
 .home-testimonials-section {
   background: var(--surface);

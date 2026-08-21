@@ -321,6 +321,9 @@ select.form-input option {
   white-space: nowrap;
   animation: marquee var(--ms, 32s) linear infinite;
 }
+.marquee-track.rev {
+  animation-direction: reverse;
+}
 .marquee-item {
   font-family: var(--f-d);
   font-weight: 700;
@@ -481,6 +484,10 @@ select.form-input option {
   min-width: calc(33.333% - 2px);
   display: flex;
   flex-direction: column;
+  transition: opacity 0.32s ease;
+}
+.testi-slide.dim {
+  opacity: 0.35;
 }
 .testi-slide .testi-card {
   flex: 1;
@@ -843,7 +850,8 @@ select.form-input option {
   }
 
   /* About split */
-  .about-split-grid {
+  .about-split-grid,
+  .home-about-split {
     grid-template-columns: 1fr !important;
     gap: 40px !important;
   }

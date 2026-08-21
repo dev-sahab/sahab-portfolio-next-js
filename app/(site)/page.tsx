@@ -155,6 +155,71 @@ export default async function HomePage() {
         ))}
       </div>
 
+      {/* ── ABOUT ── */}
+      <section className="section-pad home-border-top">
+        <div className="container">
+          <div className="home-about-split">
+            <AnimatedSection from="left">
+              <div className="home-about-img-wrap">
+                <div className="home-about-img-frame">
+                  <Image
+                    src="/images/profile/shahabuddin.png"
+                    alt={s?.name || "Sahab Uddin Mintu"}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 460px"
+                    className="home-about-img"
+                  />
+                </div>
+                <div className="home-about-badge">
+                  {s?.location || "Sylhet, Bangladesh"}
+                  <br />
+                  {s?.availabilityText || "Open to freelance & contracts ✦"}
+                </div>
+              </div>
+            </AnimatedSection>
+
+            <div>
+              <AnimatedSection>
+                <span className="s-label">About Me</span>
+              </AnimatedSection>
+              <AnimatedSection>
+                <p className="home-about-bio">
+                  I obsess over clean code and experiences that{" "}
+                  <span className="accent-word">convert</span>.
+                </p>
+              </AnimatedSection>
+              <AnimatedSection className="home-about-text">
+                <p>
+                  {s?.bio ||
+                    "Currently a Professional CMS Developer, I've shipped 100+ projects across WordPress, Webflow, Wix and Framer — pairing pixel-perfect Figma translations with clean, scalable code."}
+                </p>
+              </AnimatedSection>
+              <AnimatedSection className="home-about-chips">
+                {[
+                  "WordPress",
+                  "Webflow",
+                  "React",
+                  "Node.js",
+                  "Figma",
+                  "WooCommerce",
+                  "Framer",
+                  "Elementor",
+                ].map((c) => (
+                  <span key={c} className="tag green">
+                    {c}
+                  </span>
+                ))}
+              </AnimatedSection>
+              <AnimatedSection>
+                <Link href="/about" className="btn btn-outline">
+                  Read Full Story →
+                </Link>
+              </AnimatedSection>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── SERVICES ── */}
       <section className="section-pad home-border-top">
         <div className="container">
@@ -287,6 +352,13 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      <Marquee
+        items={["Figma", "Tailwind CSS", "Git", "REST APIs", "Firebase", "MongoDB", "Make.com", "Airtable", "Stripe", "Memberstack"]}
+        separator="★"
+        speed="28s"
+        reverse
+      />
 
       {/* ── TESTIMONIALS ── */}
       {testimonials.length > 0 && (

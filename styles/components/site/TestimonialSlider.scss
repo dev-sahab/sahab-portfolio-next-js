@@ -1,4 +1,5 @@
 .testi-outer {
+  position: relative;
   overflow: hidden;
   cursor: grab;
   margin-top: 52px;
@@ -8,6 +9,24 @@
    component additionally needs a will-change hint for the GSAP x-tween. */
 .testi-slider-track {
   will-change: transform;
+}
+
+.testi-card {
+  background: var(--bg);
+  padding: 40px 36px;
+  border-radius: var(--r);
+  transition:
+    transform 0.4s var(--ease),
+    background 0.3s;
+
+  &:hover {
+    transform: translateY(-4px);
+    background: var(--surface2);
+  }
+}
+[data-theme="light"] .testi-card {
+  background: var(--bg);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.07);
 }
 
 .testi-stars {
@@ -107,4 +126,11 @@
   background: transparent;
   transition: all 0.28s;
   font-size: 16px;
+
+  &:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
+    transform: scale(1.06);
+  }
 }
