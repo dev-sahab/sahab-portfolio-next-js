@@ -1,5 +1,10 @@
 .sp-hero {
-  padding: 136px var(--px) 54px;
+  // Horizontal padding lives on the nested .container, not here — this used
+  // to double up with .container's own padding (136px var(--px) 54px),
+  // which only became visible below ~1440px viewport width (once .container
+  // stops being capped by --max and starts filling its parent): the hero
+  // ended up inset ~40px further than every other page's .page-hero+.container.
+  padding: 136px 0 54px;
   border-bottom: 1px solid var(--border);
   position: relative;
   overflow: hidden;
@@ -49,15 +54,6 @@
   display: flex;
   gap: 13px;
   flex-wrap: wrap;
-}
-
-.sp-content-wrap {
-  padding: 0 var(--px);
-}
-
-.sp-content-inner {
-  max-width: calc(var(--max) + var(--px) * 2);
-  margin: 0 auto;
 }
 
 .sp-featured-img {

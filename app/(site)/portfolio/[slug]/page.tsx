@@ -154,131 +154,129 @@ export default async function ProjectPage({
       </section>
 
       {/* CONTENT */}
-      <div className="sp-content-wrap">
-        <div className="sp-content-inner">
-          {/* Featured image placeholder */}
-          <AnimatedSection>
-            <div className="sp-featured-img">
-              {project.coverImage ? (
-                <Image
-                  src={project.coverImage}
-                  alt={project.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 1200px"
-                  className="sp-featured-img-el"
-                />
-              ) : (
-                (project.category?.name || '??').slice(0, 2).toUpperCase()
-              )}
-            </div>
-          </AnimatedSection>
-
-          {/* Overview */}
-          <AnimatedSection className="sp-section">
-            <div className="sp-overview-grid">
-              <div>
-                <div className="sp-eyebrow">
-                  Project Overview
-                </div>
-                <h2 className="sp-h2 sp-overview-title">
-                  About this project
-                </h2>
-                <p className="sp-body-text">
-                  {project.excerpt}
-                </p>
-              </div>
-              <div>
-                <div className="sp-eyebrow">
-                  Details
-                </div>
-                <div className="sp-details-grid">
-                  {[
-                    ["Category", project.category?.name || "Uncategorized"],
-                    ["Year", project.year],
-                    ["Client", project.client ? "Client Project" : "Personal Project"],
-                    ["Duration", project.duration || "N/A"],
-                  ].map(([k, v]) => (
-                    <div
-                      key={k as string}
-                      className="sp-detail-cell"
-                    >
-                      <div className="sp-detail-label">
-                        {k}
-                      </div>
-                      <div className="sp-detail-value">
-                        {v}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </AnimatedSection>
-
-          {/* Full content */}
-          {project.content && (
-            <AnimatedSection className="sp-section">
-              <div className="sp-eyebrow">
-                Case Study
-              </div>
-              <div
-                className="markdown-content sp-body-text"
-                dangerouslySetInnerHTML={{
-                  __html: sanitizeContent(project.content),
-                }}
+      <div className="container">
+        {/* Featured image placeholder */}
+        <AnimatedSection>
+          <div className="sp-featured-img">
+            {project.coverImage ? (
+              <Image
+                src={project.coverImage}
+                alt={project.title}
+                fill
+                sizes="(max-width: 768px) 100vw, 1200px"
+                className="sp-featured-img-el"
               />
-            </AnimatedSection>
-          )}
+            ) : (
+              (project.category?.name || '??').slice(0, 2).toUpperCase()
+            )}
+          </div>
+        </AnimatedSection>
 
-          {/* Gallery */}
-          {project.gallery && project.gallery.length > 0 && (
-            <AnimatedSection className="sp-section">
+        {/* Overview */}
+        <AnimatedSection className="sp-section">
+          <div className="sp-overview-grid">
+            <div>
               <div className="sp-eyebrow">
-                Screenshots
+                Project Overview
               </div>
-              <h2 className="sp-h2 sp-gallery-title">
-                Visual walkthrough
+              <h2 className="sp-h2 sp-overview-title">
+                About this project
               </h2>
-              <p className="sp-gallery-hint">
-                Click any image to view full-size.
+              <p className="sp-body-text">
+                {project.excerpt}
               </p>
-              <Lightbox images={project.gallery} />
-            </AnimatedSection>
-          )}
-
-          {/* Tech Stack */}
-          {project.stack && project.stack.length > 0 && (
-            <AnimatedSection className="sp-section">
-              <div className="sp-stack-header">
-                <div>
-                  <div className="sp-eyebrow">
-                    Tech Stack
-                  </div>
-                  <h2 className="sp-h2">
-                    Tools &amp; Technologies
-                  </h2>
-                </div>
-                {project.liveUrl && (
-                  <a
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener"
-                    className="btn btn-accent"
-                  >
-                    View Live Project ↗
-                  </a>
-                )}
+            </div>
+            <div>
+              <div className="sp-eyebrow">
+                Details
               </div>
-              <div className="sp-stack-pills">
-                {project.stack.map((s) => (
-                  <span key={s} className="tag sp-stack-pill">
-                    {s}
-                  </span>
+              <div className="sp-details-grid">
+                {[
+                  ["Category", project.category?.name || "Uncategorized"],
+                  ["Year", project.year],
+                  ["Client", project.client ? "Client Project" : "Personal Project"],
+                  ["Duration", project.duration || "N/A"],
+                ].map(([k, v]) => (
+                  <div
+                    key={k as string}
+                    className="sp-detail-cell"
+                  >
+                    <div className="sp-detail-label">
+                      {k}
+                    </div>
+                    <div className="sp-detail-value">
+                      {v}
+                    </div>
+                  </div>
                 ))}
               </div>
-            </AnimatedSection>
-          )}
-        </div>
+            </div>
+          </div>
+        </AnimatedSection>
+
+        {/* Full content */}
+        {project.content && (
+          <AnimatedSection className="sp-section">
+            <div className="sp-eyebrow">
+              Case Study
+            </div>
+            <div
+              className="markdown-content sp-body-text"
+              dangerouslySetInnerHTML={{
+                __html: sanitizeContent(project.content),
+              }}
+            />
+          </AnimatedSection>
+        )}
+
+        {/* Gallery */}
+        {project.gallery && project.gallery.length > 0 && (
+          <AnimatedSection className="sp-section">
+            <div className="sp-eyebrow">
+              Screenshots
+            </div>
+            <h2 className="sp-h2 sp-gallery-title">
+              Visual walkthrough
+            </h2>
+            <p className="sp-gallery-hint">
+              Click any image to view full-size.
+            </p>
+            <Lightbox images={project.gallery} />
+          </AnimatedSection>
+        )}
+
+        {/* Tech Stack */}
+        {project.stack && project.stack.length > 0 && (
+          <AnimatedSection className="sp-section">
+            <div className="sp-stack-header">
+              <div>
+                <div className="sp-eyebrow">
+                  Tech Stack
+                </div>
+                <h2 className="sp-h2">
+                  Tools &amp; Technologies
+                </h2>
+              </div>
+              {project.liveUrl && (
+                <a
+                  href={project.liveUrl}
+                  target="_blank"
+                  rel="noopener"
+                  className="btn btn-accent"
+                >
+                  View Live Project ↗
+                </a>
+              )}
+            </div>
+            <div className="sp-stack-pills">
+              {project.stack.map((s) => (
+                <span key={s} className="tag sp-stack-pill">
+                  {s}
+                </span>
+              ))}
+            </div>
+          </AnimatedSection>
+        )}
       </div>
 
       {/* PREV / NEXT */}
