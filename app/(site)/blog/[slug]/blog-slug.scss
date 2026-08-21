@@ -76,7 +76,12 @@
 
 .blog-post-layout {
   display: grid;
-  grid-template-columns: 1fr 300px;
+  // minmax(0, 1fr), not bare 1fr: grid items default to min-width: auto,
+  // so a paragraph with no breakable space (e.g. CMS content pasted with
+  // &nbsp; runs) forces this track — and the whole grid — to blow out past
+  // the viewport instead of wrapping. minmax(0, ...) lets it shrink below
+  // that content-based minimum.
+  grid-template-columns: minmax(0, 1fr) 300px;
   gap: 56px;
   padding: 68px 0;
 }

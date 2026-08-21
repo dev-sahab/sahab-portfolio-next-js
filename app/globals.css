@@ -827,7 +827,7 @@ select.form-input option {
     grid-template-columns: 1fr !important;
   }
   .blog-post-layout {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: minmax(0, 1fr) !important;
   }
   .blog-sidebar {
     display: none;
@@ -921,6 +921,13 @@ select.form-input option {
 }
 
 /* ── MARKDOWN CONTENT (blog/portfolio rich text) ── */
+.markdown-content {
+  /* CMS content can contain runs with no breakable space (pasted &nbsp;
+     text, long URLs) — without this, a single such run forces its whole
+     grid track (and the layout around it) to overflow the viewport
+     instead of wrapping. */
+  overflow-wrap: break-word;
+}
 .markdown-content h1,
 .markdown-content h2,
 .markdown-content h3,
