@@ -8,6 +8,11 @@ const BlogPostSchema = new Schema({
   coverImage: { type: String },
   category: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
   tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }],
+  // Who wrote it — needed for the author/contributor "own content only"
+  // permission checks in lib/permissions.ts (canWriteContent). Optional
+  // since posts created before this field existed, or by admin/editor
+  // (who can write regardless of ownership), may not have one.
+  author: { type: Schema.Types.ObjectId, ref: 'User' },
   published: { type: Boolean, default: false },
   featured: { type: Boolean, default: false },
   readTime: { type: Number },

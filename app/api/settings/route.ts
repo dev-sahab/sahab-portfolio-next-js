@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
+import { can } from '@/lib/permissions'
 import connectDB from '@/lib/mongodb'
 import SiteSettings from '@/models/SiteSettings'
 
@@ -17,6 +18,8 @@ export async function GET() {
 export async function PUT(req: NextRequest) {
   const session = await auth()
   if (!session) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+  const role = (session.user as any)?.role
+  if (!can(role, 'settings.write')) return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 })
   try {
     await connectDB()
     const body = await req.json()

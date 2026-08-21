@@ -185,6 +185,15 @@ export interface QuoteRequest {
   createdAt?: string
 }
 
+export interface User {
+  _id: string
+  name: string
+  email: string
+  role: 'administrator' | 'editor' | 'author' | 'contributor' | 'subscriber'
+  active: boolean
+  createdAt?: string
+}
+
 export type ApiResponse<T = unknown> = {
   success: boolean
   data?: T

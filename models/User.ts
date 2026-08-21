@@ -1,13 +1,13 @@
 import { Schema, model, models } from 'mongoose'
 import bcrypt from 'bcryptjs'
 
-export type UserRole = 'admin' | 'editor'
+export type UserRole = 'administrator' | 'editor' | 'author' | 'contributor' | 'subscriber'
 
 const UserSchema = new Schema({
   name:     { type: String, required: true },
   email:    { type: String, required: true, unique: true, lowercase: true },
   password: { type: String, required: true, minlength: 8 },
-  role:     { type: String, enum: ['admin', 'editor'], default: 'editor' },
+  role:     { type: String, enum: ['administrator', 'editor', 'author', 'contributor', 'subscriber'], default: 'editor' },
   active:   { type: Boolean, default: true },
 }, { timestamps: true })
 

@@ -31,7 +31,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           if (adminEmail && adminPassword &&
               credentials.email === adminEmail &&
               credentials.password === adminPassword) {
-            return { id: 'env-admin', name: 'Admin', email: adminEmail, role: 'admin' }
+            return { id: 'env-admin', name: 'Admin', email: adminEmail, role: 'administrator' }
           }
           return null
         } catch (e) {

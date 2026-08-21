@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
+import { can } from '@/lib/permissions'
 import connectDB from '@/lib/mongodb'
 import Media from '@/models/Media'
 import { getAllReferencedUrls } from '@/lib/mediaUsage'
@@ -10,6 +11,8 @@ const TYPE_FILTERS: MediaTypeFilter[] = ['image', 'audio', 'video', 'document', 
 export async function GET(req: NextRequest) {
   const session = await auth()
   if (!session) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+  const role = (session.user as any)?.role
+  if (!can(role, 'media.read')) return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 })
   try {
     await connectDB()
     const { searchParams } = new URL(req.url)

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import connectDB from '@/lib/mongodb'
 import Contact from '@/models/Contact'
 import { auth } from '@/lib/auth'
+import { can } from '@/lib/permissions'
 
 export async function POST(req: NextRequest) {
   try {
@@ -42,6 +43,8 @@ export async function POST(req: NextRequest) {
 export async function GET() {
   const session = await auth()
   if (!session) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+  const role = (session.user as any)?.role
+  if (!can(role, 'contacts.read')) return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 })
   try {
     await connectDB()
     const contacts = await Contact.find().sort({ createdAt: -1 }).lean()

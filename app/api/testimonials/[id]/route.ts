@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
+import { can } from '@/lib/permissions'
 import connectDB from '@/lib/mongodb'
 import Testimonial from '@/models/Testimonial'
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await auth()
   if (!session) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+  const role = (session.user as any)?.role
+  if (!can(role, 'testimonials.write')) return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 })
   try {
     await connectDB()
     const { id } = await params
@@ -20,6 +23,8 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await auth()
   if (!session) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+  const role = (session.user as any)?.role
+  if (!can(role, 'testimonials.write')) return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 })
   try {
     await connectDB()
     const { id } = await params

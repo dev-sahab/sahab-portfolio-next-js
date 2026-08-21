@@ -1,15 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
+import { can } from '@/lib/permissions'
 import connectDB from '@/lib/mongodb'
 import UserModel from '@/models/User'
 
-async function requireAdmin() {
+async function currentRole() {
   const session = await auth()
-  return (session?.user as any)?.role === 'admin'
+  return (session?.user as any)?.role as string | undefined
 }
 
 export async function GET() {
-  if (!await requireAdmin()) return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 })
+  if (!can(await currentRole(), 'users.read')) return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 })
   try {
     await connectDB()
     const users = await UserModel.find().select('-password').sort({ createdAt: -1 }).lean()
@@ -20,7 +21,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  if (!await requireAdmin()) return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 })
+  if (!can(await currentRole(), 'users.write')) return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 })
   try {
     await connectDB()
     const { name, email, password, role } = await req.json()
