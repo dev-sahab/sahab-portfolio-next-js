@@ -43,6 +43,8 @@ This is a single Next.js App Router project serving three things under one deplo
 
 `sahab-site/` at the repo root is the **original static HTML/CSS/JS template** this app was rebuilt from — not part of the running app, but the authoritative design/animation/markup reference when a page needs to match the original template exactly (check there before guessing at intended styling/behavior). Its `scss/` folder is also the origin of most class names now used in `app/globals.css` and the component-level `.scss` files (see Styling below).
 
+`@/*` (in `tsconfig.json`) resolves to the repo root, so every import — `.tsx`, `.ts`, and `.scss` alike — uses `@/lib/...`, `@/models/...`, `@/components/...`, `@/styles/...`, never a relative path across a directory boundary. Shared TS types for Mongoose-backed data (`Project`, `BlogPost`, `SiteSettings`, `User`, etc.) all live in one place, `types/index.ts`, rather than being colocated with their model.
+
 ### Data layer
 Mongoose models live in `models/`. `lib/mongodb.ts` holds a cached connection (required for serverless — see the `global.mongooseCache` pattern). Key collections: `Project`, `BlogPost`, `Category`, `Tag`, `Testimonial`, `Contact`, `QuoteRequest`, `SiteSettings`, `User`, `Media`.
 
