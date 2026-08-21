@@ -3,8 +3,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { connection } from 'next/server'
 import { notFound } from 'next/navigation'
-import DOMPurify from 'isomorphic-dompurify'
 import connectDB from '@/lib/mongodb'
+import { sanitizeContent } from '@/lib/sanitize'
 import BlogPost from '@/models/BlogPost'
 import '@/models/Category'
 import '@/models/Tag'
@@ -81,7 +81,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <AnimatedSection>
               <div
                 className="markdown-content blog-post-markdown"
-                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
+                dangerouslySetInnerHTML={{ __html: sanitizeContent(post.content) }}
               />
             </AnimatedSection>
             <AnimatedSection className="blog-post-tags-section">

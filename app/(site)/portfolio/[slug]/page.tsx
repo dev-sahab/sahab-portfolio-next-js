@@ -3,8 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { connection } from "next/server";
 import { notFound } from "next/navigation";
-import DOMPurify from "isomorphic-dompurify";
 import connectDB from "@/lib/mongodb";
+import { sanitizeContent } from "@/lib/sanitize";
 import Project from "@/models/Project";
 import "@/models/Category";
 import "@/models/Tag";
@@ -224,7 +224,7 @@ export default async function ProjectPage({
               <div
                 className="markdown-content sp-body-text"
                 dangerouslySetInnerHTML={{
-                  __html: DOMPurify.sanitize(project.content),
+                  __html: sanitizeContent(project.content),
                 }}
               />
             </AnimatedSection>
