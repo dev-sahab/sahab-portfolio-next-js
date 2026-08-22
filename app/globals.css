@@ -422,7 +422,7 @@ select.form-input option {
 .services-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  gap: 2px;
 }
 .service-card {
   background: var(--surface);
@@ -458,7 +458,7 @@ select.form-input option {
 .work-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  gap: 2px;
 }
 .project-card {
   background: var(--surface);
@@ -471,6 +471,17 @@ select.form-input option {
 }
 .project-card:hover {
   transform: translateY(-4px);
+}
+.project-card:hover .home-project-title {
+  color: var(--accent);
+}
+.project-card:hover .home-project-arrow {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+}
+.project-card:hover .home-cover-img {
+  transform: scale(1.04);
 }
 
 /* ── TESTIMONIALS ── */
@@ -550,7 +561,7 @@ select.form-input option {
 .blog-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  gap: 2px;
 }
 
 /* ── FILTER ── */
@@ -600,6 +611,13 @@ select.form-input option {
   line-height: 0.9;
   letter-spacing: -0.04em;
   margin-bottom: 24px;
+}
+.cta-sub {
+  font-size: 16px;
+  color: var(--text2);
+  max-width: 460px;
+  margin: 0 auto 44px;
+  line-height: 1.7;
 }
 
 /* ── PAGE HERO ── */
@@ -831,7 +849,7 @@ select.form-input option {
 
   /* Blog layout */
   .blog-grid {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: 1fr 1fr !important;
   }
   .blog-post-layout {
     grid-template-columns: minmax(0, 1fr) !important;
@@ -888,6 +906,9 @@ select.form-input option {
     --px: 16px;
   }
   .portfolio-grid {
+    grid-template-columns: 1fr;
+  }
+  .blog-grid {
     grid-template-columns: 1fr;
   }
   .stats-bar {
