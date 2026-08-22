@@ -2,6 +2,21 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## 📚 Project documentation map
+
+This file (always loaded) covers day-to-day repo conventions and platform gotchas. For anything deeper, read the specific file below instead of re-scanning the codebase — each is scoped to one concern so you only pay for what the task actually needs:
+
+| File | Read it when the task involves... |
+|---|---|
+| [`PRD.md`](./PRD.md) | Understanding what this product is/does, who it's for, feature scope, or whether something is in/out of scope. |
+| [`ARCHITECTURE.md`](./ARCHITECTURE.md) | System structure, the full data model (every Mongoose schema's fields), env vars, deployment topology, or the request lifecycle. |
+| [`RULES.md`](./RULES.md) | Writing new code — conventions, patterns to follow, tech-choice rationale, anti-patterns already caught. |
+| [`DESIGN.md`](./DESIGN.md) | Touching styling, colors, typography, spacing, grids, or animations — the actual token values and conventions, not just "use CSS vars." |
+| [`SECURITY.md`](./SECURITY.md) | Writing/reviewing an API route, auth, permissions, or anything handling user input — includes a concrete pre-ship checklist. |
+| [`MEMORY.md`](./MEMORY.md) | Understanding *why* something is the way it is — dated log of past fixes/decisions and the reasoning behind them. |
+
+Keep these current: if a change alters something one of these files documents, update that file and add a dated entry to `MEMORY.md` in the same piece of work — don't leave it to be rediscovered from a diff later.
+
 ## ⚠️ Next.js version warning
 
 This repo runs **Next.js 16.2.11** and **React 19.2.4** — both newer than your training data, with breaking API/convention changes from the Next.js you know. Before writing code that touches routing, middleware, metadata, or config, check `node_modules/next/dist/docs/` for the current behavior rather than assuming.
