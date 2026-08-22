@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
-import { canWriteContent } from '@/lib/permissions'
+import { can, canWriteContent } from '@/lib/permissions'
 import connectDB from '@/lib/mongodb'
 import BlogPost from '@/models/BlogPost'
 import '@/models/Category'
 import '@/models/Tag'
 import { calculateReadTime, slugify } from '@/lib/utils'
 import { resolveTagIds } from '@/lib/taxonomy'
+import { apiError } from '@/lib/apiError'
+import { stripOperatorKeys } from '@/lib/sanitizeInput'
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -14,9 +16,17 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
     const { id } = await params
     const post = await BlogPost.findById(id).populate('category').populate('tags').lean()
     if (!post) return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 })
+    // Same rule as /api/projects/[id]: an unpublished draft 404s for anyone
+    // without blog.read instead of revealing it exists.
+    if (!(post as any).published) {
+      const session = await auth()
+      if (!can((session?.user as any)?.role, 'blog.read')) {
+        return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 })
+      }
+    }
     return NextResponse.json({ success: true, data: post })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return apiError(e, 'blog/[id]')
   }
 }
 
@@ -31,7 +41,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
     const role = (session.user as any)?.role
     const userId = (session.user as any)?.id
-    const body = await req.json()
+    const body = stripOperatorKeys(await req.json())
     const isOwner = !!existing.author && String(existing.author) === String(userId)
     // A published post staying published, or a draft being flipped to
     // published, both count as "publishing" — contributors can do neither.
@@ -46,7 +56,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     const post = await BlogPost.findByIdAndUpdate(id, body, { new: true, runValidators: true })
     return NextResponse.json({ success: true, data: post })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return apiError(e, 'blog/[id]')
   }
 }
 
@@ -69,6 +79,6 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
     await BlogPost.findByIdAndDelete(id)
     return NextResponse.json({ success: true, message: 'Deleted' })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return apiError(e, 'blog/[id]')
   }
 }

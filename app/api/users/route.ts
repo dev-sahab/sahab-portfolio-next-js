@@ -3,6 +3,7 @@ import { auth } from '@/lib/auth'
 import { can } from '@/lib/permissions'
 import connectDB from '@/lib/mongodb'
 import UserModel from '@/models/User'
+import { apiError } from '@/lib/apiError'
 
 async function currentRole() {
   const session = await auth()
@@ -16,7 +17,7 @@ export async function GET() {
     const users = await UserModel.find().select('-password').sort({ createdAt: -1 }).lean()
     return NextResponse.json({ success: true, data: users })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return apiError(e, 'users')
   }
 }
 
@@ -32,6 +33,6 @@ export async function POST(req: NextRequest) {
     const user = await UserModel.create({ name, email, password, role: role || 'editor' })
     return NextResponse.json({ success: true, data: { _id: user._id, name: user.name, email: user.email, role: user.role, active: user.active } }, { status: 201 })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return apiError(e, 'users')
   }
 }

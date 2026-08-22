@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import connectDB from '@/lib/mongodb'
 import UserModel from '@/models/User'
+import { apiError } from '@/lib/apiError'
 
 /**
  * POST /api/setup
@@ -22,6 +23,6 @@ export async function POST() {
     const user = await UserModel.create({ name, email, password, role: 'administrator' })
     return NextResponse.json({ success: true, message: `✓ Admin user created: ${user.email}. You can now login with your env var credentials. After confirming login works, you can remove ADMIN_EMAIL/ADMIN_PASSWORD from Vercel env vars.` })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return apiError(e, 'setup')
   }
 }

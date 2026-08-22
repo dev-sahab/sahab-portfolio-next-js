@@ -7,6 +7,8 @@ import Project from '@/models/Project'
 import BlogPost from '@/models/BlogPost'
 import { slugify } from '@/lib/utils'
 import { getOrCreateUncategorized } from '@/lib/taxonomy'
+import { apiError } from '@/lib/apiError'
+import { stripOperatorKeys } from '@/lib/sanitizeInput'
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -16,7 +18,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
     if (!category) return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 })
     return NextResponse.json({ success: true, data: category })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return apiError(e, 'categories/[id]')
   }
 }
 
@@ -28,13 +30,13 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   try {
     await connectDB()
     const { id } = await params
-    const body = await req.json()
+    const body = stripOperatorKeys(await req.json())
     if (body.name && !body.slug) body.slug = slugify(body.name)
     const category = await Category.findByIdAndUpdate(id, body, { new: true, runValidators: true })
     if (!category) return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 })
     return NextResponse.json({ success: true, data: category })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return apiError(e, 'categories/[id]')
   }
 }
 
@@ -63,6 +65,6 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
     await Category.findByIdAndDelete(id)
     return NextResponse.json({ success: true, message: 'Deleted' })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return apiError(e, 'categories/[id]')
   }
 }

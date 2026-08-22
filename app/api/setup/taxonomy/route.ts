@@ -1,10 +1,13 @@
 import { NextResponse } from 'next/server'
+import { auth } from '@/lib/auth'
+import { normalizeRole } from '@/lib/permissions'
 import connectDB from '@/lib/mongodb'
 import Category from '@/models/Category'
 import Tag from '@/models/Tag'
 import Project from '@/models/Project'
 import BlogPost from '@/models/BlogPost'
 import { slugify } from '@/lib/utils'
+import { apiError } from '@/lib/apiError'
 
 const PROJECT_CATEGORY_LABELS: Record<string, string> = {
   wordpress: 'WordPress',
@@ -20,9 +23,17 @@ const PROJECT_CATEGORY_LABELS: Record<string, string> = {
  * One-time: backfills Category/Tag collections from the legacy string
  * category/tags fields on Project and BlogPost, then relinks every
  * existing document to the new ObjectId references.
- * Safe — only runs if zero categories exist in DB.
+ * Guarded by the zero-categories check below AND an administrator session —
+ * unlike /api/setup this isn't a pre-auth bootstrap step (an admin account
+ * already has to exist to be the one running it from the dashboard), so
+ * there's no reason for it to be a publicly callable, unauthenticated,
+ * database-mutating endpoint.
  */
 export async function POST() {
+  const session = await auth()
+  if (normalizeRole((session?.user as any)?.role) !== 'administrator') {
+    return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 })
+  }
   try {
     await connectDB()
     const alreadyMigrated = await Category.countDocuments()
@@ -108,6 +119,6 @@ export async function POST() {
       message: `Migrated ${projectsUpdated} projects and ${postsUpdated} posts. Created ${categoriesCreated.length} categories and ${tagsCreated.length} tags.`,
     })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return apiError(e, 'setup/taxonomy')
   }
 }
