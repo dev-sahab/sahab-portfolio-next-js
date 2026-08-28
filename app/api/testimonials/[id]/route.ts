@@ -3,6 +3,8 @@ import { auth } from '@/lib/auth'
 import { can } from '@/lib/permissions'
 import connectDB from '@/lib/mongodb'
 import Testimonial from '@/models/Testimonial'
+import { apiError } from '@/lib/apiError'
+import { stripOperatorKeys } from '@/lib/sanitizeInput'
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await auth()
@@ -12,11 +14,11 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   try {
     await connectDB()
     const { id } = await params
-    const body = await req.json()
+    const body = stripOperatorKeys(await req.json())
     const item = await Testimonial.findByIdAndUpdate(id, body, { new: true })
     return NextResponse.json({ success: true, data: item })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return apiError(e, 'testimonials/[id]')
   }
 }
 
@@ -31,6 +33,6 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
     await Testimonial.findByIdAndDelete(id)
     return NextResponse.json({ success: true })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return apiError(e, 'testimonials/[id]')
   }
 }

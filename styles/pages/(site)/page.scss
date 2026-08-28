@@ -167,6 +167,7 @@
 }
 .home-cover-img {
   object-fit: cover;
+  transition: transform 0.6s var(--ease);
 }
 
 /* ── SERVICES ── */
@@ -198,6 +199,10 @@
   line-height: 1.72;
   color: var(--text2);
   margin-bottom: 20px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 /* ── WORK / PROJECT CARDS ── */
@@ -243,6 +248,10 @@
   color: var(--text2);
   line-height: 1.62;
   margin-bottom: 20px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 .home-project-footer {
   display: flex;
@@ -258,6 +267,11 @@
   align-items: center;
   justify-content: center;
   font-size: 15px;
+  flex-shrink: 0;
+  transition:
+    background 0.3s,
+    border-color 0.3s,
+    color 0.3s;
 }
 
 /* ── ABOUT ── */
@@ -330,11 +344,22 @@
   display: flex;
   flex-direction: column;
   transition: transform 0.38s var(--ease);
+
+  &:hover {
+    transform: translateY(-4px);
+  }
+  &:hover .home-blog-title {
+    color: var(--accent);
+  }
+  &:hover .home-cover-img {
+    transform: scale(1.05);
+  }
 }
 .home-blog-thumb {
   width: 100%;
   aspect-ratio: 16/9;
   position: relative;
+  overflow: hidden;
   background: var(--surface2);
   display: flex;
   align-items: center;
@@ -370,12 +395,17 @@
   letter-spacing: -0.01em;
   margin-bottom: 7px;
   flex: 1;
+  transition: color 0.3s;
 }
 .home-blog-excerpt {
   font-size: 13px;
   color: var(--text2);
   line-height: 1.62;
   margin-bottom: 16px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 .home-blog-readmore {
   font-family: var(--f-m);

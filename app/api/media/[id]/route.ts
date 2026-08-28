@@ -5,6 +5,7 @@ import { v2 as cloudinary } from 'cloudinary'
 import connectDB from '@/lib/mongodb'
 import Media from '@/models/Media'
 import { checkMediaUsage } from '@/lib/mediaUsage'
+import { apiError } from '@/lib/apiError'
 
 cloudinary.config({
   cloud_name:  process.env.CLOUDINARY_CLOUD_NAME,
@@ -24,7 +25,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
     if (!item) return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 })
     return NextResponse.json({ success: true, data: item })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return apiError(e, 'media/[id]')
   }
 }
 
@@ -45,7 +46,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     if (!item) return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 })
     return NextResponse.json({ success: true, data: item })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return apiError(e, 'media/[id]')
   }
 }
 
@@ -74,6 +75,6 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
 
     return NextResponse.json({ success: true })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return apiError(e, 'media/[id]')
   }
 }

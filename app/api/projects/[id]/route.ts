@@ -7,6 +7,8 @@ import '@/models/Category'
 import '@/models/Tag'
 import { slugify } from '@/lib/utils'
 import { resolveTagIds } from '@/lib/taxonomy'
+import { apiError } from '@/lib/apiError'
+import { stripOperatorKeys } from '@/lib/sanitizeInput'
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -14,9 +16,18 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
     const { id } = await params
     const project = await Project.findById(id).populate('category').populate('tags').lean()
     if (!project) return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 })
+    // An unpublished draft is only visible to staff with projects.read —
+    // report it as 404 (not 403) to an unauthorized caller so the id can't
+    // be used as a "does this draft exist" oracle either.
+    if (!(project as any).published) {
+      const session = await auth()
+      if (!can((session?.user as any)?.role, 'projects.read')) {
+        return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 })
+      }
+    }
     return NextResponse.json({ success: true, data: project })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return apiError(e, 'projects/[id]')
   }
 }
 
@@ -28,14 +39,14 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   try {
     await connectDB()
     const { id } = await params
-    const body = await req.json()
+    const body = stripOperatorKeys(await req.json())
     if (!body.slug && body.title) body.slug = slugify(body.title)
     if (Array.isArray(body.tags)) body.tags = await resolveTagIds(body.tags, 'project')
     const project = await Project.findByIdAndUpdate(id, body, { new: true, runValidators: true })
     if (!project) return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 })
     return NextResponse.json({ success: true, data: project })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return apiError(e, 'projects/[id]')
   }
 }
 
@@ -50,6 +61,6 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
     await Project.findByIdAndDelete(id)
     return NextResponse.json({ success: true, message: 'Deleted' })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return apiError(e, 'projects/[id]')
   }
 }

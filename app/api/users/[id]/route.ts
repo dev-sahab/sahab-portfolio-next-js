@@ -3,6 +3,8 @@ import { auth } from '@/lib/auth'
 import { can } from '@/lib/permissions'
 import connectDB from '@/lib/mongodb'
 import UserModel from '@/models/User'
+import { apiError } from '@/lib/apiError'
+import { stripOperatorKeys } from '@/lib/sanitizeInput'
 
 async function currentRole() {
   const session = await auth()
@@ -14,13 +16,13 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   try {
     await connectDB()
     const { id } = await params
-    const body = await req.json()
+    const body = stripOperatorKeys(await req.json())
     delete body.password // password changes handled separately
     const user = await UserModel.findByIdAndUpdate(id, body, { new: true }).select('-password')
     if (!user) return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 })
     return NextResponse.json({ success: true, data: user })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return apiError(e, 'users/[id]')
   }
 }
 
@@ -32,6 +34,6 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
     await UserModel.findByIdAndDelete(id)
     return NextResponse.json({ success: true })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return apiError(e, 'users/[id]')
   }
 }

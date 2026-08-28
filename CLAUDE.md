@@ -2,6 +2,21 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## 📚 Project documentation map
+
+This file (always loaded) covers day-to-day repo conventions and platform gotchas. For anything deeper, read the specific file below instead of re-scanning the codebase — each is scoped to one concern so you only pay for what the task actually needs:
+
+| File | Read it when the task involves... |
+|---|---|
+| [`PRD.md`](./PRD.md) | Understanding what this product is/does, who it's for, feature scope, or whether something is in/out of scope. |
+| [`ARCHITECTURE.md`](./ARCHITECTURE.md) | System structure, the full data model (every Mongoose schema's fields), env vars, deployment topology, or the request lifecycle. |
+| [`RULES.md`](./RULES.md) | Writing new code — conventions, patterns to follow, tech-choice rationale, anti-patterns already caught. |
+| [`DESIGN.md`](./DESIGN.md) | Touching styling, colors, typography, spacing, grids, or animations — the actual token values and conventions, not just "use CSS vars." |
+| [`SECURITY.md`](./SECURITY.md) | Writing/reviewing an API route, auth, permissions, or anything handling user input — includes a concrete pre-ship checklist. |
+| [`MEMORY.md`](./MEMORY.md) | Understanding *why* something is the way it is — dated log of past fixes/decisions and the reasoning behind them. |
+
+Keep these current: if a change alters something one of these files documents, update that file and add a dated entry to `MEMORY.md` in the same piece of work — don't leave it to be rediscovered from a diff later.
+
 ## ⚠️ Next.js version warning
 
 This repo runs **Next.js 16.2.11** and **React 19.2.4** — both newer than your training data, with breaking API/convention changes from the Next.js you know. Before writing code that touches routing, middleware, metadata, or config, check `node_modules/next/dist/docs/` for the current behavior rather than assuming.
@@ -51,7 +66,7 @@ Mongoose models live in `models/`. `lib/mongodb.ts` holds a cached connection (r
 **Taxonomy is shared, not duplicated**: `Category` and `Tag` each have a `type: 'project' | 'blog'` discriminator instead of separate project/blog models. `lib/taxonomy.ts`'s `resolveTagIds()` lets dashboard forms submit plain tag-name strings, which get upserted into real `Tag` docs by `{slug, type}`.
 
 ### Auth
-NextAuth v5, credentials-only, JWT session strategy (`lib/auth.ts`). `authorize()` checks the `User` collection first, then falls back to `ADMIN_EMAIL`/`ADMIN_PASSWORD` env vars (that fallback session's `user.id` is the literal string `"env-admin"`, not a Mongoose ObjectId, and its role is `'administrator'`). `session.user.id` is populated from `token.sub` in the `session()` callback — any code writing an ObjectId ref from it (e.g. `Media.uploadedBy`) must guard with `Types.ObjectId.isValid()` first.
+NextAuth v5, credentials-only, JWT session strategy (`lib/auth.ts`). `authorize()` checks the `User` collection first, then falls back to `ADMIN_EMAIL`/`ADMIN_PASSWORD` env vars (that fallback session's `user.id` is the literal string `"env-admin"`, not a Mongoose ObjectId, and its role is `'administrator'`). `session.user.id` is populated from `token.sub` in the `session()` callback — any code writing an ObjectId ref from it (e.g. `Media.uploadedBy`) must guard with `Types.ObjectId.isValid()` first. Login is rate-limited (`lib/rateLimit.ts`, 5 attempts/min/IP) directly inside `authorize()`, since `proxy.ts` doesn't sit in front of the credentials callback.
 
 ### Authorization
 Five WordPress-analogous roles (`models/User.ts`'s `UserRole`): `administrator`, `editor`, `author`, `contributor`, `subscriber`. `lib/permissions.ts` is the single source of truth for what each can do:
@@ -60,7 +75,9 @@ Five WordPress-analogous roles (`models/User.ts`'s `UserRole`): `administrator`,
 - `canWriteContent(role, kind, {isOwner, publishing})` — ownership-aware on top of `can()`, for roles whose permission depends on *whose* content it is (`author`'s `blog.write.own`, `contributor`'s `blog.write.own.draft`). Only `BlogPost` tracks an `author` field for this — `Project` has no role whose permission varies by ownership, so it never needs it. Contributors are blocked from ever setting `published: true`, whether creating, editing their own draft, or editing a post that's already published.
 - `ROLES` — label/description per role, consumed by both the `/dashboard/users` page and `AddUserModal` so the copy only lives in one place.
 
-Route handlers all follow the same shape: pull `role` off `session.user.role`, then gate with `can(role, '<resource>.<read|write>')` (or `canWriteContent` for blog). `components/dashboard/Sidebar.tsx` filters nav items the same way — each entry can declare a `perm` string checked against the logged-in user's role. Note this only covers the Sidebar and the API layer: a dashboard *page* itself (e.g. `/dashboard/settings`) doesn't redirect a role that can't act on it, it just gets a 403 from the API on submit.
+Route handlers all follow the same shape: pull `role` off `session.user.role`, then gate with `can(role, '<resource>.<read|write>')` (or `canWriteContent` for blog). `components/dashboard/Sidebar.tsx` filters nav items the same way — each entry can declare a `perm` string checked against the logged-in user's role. Note this only covers the Sidebar and the API layer: a dashboard *page* itself (e.g. `/dashboard/settings`) doesn't redirect a role that can't act on it, it just gets a 403 from the API on submit. **`proxy.ts` does not cover `/api/*`** (its matcher is `/dashboard/:path*` only) — every route handler must do its own `auth()`/`can()` check, there's no middleware safety net.
+
+Beyond the auth/permission gate, every `route.ts` follows one more shape, added during a 2026-08-23 security pass (full detail: `SECURITY.md`): wrap client JSON with `stripOperatorKeys()` (`lib/sanitizeInput.ts`) before it reaches a Mongoose write, return errors via `apiError(e, label)` (`lib/apiError.ts`) instead of `NextResponse.json({ error: e.message })`, and force the published-only filter for any caller that isn't authenticated with `<resource>.read` on a list/detail GET. Follow this shape for any new route rather than the older pattern still visible in git history.
 
 ### Media / image handling
 Every Cloudinary upload (via `app/api/upload/route.ts`) creates a matching `Media` document (title/alt/caption/dimensions/uploader) — the Media Library (`/dashboard/media`) is just a browser over that collection, not a separate system. Filenames are derived from the original upload name + a random suffix (not Cloudinary's default hash id).
@@ -102,7 +119,7 @@ Every component/page has its own `.scss` file, but none of them sit next to thei
 
 `_variables.scss`/`_mixins.scss` stay resolvable from *any* `.scss` file via `@use 'variables' as v;` / `@use 'mixins' as m;` (no relative path needed — `next.config.ts`'s `sassOptions.loadPaths` points at the `styles/` folder itself, so this still works no matter how deeply nested the importing file is under `pages/`/`components/`).
 
-A handful of genuinely data-driven inline styles remain by design and should **not** be converted to classes: per-item colors/values computed from CMS data (e.g. `dashboard/page.tsx`'s stat-card icon color), tree-depth indentation in `CategoryCombobox`/`TaxonomyManager`, and CSS custom properties set from props (`Marquee`'s `--ms` speed, `about/page.tsx`'s skill-bar `--w`).
+A handful of genuinely data-driven inline styles remain by design and should **not** be converted to classes: per-item colors/values computed from CMS data (e.g. `dashboard/page.tsx`'s stat-card icon color), tree-depth indentation in `CategoryCombobox`/`TaxonomyManager`, and CSS custom properties set from props (`Marquee`'s `--ms` speed, `components/site/SkillBar.tsx`'s `--w`). That last one is half CSS, half JS: `globals.css`'s `.skill-fill` starts at `width: 0` and only animates to `var(--w)` once a `.go` class is present, which `SkillBar.tsx` adds via an `IntersectionObserver` on scroll-into-view — reading only one of the two files makes it look like the bar does nothing.
 
 ### Deployment
 Vercel (region `sin1`, see `vercel.json`), MongoDB Atlas, Cloudinary for image storage, Resend for transactional email.

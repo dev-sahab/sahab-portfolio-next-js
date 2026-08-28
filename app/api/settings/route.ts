@@ -3,6 +3,8 @@ import { auth } from '@/lib/auth'
 import { can } from '@/lib/permissions'
 import connectDB from '@/lib/mongodb'
 import SiteSettings from '@/models/SiteSettings'
+import { apiError } from '@/lib/apiError'
+import { stripOperatorKeys } from '@/lib/sanitizeInput'
 
 export async function GET() {
   try {
@@ -11,7 +13,7 @@ export async function GET() {
     if (!settings) settings = await SiteSettings.create({})
     return NextResponse.json({ success: true, data: settings })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return apiError(e, 'settings')
   }
 }
 
@@ -22,10 +24,10 @@ export async function PUT(req: NextRequest) {
   if (!can(role, 'settings.write')) return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 })
   try {
     await connectDB()
-    const body = await req.json()
+    const body = stripOperatorKeys(await req.json())
     const settings = await SiteSettings.findOneAndUpdate({}, body, { new: true, upsert: true, runValidators: true })
     return NextResponse.json({ success: true, data: settings })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return apiError(e, 'settings')
   }
 }

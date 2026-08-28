@@ -5,6 +5,7 @@ import { v2 as cloudinary } from 'cloudinary'
 import connectDB from '@/lib/mongodb'
 import Media from '@/models/Media'
 import { getAllReferencedUrls, type MediaReference } from '@/lib/mediaUsage'
+import { apiError } from '@/lib/apiError'
 
 cloudinary.config({
   cloud_name:  process.env.CLOUDINARY_CLOUD_NAME,
@@ -44,6 +45,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true, deleted, skipped })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return apiError(e, 'media/bulk-delete')
   }
 }

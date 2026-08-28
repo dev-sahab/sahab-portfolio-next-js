@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { connection } from "next/server";
 import AnimatedSection from "@/components/site/AnimatedSection";
+import SkillBar from "@/components/site/SkillBar";
 import connectDB from "@/lib/mongodb";
 import SiteSettings from "@/models/SiteSettings";
 import type { SiteSettings as ISettings } from "@/types";
@@ -213,6 +214,48 @@ export default async function AboutPage() {
         </div>
       </section>
 
+      {/* INFO GRID */}
+      <section className="about-bordered-section">
+        <div className="container">
+          <AnimatedSection>
+            <div className="about-meta-grid">
+              <div className="about-meta-item">
+                <div className="about-meta-key">Role</div>
+                <div className="about-meta-value">
+                  WordPress &amp; MERN Developer
+                </div>
+              </div>
+              <div className="about-meta-item">
+                <div className="about-meta-key">Company</div>
+                <div className="about-meta-value">
+                  {s?.company || "PIXELVEGA"}
+                </div>
+              </div>
+              <div className="about-meta-item">
+                <div className="about-meta-key">Experience</div>
+                <div className="about-meta-value">6+ years</div>
+              </div>
+              <div className="about-meta-item">
+                <div className="about-meta-key">Location</div>
+                <div className="about-meta-value">
+                  {s?.location || "Sylhet, Bangladesh"}
+                </div>
+              </div>
+              <div className="about-meta-item">
+                <div className="about-meta-key">Languages</div>
+                <div className="about-meta-value">EN · BN · HI</div>
+              </div>
+              <div className="about-meta-item">
+                <div className="about-meta-key">Availability</div>
+                <div className="about-meta-value">
+                  {s?.availabilityText || "Freelance & Contracts"}
+                </div>
+              </div>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
       {/* TIMELINE */}
       <section className="about-bordered-section">
         <div className="container">
@@ -256,22 +299,11 @@ export default async function AboutPage() {
                 <h3 className="about-skill-group-title">{group.name}</h3>
                 <div className="d-flex flex-col about-skill-list">
                   {group.skills.map((skill) => (
-                    <div key={skill.name}>
-                      <div className="d-flex justify-between about-skill-row-head">
-                        <span>{skill.name}</span>
-                        <span className="about-skill-pct">
-                          {skill.level}%
-                        </span>
-                      </div>
-                      <div className="about-skill-track">
-                        <div
-                          className="skill-fill"
-                          style={
-                            { "--w": `${skill.level}%` } as React.CSSProperties
-                          }
-                        />
-                      </div>
-                    </div>
+                    <SkillBar
+                      key={skill.name}
+                      name={skill.name}
+                      level={skill.level}
+                    />
                   ))}
                 </div>
               </AnimatedSection>
@@ -290,6 +322,10 @@ export default async function AboutPage() {
             <h2 className="cta-title">
               Ready to <span className="accent-word">build</span> something?
             </h2>
+            <p className="cta-sub">
+              Open for new projects, part-time contracts, and full-time
+              opportunities.
+            </p>
             <div className="d-flex justify-center flex-wrap about-cta-buttons">
               <Link href="/contact" className="btn btn-accent">
                 Get In Touch →

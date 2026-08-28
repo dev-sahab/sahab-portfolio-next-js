@@ -95,6 +95,39 @@
   margin-bottom: 28px;
 }
 
+// ── INFO GRID ──
+.about-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.about-meta-item {
+  padding: 16px 20px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+
+  &:nth-child(2n) {
+    border-right: none;
+  }
+  &:nth-last-child(-n + 2) {
+    border-bottom: none;
+  }
+}
+.about-meta-key {
+  font-family: var(--f-m);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+.about-meta-value {
+  font-size: 13px;
+  font-weight: 500;
+}
+
 // ── TIMELINE ──
 .about-timeline-item {
   display: grid;
@@ -171,5 +204,4 @@
 }
 .about-cta-buttons {
   gap: 14px;
-  margin-top: 36px;
 }

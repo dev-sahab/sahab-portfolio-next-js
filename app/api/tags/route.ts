@@ -4,6 +4,8 @@ import { can } from '@/lib/permissions'
 import connectDB from '@/lib/mongodb'
 import Tag from '@/models/Tag'
 import { slugify } from '@/lib/utils'
+import { apiError } from '@/lib/apiError'
+import { stripOperatorKeys } from '@/lib/sanitizeInput'
 
 export async function GET(req: NextRequest) {
   try {
@@ -14,7 +16,7 @@ export async function GET(req: NextRequest) {
     const tags = await Tag.find(query).sort({ name: 1 }).lean()
     return NextResponse.json({ success: true, data: tags })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return apiError(e, 'tags')
   }
 }
 
@@ -25,11 +27,11 @@ export async function POST(req: NextRequest) {
   if (!can(role, 'tags.write')) return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 })
   try {
     await connectDB()
-    const body = await req.json()
+    const body = stripOperatorKeys(await req.json())
     if (!body.slug) body.slug = slugify(body.name)
     const tag = await Tag.create(body)
     return NextResponse.json({ success: true, data: tag }, { status: 201 })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return apiError(e, 'tags')
   }
 }
