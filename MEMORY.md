@@ -6,6 +6,16 @@
 
 ---
 
+### 2026-08-28 — Portfolio gallery Lightbox: zoomed image had a horizontal scrollbar and an unreachable top edge
+
+Two bugs in `components/site/Lightbox.tsx` (used by `portfolio/[slug]/page.tsx` for the project gallery), both from the same root cause: `ZOOM_STEPS`'s non-`'fit'` values were multiples of the image's *native pixel size*, not of the viewport. For a tall image (e.g. a full-page screenshot gallery asset) whose native width happened to exceed the lightbox's available width, the very first zoom-in click (125% of native) already rendered wider than the viewport — hence the horizontal scrollbar.
+
+Separately, `.lb-img-wrap` centered its (potentially overflowing) child via `align-items:center; justify-content:center` on a flex container with `overflow:auto`. That's the classic "centered flex/grid child + overflow" trap: the browser only lets you scroll to the *reachable* side of the centering offset, and doesn't extend the scrollable region to the start edge the way it does for normal (non-alignment-based) overflow — so once the zoomed image was taller than the container, its top portion was genuinely unreachable by scrolling, not just off-screen.
+
+Fixed both:
+1. Redefined the zoom steps as multiples of *fit-width scale* (`container.w / natural.w`) instead of native pixel size — `ZOOM_STEPS` is now `['fit', 1, 1.25, 1.5, 1.75, 2]`, so the first click-to-zoom step (index 1) always renders at exactly 100% of the viewport width, guaranteeing no horizontal scrollbar on that step; only the further manual +/- steps zoom in past that (where horizontal scroll becomes expected/deliberate).
+2. Replaced the flex `align-items`/`justify-content` centering on `.lb-img-wrap` with `margin: auto` on `.lb-img` itself (`app/globals.css`) — auto margins collapse to 0 instead of clipping when the child overflows, which keeps the scrollable region reachable all the way to the image's real top-left. Added an explicit `wrapRef.scrollTop/scrollLeft = 0` reset on every zoom-level change as a belt-and-suspenders guarantee that zooming in always opens scrolled to the top, rather than relying on incidental browser scroll-position defaults. Also added `scrollbar-gutter: stable` on `.lb-img-wrap` so a vertical scrollbar appearing (once a tall zoomed image overflows) doesn't shave a few pixels off the width that was already computed to exactly match the container before that scrollbar existed.
+
 ### 2026-08-23 — Documentation set created (this file + PRD/ARCHITECTURE/RULES/DESIGN/SECURITY.md)
 
 Created so a fresh agent session can read a handful of targeted docs instead of re-scanning the whole codebase to answer "what is this app / how is it built / what are the rules / what does it look like / what's the security posture." `CLAUDE.md` stays the primary always-loaded reference (repo conventions, Windows/Turbopack gotchas, commands); these files are the deeper, task-specific references it now points to.

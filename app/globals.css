@@ -1094,6 +1094,14 @@ select.form-input option {
   border-radius: var(--r);
   object-fit: contain;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  /* Centers the image when it's smaller than .lb-img-wrap, same as the old
+     align-items/justify-content:center on the wrap — but unlike that, auto
+     margins collapse to 0 (not negative) once the image overflows, so the
+     wrap's `overflow: auto` can always scroll back to the image's actual
+     top-left edge. align-items/justify-content:center on a flex/grid parent
+     don't affect the scrollable overflow region the same way, which is why
+     the zoomed-in image's top was unreachable before this. */
+  margin: auto;
 }
 .lb-close {
   position: absolute;
@@ -1161,9 +1169,15 @@ select.form-input option {
   width: 100%;
   height: 100%;
   overflow: auto;
+  /* Reserves the vertical scrollbar's width up front (on browsers that
+     support it) so a tall zoomed image — sized in JS off this element's
+     clientWidth *before* it overflows — doesn't get measured a scrollbar's
+     width too wide the instant that scrollbar appears, which would
+     reintroduce a few pixels of horizontal scroll. */
+  scrollbar-gutter: stable;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  /* No align-items/justify-content:center here — centering is done by
+     `.lb-img`'s `margin: auto` instead, see the comment there. */
 }
 .lb-zoom {
   position: absolute;
