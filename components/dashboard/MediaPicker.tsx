@@ -11,14 +11,20 @@ interface Props {
   /** When provided, "Upload New" stages the file locally (blob preview) instead of
    *  uploading immediately — the caller is responsible for uploading it for real later. */
   onStageUpload?: (blobUrl: string, file: File) => void
+  /** Extra, caller-supplied images shown in a "Quick Add" row above the library
+   *  grid — e.g. a project's cover image, so it can be reused in its gallery
+   *  without hunting for it (works even for a just-staged `blob:` cover that
+   *  isn't in the Media Library yet, since these are plain URLs, not Media docs). */
+  pinned?: { url: string; label: string }[]
 }
 
-export default function MediaPicker({ multiple = false, folder = 'sahab-portfolio', onSelect, onClose, onStageUpload }: Props) {
+export default function MediaPicker({ multiple = false, folder = 'sahab-portfolio', onSelect, onClose, onStageUpload, pinned = [] }: Props) {
   const [tab, setTab] = useState<'library' | 'upload'>('library')
   const [items, setItems] = useState<Media[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
   const [selectedIds, setSelectedIds] = useState<string[]>([])
+  const [selectedPinnedUrls, setSelectedPinnedUrls] = useState<string[]>([])
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
@@ -44,8 +50,16 @@ export default function MediaPicker({ multiple = false, folder = 'sahab-portfoli
     setSelectedIds(p => p.includes(item._id) ? p.filter(id => id !== item._id) : [...p, item._id])
   }
 
+  const togglePinned = (url: string) => {
+    if (!multiple) { onSelect([url]); onClose(); return }
+    setSelectedPinnedUrls(p => p.includes(url) ? p.filter(u => u !== url) : [...p, url])
+  }
+
   const confirmSelection = () => {
-    const urls = items.filter(i => selectedIds.includes(i._id)).map(i => i.url)
+    const urls = [
+      ...selectedPinnedUrls,
+      ...items.filter(i => selectedIds.includes(i._id)).map(i => i.url),
+    ]
     if (urls.length) onSelect(urls)
     onClose()
   }
@@ -102,6 +116,31 @@ export default function MediaPicker({ multiple = false, folder = 'sahab-portfoli
         <div className="mp-body">
           {tab === 'library' ? (
             <>
+              {pinned.length > 0 && (
+                <div className="mp-pinned-section">
+                  <div className="mp-pinned-label">Quick Add</div>
+                  <div className="mp-pinned-grid">
+                    {pinned.map(p => {
+                      const isSelected = selectedPinnedUrls.includes(p.url)
+                      return (
+                        <button
+                          key={p.url}
+                          type="button"
+                          onClick={() => togglePinned(p.url)}
+                          className={`mp-library-item ${isSelected ? 'is-selected' : ''}`}
+                        >
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={p.url} alt={p.label} className="mp-library-item-img" />
+                          <div className="mp-pinned-tag">{p.label}</div>
+                          {multiple && isSelected && (
+                            <div className="mp-selected-check">✓</div>
+                          )}
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
               <input
                 type="text"
                 value={search}
@@ -163,18 +202,21 @@ export default function MediaPicker({ multiple = false, folder = 'sahab-portfoli
           )}
         </div>
 
-        {tab === 'library' && multiple && (
-          <div className="mp-footer">
-            <span className="mp-footer-count">{selectedIds.length} selected</span>
-            <div className="mp-footer-actions">
-              <button type="button" onClick={onClose} className="mp-footer-cancel-btn">Cancel</button>
-              <button type="button" onClick={confirmSelection} disabled={!selectedIds.length}
-                className="mp-footer-confirm-btn">
-                Add {selectedIds.length || ''} Image{selectedIds.length === 1 ? '' : 's'}
-              </button>
+        {tab === 'library' && multiple && (() => {
+          const totalSelected = selectedIds.length + selectedPinnedUrls.length
+          return (
+            <div className="mp-footer">
+              <span className="mp-footer-count">{totalSelected} selected</span>
+              <div className="mp-footer-actions">
+                <button type="button" onClick={onClose} className="mp-footer-cancel-btn">Cancel</button>
+                <button type="button" onClick={confirmSelection} disabled={!totalSelected}
+                  className="mp-footer-confirm-btn">
+                  Add {totalSelected || ''} Image{totalSelected === 1 ? '' : 's'}
+                </button>
+              </div>
             </div>
-          </div>
-        )}
+          )
+        })()}
       </div>
     </div>
   )

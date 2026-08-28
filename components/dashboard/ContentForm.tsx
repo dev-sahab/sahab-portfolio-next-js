@@ -158,8 +158,12 @@ export default function ContentForm({ title, endpoint, method = 'POST', fields, 
         onStageUpload={registerPendingUpload} onStageDelete={registerPendingDeletion} />
     }
     if (f.type === 'gallery') {
+      // Offer the form's cover/feature image (if any) as a "Quick Add" pick
+      // in the gallery's media picker — see GalleryUpload's featuredImageUrl.
+      const imageFieldName = fields.find(other => other.type === 'image')?.name
+      const featuredImageUrl = imageFieldName ? values[imageFieldName] : undefined
       return <GalleryUpload label={f.label} value={values[f.name] || []} onChange={v => set(f.name, v)} folder={f.imageFolder}
-        onStageUpload={registerPendingUpload} onStageDelete={registerPendingDeletion} />
+        onStageUpload={registerPendingUpload} onStageDelete={registerPendingDeletion} featuredImageUrl={featuredImageUrl} />
     }
     if (f.type === 'richtext') {
       return <><label className="cf-lbl">{f.label}{f.required && ' *'}</label>

@@ -12,9 +12,14 @@ interface Props {
   onStageUpload?: (blobUrl: string, file: File) => void
   /** Stage an existing (already-uploaded) image for deletion — only applied once the form is actually saved. */
   onStageDelete?: (url: string) => void
+  /** The form's cover/feature image (if any) — offered as a "Quick Add" pick
+   *  in the picker so it can be reused in the gallery without re-uploading or
+   *  hunting for it in the Media Library, even while it's still a staged
+   *  (not-yet-uploaded) blob: preview. */
+  featuredImageUrl?: string
 }
 
-export default function GalleryUpload({ value = [], onChange, folder = 'sahab-portfolio', label = 'Gallery', onStageUpload, onStageDelete }: Props) {
+export default function GalleryUpload({ value = [], onChange, folder = 'sahab-portfolio', label = 'Gallery', onStageUpload, onStageDelete, featuredImageUrl }: Props) {
   const [dragIndex, setDragIndex] = useState<number | null>(null)
   const [pickerOpen, setPickerOpen] = useState(false)
 
@@ -86,6 +91,7 @@ export default function GalleryUpload({ value = [], onChange, folder = 'sahab-po
           onSelect={urls => onChange([...value, ...urls])}
           onClose={() => setPickerOpen(false)}
           onStageUpload={onStageUpload}
+          pinned={featuredImageUrl && !value.includes(featuredImageUrl) ? [{ url: featuredImageUrl, label: 'Feature Image' }] : []}
         />
       )}
     </div>
