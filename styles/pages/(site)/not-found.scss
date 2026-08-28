@@ -1,0 +1,22 @@
+.notfound-hero {
+  min-height: calc(100vh - 400px);
+  display: flex;
+  align-items: center;
+}
+
+.notfound-inner {
+  max-width: 560px;
+}
+
+.notfound-code {
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.notfound-heading {
+  margin-bottom: 20px;
+}
+
+.notfound-buttons {
+  gap: 14px;
+}
