@@ -1,0 +1,38 @@
+.page-loading {
+  padding: 32px;
+}
+
+@keyframes page-loading-pulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+.page-loading-row,
+.page-loading-card {
+  background: var(--surface2);
+  border-radius: var(--r);
+  animation: page-loading-pulse 1.4s ease-in-out infinite;
+}
+
+.page-loading-row {
+  height: 22px;
+  margin-bottom: 12px;
+}
+.page-loading-row--wide { width: 220px; }
+.page-loading-row--narrow {
+  width: 140px;
+  height: 14px;
+  opacity: 0.7;
+  margin-bottom: 28px;
+}
+
+.page-loading-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.page-loading-card {
+  height: 96px;
+  animation-delay: 0.1s;
+}

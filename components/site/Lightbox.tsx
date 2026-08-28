@@ -4,10 +4,16 @@ import { createPortal } from 'react-dom'
 import Image from 'next/image'
 import '@/styles/components/site/Lightbox.scss'
 
-// 'fit' = scaled to fit the viewport (the opening view). The rest are exact
-// percentages of the image's real/native pixel dimensions — 200% genuinely
-// renders the image at twice its actual resolution, not twice the fitted size.
-const ZOOM_STEPS: ('fit' | number)[] = ['fit', 1.25, 1.5, 1.75, 2]
+// 'fit' = scaled to fit entirely inside the viewport (the opening view, both
+// edges visible, no scrolling). Every other step is a multiple of "fit
+// width" — the scale at which the image's rendered width exactly equals the
+// viewport width — not a multiple of the image's native pixel size. That
+// means the first zoom-in step (a single click on the image) always lands
+// on exactly 100% viewport width with zero horizontal scrollbar, then only
+// needs vertical scrolling to see the rest of a tall image; the later steps
+// (1.25/1.5/1.75/2) zoom in further from there for inspecting fine detail,
+// and are expected to introduce horizontal scroll at that point.
+const ZOOM_STEPS: ('fit' | number)[] = ['fit', 1, 1.25, 1.5, 1.75, 2]
 
 interface Props {
   images: string[]
@@ -38,6 +44,15 @@ export default function Lightbox({ images }: Props) {
     setZoomIdx(0)
     setNatural(null)
   }, [openIndex])
+
+  // Every zoom-level change (including the very first click, 'fit' -> fit-
+  // width) should open already scrolled to the image's top-left, not
+  // wherever the browser's default scroll position happens to land once the
+  // now-larger image overflows its scroll container.
+  useEffect(() => {
+    const el = wrapRef.current
+    if (el) { el.scrollTop = 0; el.scrollLeft = 0 }
+  }, [zoomIdx])
 
   useEffect(() => {
     if (openIndex === null) return
@@ -82,7 +97,9 @@ export default function Lightbox({ images }: Props) {
   if (!images.length) return null
 
   const fitScale = natural && container ? Math.min(container.w / natural.w, container.h / natural.h, 1) : 1
-  const displayPercent = Math.round((zoom === 'fit' ? fitScale : zoom) * 100)
+  const fitWidthScale = natural && container ? container.w / natural.w : 1
+  const scale = zoom === 'fit' ? fitScale : fitWidthScale * zoom
+  const displayPercent = Math.round(scale * 100)
 
   return (
     <>
@@ -125,8 +142,8 @@ export default function Lightbox({ images }: Props) {
                 zoom === 'fit'
                   ? undefined
                   : {
-                      width: natural ? natural.w * zoom : undefined,
-                      height: natural ? natural.h * zoom : undefined,
+                      width: natural ? natural.w * scale : undefined,
+                      height: natural ? natural.h * scale : undefined,
                     }
               }
             />

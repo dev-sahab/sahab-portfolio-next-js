@@ -2,6 +2,15 @@ import type { NextConfig } from 'next'
 import path from 'node:path'
 
 const nextConfig: NextConfig = {
+  experimental: {
+    // Next 15+ defaults the client Router Cache's `dynamic` staleTime to 0s
+    // (down from 30s pre-15), so every dashboard nav — even back to a page
+    // you were just on — re-fetches its full RSC payload. Restoring the old
+    // default makes revisits within 30s instant. Mutations are unaffected:
+    // ContentForm/DeleteButton/TaxonomyManager already call router.refresh()
+    // after every write, which forces a fresh read regardless of this cache.
+    staleTimes: { dynamic: 30, static: 180 },
+  },
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'res.cloudinary.com' },

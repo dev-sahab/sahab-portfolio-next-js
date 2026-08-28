@@ -29,17 +29,25 @@ function refLabel(refs: MediaReference[]) {
   return refs.map(r => `${r.title} (${r.type})`).join(', ')
 }
 
-export default function MediaLibrary() {
-  const [items, setItems] = useState<Media[]>([])
-  const [total, setTotal] = useState(0)
-  const [pages, setPages] = useState(1)
-  const [page, setPage] = useState(1)
+interface InitialData {
+  data: Media[]
+  total: number
+  page: number
+  pages: number
+  months: { year: number; month: number; count: number }[]
+}
+
+export default function MediaLibrary({ initialData }: { initialData?: InitialData }) {
+  const [items, setItems] = useState<Media[]>(initialData?.data ?? [])
+  const [total, setTotal] = useState(initialData?.total ?? 0)
+  const [pages, setPages] = useState(initialData?.pages ?? 1)
+  const [page, setPage] = useState(initialData?.page ?? 1)
   const [limit, setLimit] = useState(50)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(!initialData)
   const [search, setSearch] = useState('')
   const [typeFilter, setTypeFilter] = useState('')
   const [dateFilter, setDateFilter] = useState('')
-  const [months, setMonths] = useState<{ year: number; month: number; count: number }[]>([])
+  const [months, setMonths] = useState<{ year: number; month: number; count: number }[]>(initialData?.months ?? [])
   const [uploading, setUploading] = useState(false)
   const [selected, setSelected] = useState<Media | null>(null)
   const [saving, setSaving] = useState(false)
@@ -78,7 +86,10 @@ export default function MediaLibrary() {
     setLoading(false)
   }
 
-  useEffect(() => { load() }, [] ) // eslint-disable-line react-hooks/exhaustive-deps
+  // Skip the initial fetch when the server already rendered page 1 with no
+  // filters — MediaLibrary was seeded via `initialData`. Any later filter/
+  // search/page change still goes through `load()` as before.
+  useEffect(() => { if (!initialData) load() }, [] ) // eslint-disable-line react-hooks/exhaustive-deps
 
   const uploadFiles = async (files: File[]) => {
     setUploading(true)
