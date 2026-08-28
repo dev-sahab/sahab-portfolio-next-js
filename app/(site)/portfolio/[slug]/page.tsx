@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { connection } from "next/server";
 import { notFound } from "next/navigation";
 import connectDB from "@/lib/mongodb";
 import { sanitizeContent } from "@/lib/sanitize";
@@ -10,22 +9,20 @@ import "@/models/Category";
 import "@/models/Tag";
 import AnimatedSection from "@/components/site/AnimatedSection";
 import Lightbox from "@/components/site/Lightbox";
+import { getProjectBySlug } from "@/lib/publicData";
 import type { Project as IProject } from "@/types";
 import "@/styles/pages/(site)/portfolio/[slug]/portfolio-slug.scss";
+
+export const revalidate = 3600;
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  await connection();
   const { slug } = await params;
   try {
-    await connectDB();
-    const p = (await Project.findOne({
-      slug,
-      published: true,
-    }).lean()) as unknown as IProject;
+    const p = (await getProjectBySlug(slug)) as unknown as IProject;
     if (!p) return { title: "Project Not Found" };
     return {
       title: p.title,
@@ -42,22 +39,15 @@ export default async function ProjectPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  await connection();
   const { slug } = await params;
   let project: IProject | null = null;
   let prevProject: { slug: string; title: string } | null = null;
   let nextProject: { slug: string; title: string } | null = null;
   try {
-    await connectDB();
-    project = (await Project.findOne({
-      slug,
-      published: true,
-    })
-      .populate("category")
-      .populate("tags")
-      .lean()) as unknown as IProject;
+    project = (await getProjectBySlug(slug)) as unknown as IProject;
 
     if (project) {
+      await connectDB();
       const order = (await Project.find({ published: true })
         .sort({ featured: -1, createdAt: -1 })
         .select("slug title")

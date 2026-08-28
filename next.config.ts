@@ -18,6 +18,11 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'images.unsplash.com' },
       { protocol: 'https', hostname: '**.vercel.app' },
     ],
+    // Uploaded images are content-immutable per URL — app/api/upload/route.ts's
+    // buildPublicId() mints a fresh Cloudinary public_id (random suffix) on
+    // every upload, so a given URL's bytes never change in place. Safe to
+    // cache the optimizer's output for a long time (default is 4 hours).
+    minimumCacheTTL: 31536000,
   },
   sassOptions: {
     // `sass-loader` forwards this to Dart Sass's modern API, which reads

@@ -9,6 +9,7 @@ import { slugify } from '@/lib/utils'
 import { getOrCreateUncategorized } from '@/lib/taxonomy'
 import { apiError } from '@/lib/apiError'
 import { stripOperatorKeys } from '@/lib/sanitizeInput'
+import { revalidateTaxonomy } from '@/lib/revalidatePublic'
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -34,6 +35,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     if (body.name && !body.slug) body.slug = slugify(body.name)
     const category = await Category.findByIdAndUpdate(id, body, { new: true, runValidators: true })
     if (!category) return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 })
+    revalidateTaxonomy()
     return NextResponse.json({ success: true, data: category })
   } catch (e: any) {
     return apiError(e, 'categories/[id]')
@@ -63,6 +65,7 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
     }
 
     await Category.findByIdAndDelete(id)
+    revalidateTaxonomy()
     return NextResponse.json({ success: true, message: 'Deleted' })
   } catch (e: any) {
     return apiError(e, 'categories/[id]')

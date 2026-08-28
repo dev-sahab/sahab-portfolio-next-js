@@ -5,6 +5,7 @@ import connectDB from '@/lib/mongodb'
 import Testimonial from '@/models/Testimonial'
 import { apiError } from '@/lib/apiError'
 import { stripOperatorKeys } from '@/lib/sanitizeInput'
+import { revalidateTestimonials } from '@/lib/revalidatePublic'
 
 export async function GET() {
   try {
@@ -25,6 +26,7 @@ export async function POST(req: NextRequest) {
     await connectDB()
     const body = stripOperatorKeys(await req.json())
     const item = await Testimonial.create(body)
+    revalidateTestimonials()
     return NextResponse.json({ success: true, data: item }, { status: 201 })
   } catch (e: any) {
     return apiError(e, 'testimonials')

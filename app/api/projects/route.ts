@@ -9,6 +9,7 @@ import { slugify } from '@/lib/utils'
 import { resolveTagIds } from '@/lib/taxonomy'
 import { apiError } from '@/lib/apiError'
 import { stripOperatorKeys } from '@/lib/sanitizeInput'
+import { revalidateProjects } from '@/lib/revalidatePublic'
 
 export async function GET(req: NextRequest) {
   try {
@@ -41,6 +42,7 @@ export async function POST(req: NextRequest) {
     if (!body.slug) body.slug = slugify(body.title)
     if (Array.isArray(body.tags)) body.tags = await resolveTagIds(body.tags, 'project')
     const project = await Project.create(body)
+    revalidateProjects()
     return NextResponse.json({ success: true, data: project }, { status: 201 })
   } catch (e: any) {
     return apiError(e, 'projects')

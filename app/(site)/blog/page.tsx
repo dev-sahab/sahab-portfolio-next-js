@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { connection } from "next/server";
 import Link from "next/link";
 import Image from "next/image";
 import AnimatedSection from "@/components/site/AnimatedSection";
@@ -12,9 +11,9 @@ import type { BlogPost as IPost } from "@/types";
 import "@/styles/pages/(site)/blog/blog.scss";
 
 export const metadata: Metadata = { title: "Blog" };
+export const revalidate = 3600;
 
 export default async function BlogPage() {
-  await connection();
   let posts: IPost[] = [];
   try {
     await connectDB();

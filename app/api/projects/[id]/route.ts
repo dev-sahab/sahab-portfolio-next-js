@@ -9,6 +9,7 @@ import { slugify } from '@/lib/utils'
 import { resolveTagIds } from '@/lib/taxonomy'
 import { apiError } from '@/lib/apiError'
 import { stripOperatorKeys } from '@/lib/sanitizeInput'
+import { revalidateProjects } from '@/lib/revalidatePublic'
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -44,6 +45,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     if (Array.isArray(body.tags)) body.tags = await resolveTagIds(body.tags, 'project')
     const project = await Project.findByIdAndUpdate(id, body, { new: true, runValidators: true })
     if (!project) return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 })
+    revalidateProjects()
     return NextResponse.json({ success: true, data: project })
   } catch (e: any) {
     return apiError(e, 'projects/[id]')
@@ -59,6 +61,7 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
     await connectDB()
     const { id } = await params
     await Project.findByIdAndDelete(id)
+    revalidateProjects()
     return NextResponse.json({ success: true, message: 'Deleted' })
   } catch (e: any) {
     return apiError(e, 'projects/[id]')

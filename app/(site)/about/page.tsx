@@ -1,24 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { connection } from "next/server";
 import AnimatedSection from "@/components/site/AnimatedSection";
 import SkillBar from "@/components/site/SkillBar";
-import connectDB from "@/lib/mongodb";
-import SiteSettings from "@/models/SiteSettings";
+import { getSiteSettings } from "@/lib/publicData";
 import type { SiteSettings as ISettings } from "@/types";
 import Image from "next/image";
 import "@/styles/pages/(site)/about/about.scss";
 
 export const metadata: Metadata = { title: "About" };
-
-async function getSettings(): Promise<ISettings | null> {
-  try {
-    await connectDB();
-    return (await SiteSettings.findOne().lean()) as unknown as ISettings;
-  } catch {
-    return null;
-  }
-}
+export const revalidate = 3600;
 
 const timeline = [
   {
@@ -89,8 +79,7 @@ const skillGroups = [
 ];
 
 export default async function AboutPage() {
-  await connection();
-  const s = await getSettings();
+  const s = (await getSiteSettings()) as ISettings | null;
 
   return (
     <main>

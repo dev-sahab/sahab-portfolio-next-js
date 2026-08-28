@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import { connection } from "next/server";
 import Marquee from "@/components/site/Marquee";
 import AnimatedSection from "@/components/site/AnimatedSection";
 import TestimonialSlider from "@/components/site/TestimonialSlider";
@@ -10,7 +9,7 @@ import BlogPost from "@/models/BlogPost";
 import "@/models/Category";
 import "@/models/Tag";
 import Testimonial from "@/models/Testimonial";
-import SiteSettings from "@/models/SiteSettings";
+import { getSiteSettings } from "@/lib/publicData";
 import type {
   Project as IProject,
   BlogPost as IBlogPost,
@@ -18,6 +17,8 @@ import type {
   SiteSettings as ISettings,
 } from "@/types";
 import "@/styles/pages/(site)/page.scss";
+
+export const revalidate = 3600;
 
 async function getData() {
   try {
@@ -35,7 +36,7 @@ async function getData() {
         .populate("category")
         .lean(),
       Testimonial.find({ featured: true }).sort({ order: 1 }).lean(),
-      SiteSettings.findOne().lean(),
+      getSiteSettings(),
     ]);
     return { projects, posts, testimonials, settings };
   } catch {
@@ -44,7 +45,6 @@ async function getData() {
 }
 
 export default async function HomePage() {
-  await connection();
   const { projects, posts, testimonials, settings } = await getData();
   const testimonialData = (testimonials as any[]).map((testimonial) => ({
     ...testimonial,

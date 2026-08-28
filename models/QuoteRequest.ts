@@ -2,7 +2,7 @@ import { Schema, model, models } from 'mongoose'
 
 const QuoteRequestSchema = new Schema({
   name: { type: String, required: true },
-  email: { type: String, required: true },
+  email: { type: String, required: true, index: true },
   url: { type: String },
   service: { type: String, required: true },
   uiux: { type: String },

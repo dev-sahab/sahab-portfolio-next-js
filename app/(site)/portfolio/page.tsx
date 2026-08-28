@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { connection } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Project from "@/models/Project";
 import Category from "@/models/Category";
@@ -11,9 +10,9 @@ import type { Project as IProject, Category as ICategory } from "@/types";
 import "@/styles/pages/(site)/portfolio/portfolio.scss";
 
 export const metadata: Metadata = { title: "Portfolio" };
+export const revalidate = 3600;
 
 export default async function PortfolioPage() {
-  await connection();
   let projects: IProject[] = [];
   let categories: ICategory[] = [];
   try {

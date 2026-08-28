@@ -5,6 +5,7 @@ import connectDB from '@/lib/mongodb'
 import Testimonial from '@/models/Testimonial'
 import { apiError } from '@/lib/apiError'
 import { stripOperatorKeys } from '@/lib/sanitizeInput'
+import { revalidateTestimonials } from '@/lib/revalidatePublic'
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await auth()
@@ -16,6 +17,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     const { id } = await params
     const body = stripOperatorKeys(await req.json())
     const item = await Testimonial.findByIdAndUpdate(id, body, { new: true })
+    revalidateTestimonials()
     return NextResponse.json({ success: true, data: item })
   } catch (e: any) {
     return apiError(e, 'testimonials/[id]')
@@ -31,6 +33,7 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
     await connectDB()
     const { id } = await params
     await Testimonial.findByIdAndDelete(id)
+    revalidateTestimonials()
     return NextResponse.json({ success: true })
   } catch (e: any) {
     return apiError(e, 'testimonials/[id]')

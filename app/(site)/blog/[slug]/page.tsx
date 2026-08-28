@@ -1,33 +1,30 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
-import { connection } from 'next/server'
 import { notFound } from 'next/navigation'
-import connectDB from '@/lib/mongodb'
 import { sanitizeContent } from '@/lib/sanitize'
-import BlogPost from '@/models/BlogPost'
 import '@/models/Category'
 import '@/models/Tag'
 import AnimatedSection from '@/components/site/AnimatedSection'
 import { formatDate } from '@/lib/utils'
+import { getBlogPostBySlug } from '@/lib/publicData'
 import type { BlogPost as IPost } from '@/types'
 import '@/styles/pages/(site)/blog/[slug]/blog-slug.scss'
 
+export const revalidate = 3600
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  await connection()
   const { slug } = await params
   try {
-    await connectDB()
-    const p = await BlogPost.findOne({ slug, published: true }).lean() as unknown as IPost
+    const p = await getBlogPostBySlug(slug) as unknown as IPost
     return p ? { title: p.title, description: p.excerpt } : { title: 'Post Not Found' }
   } catch { return { title: 'Blog' } }
 }
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
-  await connection()
   const { slug } = await params
   let post: IPost | null = null
-  try { await connectDB(); post = await BlogPost.findOne({ slug, published: true }).populate('category').populate('tags').lean() as unknown as IPost } catch {}
+  try { post = await getBlogPostBySlug(slug) as unknown as IPost } catch {}
   if (!post) notFound()
 
   return (

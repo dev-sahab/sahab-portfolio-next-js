@@ -8,6 +8,7 @@ import BlogPost from '@/models/BlogPost'
 import { slugify } from '@/lib/utils'
 import { apiError } from '@/lib/apiError'
 import { stripOperatorKeys } from '@/lib/sanitizeInput'
+import { revalidateTaxonomy } from '@/lib/revalidatePublic'
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -33,6 +34,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     if (body.name && !body.slug) body.slug = slugify(body.name)
     const tag = await Tag.findByIdAndUpdate(id, body, { new: true, runValidators: true })
     if (!tag) return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 })
+    revalidateTaxonomy()
     return NextResponse.json({ success: true, data: tag })
   } catch (e: any) {
     return apiError(e, 'tags/[id]')
@@ -54,6 +56,7 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
     await Model.updateMany({ tags: id }, { $pull: { tags: id } })
 
     await Tag.findByIdAndDelete(id)
+    revalidateTaxonomy()
     return NextResponse.json({ success: true, message: 'Deleted' })
   } catch (e: any) {
     return apiError(e, 'tags/[id]')

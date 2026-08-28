@@ -11,4 +11,7 @@ const TestimonialSchema = new Schema({
   order: { type: Number, default: 0 },
 }, { timestamps: true })
 
+// Matches the home page's query: filter by featured, sort by order.
+TestimonialSchema.index({ featured: 1, order: 1 })
+
 export default models.Testimonial || model('Testimonial', TestimonialSchema)

@@ -6,16 +6,20 @@ const BlogPostSchema = new Schema({
   excerpt: { type: String, required: true },
   content: { type: String, required: true },
   coverImage: { type: String },
-  category: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
+  category: { type: Schema.Types.ObjectId, ref: 'Category', required: true, index: true },
   tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }],
   // Who wrote it — needed for the author/contributor "own content only"
   // permission checks in lib/permissions.ts (canWriteContent). Optional
   // since posts created before this field existed, or by admin/editor
   // (who can write regardless of ownership), may not have one.
   author: { type: Schema.Types.ObjectId, ref: 'User' },
-  published: { type: Boolean, default: false },
-  featured: { type: Boolean, default: false },
+  published: { type: Boolean, default: false, index: true },
+  featured: { type: Boolean, default: false, index: true },
   readTime: { type: Number },
 }, { timestamps: true })
+
+// Matches the public site's actual query shape (blog listing): filter by
+// published, sort by recency.
+BlogPostSchema.index({ published: 1, createdAt: -1 })
 
 export default models.BlogPost || model('BlogPost', BlogPostSchema)

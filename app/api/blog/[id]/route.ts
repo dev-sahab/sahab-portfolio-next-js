@@ -9,6 +9,7 @@ import { calculateReadTime, slugify } from '@/lib/utils'
 import { resolveTagIds } from '@/lib/taxonomy'
 import { apiError } from '@/lib/apiError'
 import { stripOperatorKeys } from '@/lib/sanitizeInput'
+import { revalidateBlog } from '@/lib/revalidatePublic'
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -54,6 +55,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     if (body.content) body.readTime = calculateReadTime(body.content)
     if (Array.isArray(body.tags)) body.tags = await resolveTagIds(body.tags, 'blog')
     const post = await BlogPost.findByIdAndUpdate(id, body, { new: true, runValidators: true })
+    revalidateBlog()
     return NextResponse.json({ success: true, data: post })
   } catch (e: any) {
     return apiError(e, 'blog/[id]')
@@ -77,6 +79,7 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
     }
 
     await BlogPost.findByIdAndDelete(id)
+    revalidateBlog()
     return NextResponse.json({ success: true, message: 'Deleted' })
   } catch (e: any) {
     return apiError(e, 'blog/[id]')

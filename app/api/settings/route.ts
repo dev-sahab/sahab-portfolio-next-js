@@ -5,6 +5,7 @@ import connectDB from '@/lib/mongodb'
 import SiteSettings from '@/models/SiteSettings'
 import { apiError } from '@/lib/apiError'
 import { stripOperatorKeys } from '@/lib/sanitizeInput'
+import { revalidateSettings } from '@/lib/revalidatePublic'
 
 export async function GET() {
   try {
@@ -26,6 +27,7 @@ export async function PUT(req: NextRequest) {
     await connectDB()
     const body = stripOperatorKeys(await req.json())
     const settings = await SiteSettings.findOneAndUpdate({}, body, { new: true, upsert: true, runValidators: true })
+    revalidateSettings()
     return NextResponse.json({ success: true, data: settings })
   } catch (e: any) {
     return apiError(e, 'settings')

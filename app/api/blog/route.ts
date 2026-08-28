@@ -10,6 +10,7 @@ import { slugify, calculateReadTime } from '@/lib/utils'
 import { resolveTagIds } from '@/lib/taxonomy'
 import { apiError } from '@/lib/apiError'
 import { stripOperatorKeys } from '@/lib/sanitizeInput'
+import { revalidateBlog } from '@/lib/revalidatePublic'
 
 export async function GET(req: NextRequest) {
   try {
@@ -48,6 +49,7 @@ export async function POST(req: NextRequest) {
     if (body.content) body.readTime = calculateReadTime(body.content)
     if (Array.isArray(body.tags)) body.tags = await resolveTagIds(body.tags, 'blog')
     const post = await BlogPost.create(body)
+    revalidateBlog()
     return NextResponse.json({ success: true, data: post }, { status: 201 })
   } catch (e: any) {
     return apiError(e, 'blog')

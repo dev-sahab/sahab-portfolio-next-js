@@ -6,6 +6,7 @@ import Category from '@/models/Category'
 import { slugify } from '@/lib/utils'
 import { apiError } from '@/lib/apiError'
 import { stripOperatorKeys } from '@/lib/sanitizeInput'
+import { revalidateTaxonomy } from '@/lib/revalidatePublic'
 
 export async function GET(req: NextRequest) {
   try {
@@ -31,6 +32,7 @@ export async function POST(req: NextRequest) {
     if (!body.slug) body.slug = slugify(body.name)
     if (!body.parent) body.parent = null
     const category = await Category.create(body)
+    revalidateTaxonomy()
     return NextResponse.json({ success: true, data: category }, { status: 201 })
   } catch (e: any) {
     return apiError(e, 'categories')

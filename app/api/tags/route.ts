@@ -6,6 +6,7 @@ import Tag from '@/models/Tag'
 import { slugify } from '@/lib/utils'
 import { apiError } from '@/lib/apiError'
 import { stripOperatorKeys } from '@/lib/sanitizeInput'
+import { revalidateTaxonomy } from '@/lib/revalidatePublic'
 
 export async function GET(req: NextRequest) {
   try {
@@ -30,6 +31,7 @@ export async function POST(req: NextRequest) {
     const body = stripOperatorKeys(await req.json())
     if (!body.slug) body.slug = slugify(body.name)
     const tag = await Tag.create(body)
+    revalidateTaxonomy()
     return NextResponse.json({ success: true, data: tag }, { status: 201 })
   } catch (e: any) {
     return apiError(e, 'tags')
