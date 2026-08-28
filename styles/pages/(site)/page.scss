@@ -344,6 +344,9 @@
   display: flex;
   flex-direction: column;
   transition: transform 0.38s var(--ease);
+  // Same fix as .project-card in globals.css: fills the AnimatedSection
+  // wrapper div, which .blog-grid already stretches to equal row height.
+  height: 100%;
 
   &:hover {
     transform: translateY(-4px);

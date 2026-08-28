@@ -468,6 +468,13 @@ select.form-input option {
   transition: transform 0.38s var(--ease);
   display: flex;
   flex-direction: column;
+  /* Each card is wrapped in an AnimatedSection div (for the scroll-reveal
+     tween) that IS a .work-grid item, so CSS Grid's default align-items:
+     stretch already makes that wrapper equal-height per row — but this card
+     itself, being shrink-to-content, didn't fill it, so cards visibly ended
+     up as tall as their own title/excerpt text rather than matching their
+     row siblings. height: 100% fills the already-equal-height wrapper. */
+  height: 100%;
 }
 .project-card:hover {
   transform: translateY(-4px);
