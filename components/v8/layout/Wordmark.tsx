@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { cx } from '@/lib/v8/cx'
 
 /** Per-letter stagger, seconds. */
-const STAGGER = 0.13
+const STAGGER = 0.1
 
 /**
  * The giant clipped "sahab" wordmark in the footer. As soon as it enters the
