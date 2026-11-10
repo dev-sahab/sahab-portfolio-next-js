@@ -48,7 +48,7 @@ Verified as of the 2026-08-23 audit (see `MEMORY.md` for the full narrative). Ea
 |---|---|---|
 | Passwords hashed | `models/User.ts` | bcrypt, cost 12, `pre('save')` hook |
 | Password never returned | `app/api/users/**` | `.select('-password')` everywhere |
-| Security headers on every response | `next.config.ts` `headers()` | X-Content-Type-Options, X-Frame-Options: DENY, HSTS, Referrer-Policy, CSP |
+| Security headers on every response | `next.config.ts` `headers()` | X-Content-Type-Options, X-Frame-Options: DENY, HSTS, Referrer-Policy, CSP (`script-src` adds `'unsafe-eval'` **only when `NODE_ENV !== 'production'`** — webpack's dev chunks need it to hydrate; production stays without it) |
 | Rate limiting | `lib/rateLimit.ts` | login 5/min/IP; `/api/contact` + `/api/quote` 5/10min/IP |
 | Safe error responses | `lib/apiError.ts` | Internal error detail logged server-side only; client gets a generic message (Mongoose ValidationError/CastError messages pass through — they're field-validation feedback, not a leak) |
 | Draft/unpublished content locked down | `app/api/projects/**`, `app/api/blog/**` | Anonymous/unpermitted GETs always get `published: true` forced, regardless of query params; single-item GET 404s (not 403s) an unpublished doc to an unauthorized caller |

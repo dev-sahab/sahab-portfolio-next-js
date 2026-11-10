@@ -1,0 +1,156 @@
+@use 'v8/tokens' as *;
+
+.v8-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  // Transparent at the top of the page (the hero's glow shows through; the
+  // hero is pulled up under the header, see Hero.scss)…
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease;
+
+  // …and Figma Interaction 01: after 80px of scroll → blur + 1px bottom border.
+  &.is-scrolled {
+    background: color-mix(in srgb, var(--bg-base) 80%, transparent);
+    backdrop-filter: blur(14px) saturate(150%);
+    border-bottom-color: var(--border-subtle);
+  }
+
+  &__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    height: var(--nav-h);
+  }
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 44px;
+    min-width: 0;
+  }
+
+  &__nav {
+    display: flex;
+    gap: 28px;
+
+    a {
+      font: 500 14px/1.55 var(--ff-sans);
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s ease;
+
+      &:hover,
+      &.is-active {
+        color: var(--text-primary);
+      }
+
+      // Scroll-spy: current section gets an ember underline.
+      &.is-active {
+        text-decoration: underline;
+        text-decoration-color: var(--accent-fill);
+        text-decoration-thickness: 2px;
+        text-underline-offset: 8px;
+      }
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__burger {
+    display: none;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    border: 1px solid var(--border-subtle);
+    background: var(--surface-card);
+    color: var(--text-primary);
+    cursor: pointer;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  @include below(1100px) {
+    &__left {
+      gap: 28px;
+    }
+    &__nav {
+      gap: 20px;
+    }
+  }
+
+  @include below($bp-md) {
+    // Extra class in the selector: `.v8-btn { display:inline-flex }` would
+    // otherwise win at equal specificity.
+    .v8-header__nav,
+    .v8-header__cta {
+      display: none;
+    }
+    &__burger {
+      display: grid;
+    }
+  }
+
+  // Figma mobile nav: logo, theme toggle, menu button (search lives in the menu).
+  @include below($bp-sm) {
+    .v8-search-trigger {
+      display: none;
+    }
+  }
+
+}
+
+// Figma "Search trigger" — opens the ⌘K menu.
+.v8-search-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 38px;
+  padding: 0 8px 0 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-card);
+  color: var(--text-muted);
+  font: 400 14px/1.55 var(--ff-sans);
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
+
+  &:hover {
+    border-color: var(--border-strong);
+    color: var(--text-secondary);
+  }
+
+  &__icon {
+    width: 15px;
+    height: 15px;
+  }
+
+  &__label {
+    width: 70px;
+    text-align: left;
+  }
+
+  .v8-kbd {
+    border-color: var(--border-subtle);
+    color: var(--text-muted);
+    padding: 3px 6px;
+  }
+
+  @include below($bp-sm) {
+    padding: 0 11px;
+  }
+}

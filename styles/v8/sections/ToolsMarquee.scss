@@ -1,0 +1,78 @@
+.v8-tools {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 48px 0 56px;
+  border-block: 1px solid var(--border-subtle);
+  overflow: hidden;
+
+  &__rows {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    // Edge fade (Figma: 220px gradient each side).
+    mask-image: linear-gradient(to right, transparent, #000 220px, #000 calc(100% - 220px), transparent);
+
+    @media (max-width: 640px) {
+      mask-image: linear-gradient(to right, transparent, #000 48px, #000 calc(100% - 48px), transparent);
+    }
+  }
+
+  // Position is driven per-frame by ToolsMarquee.tsx (idle drift + scroll
+  // boost). `padding-right` = the gap, so every copy of the list is exactly
+  // one period wide and the wrap is seamless.
+  &__row {
+    display: flex;
+    gap: 10px;
+    width: max-content;
+    margin: 0;
+    padding: 0 10px 0 0;
+    list-style: none;
+    will-change: transform;
+  }
+
+  // Figma Interaction 03: reduced motion → static, wrapped grid of one copy.
+  @media (prefers-reduced-motion: reduce) {
+    &__rows {
+      mask-image: none;
+      padding-inline: var(--gutter);
+    }
+
+    &__row {
+      flex-wrap: wrap;
+      justify-content: center;
+      width: auto;
+      padding: 0;
+      transform: none !important;
+
+      .v8-tool[aria-hidden='true'] {
+        display: none;
+      }
+    }
+  }
+}
+
+.v8-tool {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 16px 11px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-card);
+  font: 500 14px/1.55 var(--ff-sans);
+  color: var(--text-primary);
+  white-space: nowrap;
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    padding: 4px;
+    border-radius: 6px;
+    background: var(--surface-card-2);
+    color: var(--text-primary);
+  }
+}

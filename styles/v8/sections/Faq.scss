@@ -1,0 +1,128 @@
+@use 'v8/tokens' as *;
+
+.v8-faq {
+  &__row {
+    display: grid;
+    grid-template-columns: 340px minmax(0, 700px);
+    justify-content: space-between;
+    gap: 80px;
+    align-items: start;
+
+    @include below($bp-md) {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+  }
+
+  &__aside {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+  }
+
+  &__email {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font: 500 15px/1 var(--ff-sans);
+    color: var(--accent-text);
+    text-decoration: none;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+  }
+}
+
+.v8-accordion {
+  border-top: 1px solid var(--border-strong);
+
+  &__item {
+    border-bottom: 1px solid var(--border-strong);
+  }
+
+  &__heading {
+    margin: 0;
+  }
+
+  &__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    width: 100%;
+    padding: 24px 0;
+    border: 0;
+    background: none;
+    color: var(--text-primary);
+    text-align: left;
+    font-family: var(--ff-display);
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+  }
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    flex: none;
+    border-radius: 10px;
+    border: 1px solid var(--border-strong);
+    color: var(--text-primary);
+    transition:
+      background-color 0.25s ease,
+      border-color 0.25s ease;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &__trigger:hover &__icon {
+    border-color: var(--text-muted);
+  }
+
+  &__item.is-open &__icon {
+    border-color: var(--accent-fill);
+    background: var(--accent-soft);
+    color: var(--accent-text);
+  }
+
+  // Height animation via grid rows (0fr → 1fr), no JS measuring needed.
+  &__panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition:
+      grid-template-rows 0.25s $ease-out,
+      margin-top 0.25s $ease-out; // Figma: 250ms
+  }
+
+  // Negative margin pulls the open answer up to Figma's 14px gap; it lives on
+  // the panel (not inside the overflow-clipped inner) so glyphs aren't cut.
+  &__item.is-open &__panel {
+    grid-template-rows: 1fr;
+    margin-top: -10px;
+  }
+
+  &__panel-inner {
+    overflow: hidden;
+
+    p {
+      max-width: 560px;
+      margin: 0;
+      padding-bottom: 24px;
+      color: var(--text-secondary);
+    }
+  }
+}

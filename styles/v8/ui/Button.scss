@@ -1,0 +1,85 @@
+@use 'v8/tokens' as *;
+
+// Figma "Button" component: Primary = main conversion, Secondary = alternative
+// path. 48px tall (L); 38px (S) is reserved for the nav.
+.v8-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 22px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font: 500 15px/1 var(--ff-sans);
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s $ease-out,
+    box-shadow 0.2s ease;
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  &__icon {
+    width: 16px;
+    height: 16px;
+    flex: none;
+    transition: transform 0.25s $ease-out;
+  }
+
+  &:hover &__icon {
+    transform: translateX(2px);
+  }
+
+  &--sm {
+    height: 38px;
+    padding: 0 16px;
+    font-size: 14px;
+
+    .v8-btn__icon {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  &--primary {
+    background: var(--action-primary);
+    color: var(--action-on-primary);
+
+    &:hover {
+      background: color-mix(in srgb, var(--action-primary) 88%, #fff);
+    }
+  }
+
+  &--glow {
+    box-shadow: 0 8px 14px rgba(255, 92, 56, 0.35);
+  }
+
+  &--secondary {
+    background: transparent;
+    border-color: var(--border-strong);
+    color: var(--text-primary);
+
+    &:hover {
+      background: var(--surface-card);
+    }
+  }
+
+  // "Read case study" — light pill on dark, dark pill on light.
+  &--inverse {
+    padding: 0 26px;
+    font-size: 16px;
+    background: var(--text-primary);
+    color: var(--bg-base);
+
+    &:hover {
+      background: color-mix(in srgb, var(--text-primary) 88%, var(--bg-base));
+    }
+  }
+}

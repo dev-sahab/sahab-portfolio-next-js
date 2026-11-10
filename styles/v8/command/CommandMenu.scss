@@ -1,0 +1,265 @@
+@use 'v8/tokens' as *;
+
+// Ported 1:1 from the HTML prototype's `.overlay` / `.cmdk` palette
+// (html-template/new/homepage-preview-v8.html), mapped onto v8 tokens so it
+// also works in the light theme.
+
+.v8-cmdk-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 12vh 16px 16px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+  animation: v8-cmdk-fade 0.14s ease-out;
+}
+
+[data-theme='light'] .v8-cmdk-overlay {
+  background: rgba(17, 17, 19, 0.35);
+}
+
+.v8-cmdk {
+  width: 100%;
+  max-width: 660px;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid var(--border-strong);
+  background: color-mix(in srgb, var(--surface-card) 96%, transparent);
+  box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.9);
+  color: var(--text-primary);
+  font-family: var(--ff-sans);
+  animation: v8-cmdk-pop 0.22s $ease-out;
+
+  [data-theme='light'] & {
+    box-shadow: 0 40px 100px -20px rgba(17, 17, 19, 0.25);
+  }
+
+  &__field {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 56px;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--border-subtle);
+
+    input {
+      flex: 1;
+      min-width: 0;
+      height: 100%;
+      border: 0;
+      outline: none;
+      background: none;
+      color: var(--text-primary);
+      font: 500 16px/1 var(--ff-sans);
+
+      // The dialog itself is the focus context; no ring on its only input.
+      &:focus-visible {
+        outline: none;
+      }
+
+      &::placeholder {
+        color: var(--text-muted);
+      }
+    }
+  }
+
+  &__search {
+    width: 17px;
+    height: 17px;
+    flex: none;
+    color: var(--text-muted);
+  }
+
+  // HTML `.kbd`
+  &__kbd {
+    display: inline-grid;
+    place-items: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 6px;
+    border: 1px solid var(--border-strong);
+    background: color-mix(in srgb, var(--text-primary) 4%, transparent);
+    font: 500 12px/1 var(--ff-mono);
+    color: var(--text-secondary);
+  }
+
+  &__list {
+    max-height: 340px;
+    overflow: auto;
+    padding: 8px;
+    overscroll-behavior: contain;
+  }
+
+  &__group {
+    margin: 0;
+    padding: 10px 10px 6px;
+    font: 600 12px/1.4 var(--ff-sans);
+    color: var(--text-muted);
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
+    padding: 0 10px;
+    border-radius: 9px;
+    color: var(--text-secondary);
+    font-size: 14.5px;
+    cursor: pointer;
+
+    &.is-active {
+      background: color-mix(in srgb, var(--text-primary) 7%, transparent);
+      color: var(--text-primary);
+
+      .v8-cmdk__go {
+        opacity: 1;
+      }
+    }
+  }
+
+  // Brand icons sit on a white tile; UI glyphs on a dark one (HTML `.ico` / `.ico.dark`).
+  &__ico {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    flex: none;
+    border-radius: 7px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface-card-2);
+    color: var(--text-primary);
+
+    &--brand {
+      border: 0;
+      background: #fff;
+      color: #16110e;
+
+      [data-theme='light'] & {
+        box-shadow: inset 0 0 0 1px var(--border-subtle);
+      }
+    }
+  }
+
+  &__glyph {
+    width: 15px;
+    height: 15px;
+  }
+
+  &__label {
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  &__meta {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-muted);
+    white-space: nowrap;
+
+    @media (max-width: 600px) {
+      display: none;
+    }
+  }
+
+  &__go {
+    opacity: 0;
+  }
+
+  &__empty {
+    margin: 0;
+    padding: 28px;
+    text-align: center;
+    color: var(--text-muted);
+  }
+
+  &__foot {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 14px;
+    height: 42px;
+    padding: 0 14px;
+    border-top: 1px solid var(--border-subtle);
+    font-size: 12.5px;
+    color: var(--text-muted);
+
+    span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+  }
+}
+
+@keyframes v8-cmdk-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes v8-cmdk-pop {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+}
+
+// ── Phones: full-screen search (Figma mobile-menu note: "opens the full-screen search") ──
+.v8-cmdk__cancel {
+  display: none;
+  padding: 6px 4px;
+  border: 0;
+  background: none;
+  color: var(--accent-text);
+  font: 500 14px/1 var(--ff-sans);
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .v8-cmdk-overlay {
+    padding: 0;
+    background: var(--bg-base);
+    backdrop-filter: none;
+  }
+
+  .v8-cmdk {
+    display: flex;
+    flex-direction: column;
+    max-width: none;
+    height: 100dvh;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: var(--bg-base);
+
+    &__field {
+      flex: none;
+    }
+
+    &__list {
+      flex: 1;
+      max-height: none;
+    }
+
+    &__foot {
+      display: none;
+    }
+
+    // Keyboard hint → touch-friendly Cancel.
+    &__esc {
+      display: none;
+    }
+  }
+
+  .v8-cmdk__cancel {
+    display: block;
+  }
+}

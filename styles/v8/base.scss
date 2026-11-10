@@ -1,0 +1,227 @@
+@use 'v8/tokens' as *;
+
+// ── Theme scope ────────────────────────────────────────────────────────────
+// Tokens hang off the `.v8` root so nothing leaks into the existing site.
+.v8 {
+  @include theme-dark;
+}
+[data-theme='light'] .v8 {
+  @include theme-light;
+}
+
+// Match the page canvas (overscroll, short pages) to the v8 background.
+html:has(.v8) {
+  background: #0b0b0c;
+  // Header height: 68px desktop, 64px on mobile (Figma). Lives on <html> so
+  // `scroll-padding-top` (which Lenis and native anchor jumps both honour)
+  // always leaves exactly the header height + 12px above a jumped-to section.
+  --nav-h: 68px;
+  scroll-padding-top: calc(var(--nav-h) + 12px);
+
+  @include below($bp-md) {
+    --nav-h: 64px;
+  }
+}
+html[data-theme='light']:has(.v8) {
+  background: #fafafa;
+}
+html:has(.v8) body {
+  background: transparent;
+}
+
+// Lenis (smooth scroll) must be the only thing easing the scroll — the
+// global `html { scroll-behavior: smooth }` would fight it.
+html.lenis,
+html.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+// 200ms colour cross-fade when the theme is switched (see lib/v8/theme.ts).
+.v8-theme-fade .v8,
+.v8-theme-fade .v8 * {
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    fill 0.2s ease !important;
+}
+
+// ── Base ───────────────────────────────────────────────────────────────────
+.v8 {
+  --ff-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --ff-serif: var(--font-instrument), Georgia, serif;
+  --ff-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --ff-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --gutter: 20px;
+
+  min-height: 100vh;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--ff-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  caret-color: var(--accent-fill);
+
+  @media (min-width: 768px) {
+    --gutter: 32px;
+  }
+
+  ::selection {
+    background: rgba(255, 92, 57, 0.32);
+    color: var(--text-primary);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent-fill);
+    outline-offset: 3px;
+    border-radius: 8px;
+  }
+
+  h1,
+  h2,
+  h3,
+  p {
+    text-wrap: pretty;
+  }
+}
+
+.v8-skip {
+  position: absolute;
+  left: -9999px;
+  top: 12px;
+  z-index: 100;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--text-primary);
+  color: var(--bg-base);
+  font-weight: 600;
+
+  &:focus {
+    left: 16px;
+  }
+}
+
+.v8-container {
+  width: 100%;
+  max-width: calc(#{$container} + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.v8-section {
+  position: relative;
+  padding-block: 120px;
+
+  @include below($bp-md) {
+    padding-block: 88px;
+  }
+
+  &--raised {
+    background: var(--bg-raised);
+    border-block: 1px solid var(--border-subtle);
+  }
+}
+
+// ── Spotlight hover (from homepage-preview-v6.html's `.card`, extended) ────
+// One pointer-centred ember glow (400px radius) shared by every card: each
+// card within reach (`.is-lit`) paints its own slice, clipped to its own
+// rounded box (`::after` is inset 0 + border-radius inherit, so the glow
+// layer is exactly the card's shape — no overflow:hidden needed, which keeps
+// badges that sit over the card edge visible). Light crosses into
+// neighbours but never outside a card. Positions come from
+// components/v8/providers/SpotlightTracker.tsx.
+.v8-spotlight {
+  position: relative;
+  isolation: isolate;
+  transition:
+    border-color 0.3s ease,
+    translate 0.4s $ease-out;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: radial-gradient(
+      400px circle at var(--spot-x, -999px) var(--spot-y, -999px),
+      color-mix(in srgb, var(--accent-fill) 16%, transparent),
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+  }
+
+  &.is-lit::after {
+    opacity: 1;
+  }
+
+  &:hover {
+    border-color: var(--border-strong);
+  }
+}
+
+// Visually hidden but available to screen readers.
+.v8-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+// ── Scroll reveal (see components/v8/ui/Reveal.tsx) ─────────────────────────
+// Content is only hidden once the inline `v8-js` flag is set (layout.tsx),
+// and if React never hydrates (`v8-hydrated` missing) a fallback animation
+// shows everything after 2.5s — so a JS failure can't leave the page blank.
+.v8-js .v8-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.8s ease-out,
+    transform 1s $ease-out;
+  transition-delay: var(--reveal-delay, 0s);
+
+  &.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// Elements that both reveal and spotlight keep every transition.
+.v8-js .v8-reveal.v8-spotlight {
+  transition:
+    opacity 0.8s ease-out,
+    transform 1s $ease-out,
+    border-color 0.3s ease,
+    translate 0.4s $ease-out;
+}
+
+.v8-js:not(.v8-hydrated) .v8-reveal {
+  animation: v8-reveal-fallback 0.6s ease-out 2.5s forwards;
+}
+
+@keyframes v8-reveal-fallback {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v8 *,
+  .v8 *::before,
+  .v8 *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .v8-js .v8-reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
