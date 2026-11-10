@@ -45,9 +45,14 @@ const nextConfig: NextConfig = {
     // restriction: it blocks an attacker from loading a *script from another
     // origin* (e.g. an injected `<script src="https://evil.example/x.js">`),
     // which is the specific case this check is guarding against.
+    // Dev only: webpack's dev build evaluates modules with `eval()`, so
+    // without 'unsafe-eval' React never hydrates under `npm run dev` (every
+    // click handler, menu, form is dead). Production builds don't use eval,
+    // so the shipped policy stays strict.
+    const isDev = process.env.NODE_ENV !== 'production'
     const csp = [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline'",
+      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}`,
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob: https://res.cloudinary.com https://*.cloudinary.com https://images.unsplash.com https://*.vercel.app",
       "font-src 'self' data:",

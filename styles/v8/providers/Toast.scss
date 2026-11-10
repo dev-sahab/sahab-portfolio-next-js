@@ -1,0 +1,38 @@
+@use 'v8/tokens' as *;
+
+.v8-toast {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: calc(100vw - 40px);
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-card-2);
+  box-shadow: var(--shadow-editor);
+  color: var(--text-primary);
+  font: 400 14px/1.4 var(--ff-sans);
+  opacity: 0;
+  transform: translateY(16px);
+  pointer-events: none;
+  transition:
+    transform 0.3s $ease-out,
+    opacity 0.2s ease;
+
+  &.is-visible {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  &__icon {
+    width: 16px;
+    height: 16px;
+    flex: none;
+    color: var(--status-ok);
+  }
+}

@@ -1,0 +1,114 @@
+// v8 design tokens — values come straight from the Figma file's variables
+// (dark = "Home v8 · Dark", light = "Home v8 · Light").
+//
+// Names are deliberately different from app/globals.css's tokens (--bg,
+// --text, --accent…) so the two systems can live side by side until v8
+// replaces the current design.
+
+@mixin theme-dark {
+  --bg-base: #0b0b0c;
+  --bg-raised: #111113;
+  --surface-card: #141416;
+  --surface-card-2: #1b1b1e;
+  --border-subtle: #1f1f22;
+  --border-strong: #2e2e33;
+
+  --text-primary: #f4f2ee;
+  --text-secondary: #a7a5a0;
+  --text-muted: #8a8883;
+
+  --accent-fill: #ff5c39;
+  --accent-text: #ff7a5c;
+  --accent-soft: #2a140e;
+  --action-primary: #d93f17;
+  --action-on-primary: #ffffff;
+  --status-ok: #53e0a1;
+
+  --brand-deep: #2b1209;
+  --brand-on-deep: #f6efea;
+  --brand-on-deep-2: #cdb9ae;
+  --highlight-bg: #ff5c39;
+  // Accent ("Custom apps") card in dark mode: a soft ember tint over the
+  // normal card surface — the original full #ff5c39 fill was too loud at
+  // card size (per Sahab, 2026-11-11).
+  --highlight-fill:
+    linear-gradient(160deg, rgba(255, 92, 57, 0.2) 0%, rgba(255, 92, 57, 0.07) 55%, rgba(255, 92, 57, 0.03) 100%),
+    #141416;
+  --highlight-border: rgba(255, 92, 57, 0.32);
+  --highlight-fg: #f4f2ee; // = --text-primary
+  --highlight-fg-2: #a7a5a0; // = --text-secondary
+  --chip-bg: #ffffff;
+  --chip-text: #16110e;
+
+  --code-keyword: #ff9ec7;
+  --code-function: #ff8a6b;
+  --code-var: #9bd7ff;
+  --code-string: #ffd479;
+
+  --grid-line: rgba(255, 255, 255, 0.045);
+  --glow: rgba(255, 92, 57, 0.28);
+  --shadow-float: 0 2px 6px rgba(0, 0, 0, 0.18), 0 18px 40px -12px rgba(0, 0, 0, 0.35);
+  --shadow-card: 0 18px 40px -14px rgba(0, 0, 0, 0.25);
+  --shadow-editor: 0 24px 56px -16px rgba(0, 0, 0, 0.4);
+  --overlay: rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
+}
+
+@mixin theme-light {
+  --bg-base: #fafafa;
+  --bg-raised: #f4f4f5;
+  --surface-card: #ffffff;
+  --surface-card-2: #f4f4f5;
+  --border-subtle: #e4e4e7;
+  --border-strong: #d4d4d8;
+
+  --text-primary: #111113;
+  --text-secondary: #52525b;
+  --text-muted: #71717a;
+
+  --accent-fill: #ff5c39;
+  --accent-text: #c2410c;
+  --accent-soft: #ffede7;
+  --action-primary: #d93f17;
+  --action-on-primary: #ffffff;
+  --status-ok: #14935a;
+
+  --brand-deep: #18181b;
+  --brand-on-deep: #fafafa;
+  --brand-on-deep-2: #a1a1aa;
+  --highlight-bg: #fff3ee;
+  --highlight-fill: #fff3ee;
+  --highlight-border: #ffd9cc;
+  --highlight-fg: #111113;
+  --highlight-fg-2: #52525b;
+  --chip-bg: #ffffff;
+  --chip-text: #111113;
+
+  --code-keyword: #b4236b;
+  --code-function: #c2361a;
+  --code-var: #1f5f99;
+  --code-string: #8a5a00;
+
+  --grid-line: rgba(17, 17, 19, 0.06);
+  --glow: rgba(255, 92, 57, 0.2);
+  --shadow-float: 0 2px 6px rgba(17, 17, 19, 0.05), 0 18px 40px -12px rgba(17, 17, 19, 0.14);
+  --shadow-card: 0 18px 40px -14px rgba(17, 17, 19, 0.12);
+  --shadow-editor: 0 24px 56px -16px rgba(17, 17, 19, 0.14);
+  --overlay: rgba(17, 17, 19, 0.35);
+  color-scheme: light;
+}
+
+// Layout / motion constants that don't change per theme.
+$container: 1120px;
+$nav-height: 68px;
+$ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+$bp-lg: 1240px; // floating hero cards need the full desktop width
+$bp-md: 960px;
+$bp-sm: 640px;
+
+@mixin below($bp) {
+  @media (max-width: ($bp - 0.02px)) {
+    @content;
+  }
+}

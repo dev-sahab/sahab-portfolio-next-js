@@ -1,0 +1,167 @@
+@use 'v8/tokens' as *;
+
+.v8-reviews {
+  .v8-section-header {
+    margin-bottom: 56px;
+  }
+}
+
+.v8-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0 0 20px;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-card);
+
+  @include below($bp-md) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  // Phones keep the 2 × 2 grid, with tighter padding so the numbers fit.
+  @include below($bp-sm) {
+    .v8-stats__item {
+      padding: 22px 20px;
+    }
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 28px;
+    box-shadow:
+      1px 0 0 var(--border-subtle),
+      0 1px 0 var(--border-subtle);
+  }
+
+  dd {
+    margin: 0;
+  }
+
+  &__value {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    font: 700 44px/1 var(--ff-mono);
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+
+    @include below($bp-sm) {
+      font-size: 34px;
+    }
+
+    // Tabular digits so the count-up doesn't jitter.
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__suffix {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--accent-text);
+  }
+
+  &__label {
+    font: 400 14px/1.55 var(--ff-sans);
+    color: var(--text-secondary);
+  }
+}
+
+.v8-quote {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  margin: 0 0 20px;
+  padding: 40px;
+  border-radius: 18px;
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-card);
+
+  @include below($bp-md) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 28px;
+  }
+
+  blockquote {
+    flex: 1;
+    margin: 0;
+  }
+
+  p {
+    margin: 0;
+    font-family: var(--ff-serif);
+    font-style: italic;
+    font-size: clamp(28px, 2.8vw, 40px);
+    line-height: 1.18;
+    letter-spacing: -0.015em;
+    color: var(--text-primary);
+
+    span {
+      color: var(--accent-text);
+    }
+  }
+
+  figcaption {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: none;
+    font: 400 14px/1.55 var(--ff-sans);
+    color: var(--text-muted);
+
+    strong {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+  }
+}
+
+.v8-testimonials {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+
+  @include below($bp-md) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.v8-testimonial {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 0;
+  padding: 24px;
+  border-radius: 18px;
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-card);
+
+  blockquote {
+    margin: 0;
+  }
+
+  p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text-primary);
+  }
+
+  figcaption {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font: 400 14px/1.55 var(--ff-sans);
+    color: var(--text-muted);
+
+    strong {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+  }
+}

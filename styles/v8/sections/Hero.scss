@@ -1,0 +1,499 @@
+@use 'v8/tokens' as *;
+
+.v8-hero {
+  position: relative;
+  overflow: hidden;
+  // Pulled up under the (transparent) sticky header so the hero's grid and
+  // glow reach the very top of the page; the padding gives it back.
+  margin-top: calc(var(--nav-h) * -1);
+  padding: calc(var(--nav-h) + 80px) 0 48px;
+
+  @include below($bp-md) {
+    padding: calc(var(--nav-h) + 64px) 0 56px;
+  }
+
+  // ── Background: grid that fades out from the centre + ember glow on top ──
+  &__bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  &__grid {
+    position: absolute;
+    inset: 0 0 -40%;
+    background-image:
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    background-size: 96px 96px;
+    background-position: center top;
+    mask-image: radial-gradient(ellipse 55% 60% at 50% 30%, #000 30%, transparent 75%);
+  }
+
+  &__glow {
+    position: absolute;
+    left: 50%;
+    top: -150px;
+    width: 620px;
+    max-width: 90vw;
+    height: 300px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: radial-gradient(closest-side, var(--glow), transparent);
+    filter: blur(30px);
+  }
+
+  // ── Content column ──
+  &__content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    text-align: center;
+  }
+
+  // Keep the long eyebrow on one line on phones.
+  @include below($bp-sm) {
+    .v8-eyebrow {
+      font-size: 10.5px;
+      letter-spacing: 0.02em;
+    }
+  }
+
+  &__title {
+    margin: 12px 0 0;
+    font-family: var(--ff-display);
+    font-weight: 700;
+    font-size: clamp(54px, 7.25vw, 104px);
+    line-height: 0.94;
+    letter-spacing: -0.045em;
+    color: var(--text-primary);
+
+    .v8-em {
+      font-size: 1.077em;
+      letter-spacing: -0.02em;
+    }
+  }
+
+  &__lede {
+    max-width: 640px;
+    margin: 0;
+    font-size: clamp(17px, 1.4vw, 19px);
+    line-height: 1.55;
+    letter-spacing: -0.005em;
+    color: var(--text-secondary);
+
+    strong {
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+  }
+
+  &__pills {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  &__trust {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 6px 14px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font: 400 13px/1.55 var(--ff-sans);
+    color: var(--text-secondary);
+
+    li {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    li + li::before {
+      content: '';
+      width: 3px;
+      height: 3px;
+      margin-right: 9px;
+      border-radius: 50%;
+      background: var(--text-muted);
+    }
+
+    .v8-stars {
+      margin-right: 1px;
+    }
+
+    strong {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+  }
+}
+
+// Capability pill ("UI/UX design", "SEO"…)
+.v8-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-card);
+  font: 500 13px/1.55 var(--ff-sans);
+  color: var(--text-primary);
+
+  &__icon {
+    width: 14px;
+    height: 14px;
+    color: var(--accent-fill);
+  }
+}
+
+// "Press ⌘ K to search…" button
+.v8-key-hint {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  font: 400 14px/1.55 var(--ff-sans);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--text-secondary);
+  }
+}
+
+.v8-keycap {
+  box-shadow: 0 2px 0 var(--border-strong);
+  transition:
+    transform 0.12s ease-out,
+    box-shadow 0.12s ease-out;
+
+  &.is-pressed {
+    transform: translateY(2px);
+    box-shadow: 0 0 0 var(--border-strong);
+    color: var(--accent-text);
+    border-color: var(--accent-fill);
+  }
+}
+
+// ── Entry animation (HTML template's `.rise`) ──
+.v8-rise {
+  animation: v8-rise 0.9s $ease-out both;
+
+  &--1 {
+    animation-delay: 0.08s;
+  }
+  &--2 {
+    animation-delay: 0.16s;
+  }
+  &--3 {
+    animation-delay: 0.24s;
+  }
+  &--4 {
+    animation-delay: 0.4s;
+  }
+}
+
+@keyframes v8-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+// ── Floating cards (positions taken from the 1440 frame, relative to centre) ──
+.v8-hero__floats {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  @include below($bp-lg) {
+    display: none;
+  }
+}
+
+.v8-float {
+  position: absolute;
+  border-radius: 16px;
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-float);
+  // Scroll parallax (ParallaxFloats sets --drift, 0 → -12px); `translate` is
+  // separate from `transform` so it composes with the tilt + entry animation.
+  transform: rotate(var(--tilt));
+  // --mx/--my = eased mouse follow, --drift = scroll parallax; each card
+  // scales them by --depth so the layers move at slightly different rates.
+  translate: calc(var(--mx, 0px) * var(--depth, 1)) calc((var(--my, 0px) + var(--drift, 0px)) * var(--depth, 1));
+  animation: v8-float-in 1s $ease-out 0.5s both;
+
+  &--review {
+    left: calc(50% - 614px);
+    top: 146px;
+    width: 236px;
+    padding: 16px 18px;
+    --tilt: -2deg;
+    --depth: 1;
+  }
+
+  &--snippet {
+    left: calc(50% + 376px);
+    top: 154px;
+    overflow: hidden;
+    --tilt: 2deg;
+    --depth: 0.7;
+    animation-delay: 0.6s;
+  }
+
+  &--pipeline {
+    left: calc(50% - 608px);
+    top: 474px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 14px;
+    --tilt: 2deg;
+    --depth: 0.55;
+    animation-delay: 0.7s;
+  }
+
+  &--perf {
+    left: calc(50% + 378px);
+    top: 448px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px 14px 14px;
+    --tilt: -2deg;
+    --depth: 0.85;
+    animation-delay: 0.8s;
+  }
+
+  // Review card
+  &__rating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font: 500 12px/1.4 var(--ff-mono);
+  }
+
+  &__quote {
+    margin: 12px 0 6px;
+    font: 400 13px/1.55 var(--ff-sans);
+    text-align: left;
+  }
+
+  &__meta {
+    margin: 0;
+    font: 400 12px/1.4 var(--ff-mono);
+    color: var(--text-muted);
+    text-align: left;
+  }
+
+  // Snippet card
+  &__bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border-subtle);
+    font: 400 11px/1.4 var(--ff-mono);
+    color: var(--text-secondary);
+  }
+
+  &__bar-icon {
+    width: 12px;
+    height: 12px;
+    color: var(--accent-fill);
+  }
+
+  &__code {
+    padding: 12px 18px 14px 16px;
+    text-align: left;
+
+    .v8-code {
+      font-size: 12px;
+    }
+  }
+
+  // Pipeline card
+  &__stage-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__stage {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: var(--surface-card-2);
+    font: 400 11px/1.4 var(--ff-mono);
+    color: var(--text-secondary);
+
+    // Figma: the Live pill pulses once on load.
+    &.is-live {
+      background: var(--action-primary);
+      color: var(--action-on-primary);
+      animation: v8-live-pulse 1.2s ease-out 1.4s 1 both;
+    }
+  }
+
+  &__arrow {
+    width: 12px;
+    height: 12px;
+    color: var(--text-muted);
+  }
+
+  // Performance card
+  &__ring {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+
+    svg {
+      position: absolute;
+      inset: 0;
+      transform: rotate(-90deg);
+    }
+  }
+
+  &__ring-track,
+  &__ring-value {
+    fill: none;
+    stroke-width: 4;
+  }
+
+  &__ring-track {
+    stroke: var(--border-strong);
+  }
+
+  &__ring-value {
+    stroke: var(--status-ok);
+    stroke-linecap: round;
+  }
+
+  &__ring-label {
+    position: relative;
+    font: 600 14px/1 var(--ff-mono);
+  }
+
+  &__perf-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    text-align: left;
+    white-space: nowrap;
+
+    strong {
+      font: 600 14px/1.55 var(--ff-sans);
+    }
+
+    span {
+      font: 400 12px/1.4 var(--ff-mono);
+      color: var(--text-muted);
+    }
+  }
+}
+
+// Mac-style window dots, shared by the floating snippet and the process editor.
+.v8-dots {
+  display: inline-flex;
+  gap: 5px;
+
+  i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--border-strong);
+  }
+}
+
+@keyframes v8-float-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) rotate(var(--tilt));
+  }
+}
+
+@keyframes v8-live-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 92, 57, 0.55);
+  }
+  100% {
+    box-shadow: 0 0 0 10px rgba(255, 92, 57, 0);
+  }
+}
+
+// ── Inline review card (shown when the floating cards are hidden) ──
+.v8-hero__inline-review {
+  display: none;
+  position: relative;
+  left: auto;
+  top: auto;
+  width: 100%;
+  max-width: 420px;
+  margin-top: 8px;
+  transform: none;
+  translate: none;
+  text-align: left;
+
+  @include below($bp-lg) {
+    display: block;
+  }
+}
+
+// ── Figma mobile hero ──
+@include below($bp-sm) {
+  .v8-hero {
+    &__ctas {
+      flex-direction: column;
+      width: 100%;
+
+      .v8-btn {
+        width: 100%;
+      }
+    }
+
+    // Rating on its own row, the two facts on the next (Figma mobile).
+    &__trust li:first-child {
+      flex-basis: 100%;
+      justify-content: center;
+    }
+    &__trust li:nth-child(2)::before {
+      display: none;
+    }
+  }
+
+  // Keyboard shortcuts don't apply on phones.
+  .v8-key-hint {
+    display: none;
+  }
+}

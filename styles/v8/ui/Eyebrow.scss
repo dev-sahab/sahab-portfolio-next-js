@@ -1,0 +1,25 @@
+.v8-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font: 500 12px/1 var(--ff-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+
+  &--accent {
+    color: var(--accent-text);
+  }
+
+  &--muted {
+    color: var(--text-muted);
+  }
+
+  &__marker {
+    width: 6px;
+    height: 6px;
+    border-radius: 1px;
+    background: var(--accent-fill);
+    flex: none;
+  }
+}

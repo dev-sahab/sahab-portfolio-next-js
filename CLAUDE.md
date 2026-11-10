@@ -56,6 +56,8 @@ This is a single Next.js App Router project serving three things under one deplo
 - **`app/(dashboard)/dashboard/`** — an admin CMS for managing all site content, gated by `proxy.ts` + `lib/auth.ts`.
 - **`app/api/`** — REST-style route handlers backing the dashboard's CRUD calls (each resource has a `route.ts` list/create handler and a `[id]/route.ts` get/update/delete handler).
 
+**`app/v8/`** is the next homepage design (Figma "Home v8"), built as a standalone, `noindex` route that doesn't share anything with `(site)`: its own layout, `components/v8/` (layout/sections/ui/command/providers), static content in `content/v8/`, helpers in `lib/v8/`, and `v8-`-prefixed styles under `styles/v8/` with their own tokens scoped to `.v8`. Keep it isolated until it replaces `/` — see the 2026-11-10 entry in `MEMORY.md`.
+
 `sahab-site/` at the repo root is the **original static HTML/CSS/JS template** this app was rebuilt from — not part of the running app, but the authoritative design/animation/markup reference when a page needs to match the original template exactly (check there before guessing at intended styling/behavior). Its `scss/` folder is also the origin of most class names now used in `app/globals.css` and the component-level `.scss` files (see Styling below).
 
 `@/*` (in `tsconfig.json`) resolves to the repo root, so every import — `.tsx`, `.ts`, and `.scss` alike — uses `@/lib/...`, `@/models/...`, `@/components/...`, `@/styles/...`, never a relative path across a directory boundary. Shared TS types for Mongoose-backed data (`Project`, `BlogPost`, `SiteSettings`, `User`, etc.) all live in one place, `types/index.ts`, rather than being colocated with their model.

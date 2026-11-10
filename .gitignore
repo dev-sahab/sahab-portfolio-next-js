@@ -6,6 +6,8 @@ node_modules/
 out/
 
 # Environment
+.env
+.env.local
 .env.*.local
 
 # Logs
@@ -16,9 +18,9 @@ npm-debug.log*
 Thumbs.db
 
 # IDE
+.vscode/
 .idea/
 
 # Ignore the following directories
 /sahab-site
 /html-template
-config.bat

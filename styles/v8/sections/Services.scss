@@ -1,0 +1,576 @@
+@use 'v8/tokens' as *;
+
+.v8-services {
+  .v8-section-header {
+    margin-bottom: 56px;
+  }
+
+  &__cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+
+    @include below(1100px) {
+      grid-template-columns: 1fr 1fr;
+    }
+    @include below($bp-sm + 140px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__process {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin-top: 56px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border-subtle);
+  }
+}
+
+// ── Service card ──
+.v8-service {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 554px;
+  padding: 36px 32px 32px;
+  border-radius: 24px;
+  border: 1px solid transparent;
+  color: var(--svc-fg);
+
+  @include below($bp-md) {
+    min-height: 0;
+  }
+
+  // Figma Interaction 05: lift 4px with a brighter border. `translate` is
+  // independent of `transform`, which the scroll-reveal animates.
+  .v8-js &.v8-reveal {
+    transition:
+      opacity 0.8s ease-out,
+      transform 1s $ease-out,
+      translate 0.35s $ease-out,
+      border-color 0.3s ease,
+      box-shadow 0.35s ease;
+  }
+
+  &:hover,
+  &:focus-within {
+    translate: 0 -4px;
+    box-shadow: var(--shadow-card);
+  }
+
+  // Hover border = accent colour on every variant.
+  &:hover,
+  &:focus-within {
+    border-color: var(--accent-fill);
+  }
+
+  // Whole card is clickable: the title link stretches over the card.
+  &__link {
+    color: inherit;
+    text-decoration: none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      border-radius: inherit;
+    }
+
+    &:focus-visible {
+      outline: none;
+
+      &::after {
+        outline: 2px solid var(--accent-fill);
+        outline-offset: 3px;
+      }
+    }
+  }
+
+  &--deep {
+    background: var(--brand-deep);
+    --svc-fg: var(--brand-on-deep);
+    --svc-fg-2: var(--brand-on-deep-2);
+    --svc-check: var(--accent-fill);
+    --svc-divider: color-mix(in srgb, var(--brand-on-deep) 18%, transparent);
+  }
+
+  &--plain {
+    background: var(--surface-card);
+    border-color: var(--border-strong);
+    --svc-fg: var(--text-primary);
+    --svc-fg-2: var(--text-secondary);
+    --svc-check: var(--accent-fill);
+    --svc-divider: color-mix(in srgb, var(--text-primary) 18%, transparent);
+
+    .v8-service__chip {
+      box-shadow: inset 0 0 0 1px var(--border-subtle);
+    }
+  }
+
+  &--accent {
+    background: var(--highlight-fill);
+    border-color: var(--highlight-border);
+    --svc-fg: var(--highlight-fg);
+    --svc-fg-2: var(--highlight-fg-2);
+    --svc-check: var(--accent-fill);
+    --svc-divider: color-mix(in srgb, var(--highlight-fg) 18%, transparent);
+
+    .v8-service__chip {
+      box-shadow: inset 0 0 0 1px var(--border-subtle);
+    }
+  }
+
+  &__badge {
+    position: absolute;
+    top: -14px;
+    right: 24px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--action-primary);
+    color: #fff;
+    font: 400 11px/1.4 var(--ff-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  &__stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  // Sits above the stretched card link so its tooltip still gets hover.
+  &__chip {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--chip-bg);
+    color: var(--chip-text);
+
+    // Figma: logo chips show the tool name on hover.
+    &::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      left: 50%;
+      bottom: calc(100% + 8px);
+      padding: 5px 9px;
+      border-radius: 7px;
+      background: var(--text-primary);
+      color: var(--bg-base);
+      font: 500 12px/1.2 var(--ff-sans);
+      white-space: nowrap;
+      opacity: 0;
+      translate: -50% 4px;
+      pointer-events: none;
+      transition:
+        opacity 0.18s ease,
+        translate 0.18s ease;
+    }
+
+    &:hover::after {
+      opacity: 1;
+      translate: -50% 0;
+    }
+  }
+
+  &__title {
+    margin: 0;
+    font-family: var(--ff-display);
+    font-weight: 700;
+    font-size: 34px;
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+  }
+
+  &__desc {
+    margin: 0;
+    color: var(--svc-fg-2);
+  }
+
+  &__divider {
+    width: 100%;
+    height: 1px;
+    margin: 0;
+    border: 0;
+    background: var(--svc-divider);
+  }
+
+  &__features {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    padding: 4px 0 0;
+    list-style: none;
+    font: 400 14px/1.55 var(--ff-sans);
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+  }
+
+  &__check {
+    width: 16px;
+    height: 16px;
+    flex: none;
+    color: var(--svc-check);
+  }
+
+  &__best {
+    margin: auto 0 0;
+    padding-top: 8px;
+    font: 500 14px/1.55 var(--ff-sans);
+    color: var(--svc-fg-2);
+  }
+
+  &--plain &__best,
+  &--accent &__best {
+    color: var(--svc-fg);
+  }
+}
+
+// ── Process ──
+.v8-process {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+  &__title {
+    margin: 0;
+    font-family: var(--ff-display);
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: minmax(0, 448px) minmax(0, 616px);
+    justify-content: space-between;
+    gap: 56px;
+    align-items: start;
+
+    @include below(1100px) {
+      // minmax(0…) so the editor's long code lines scroll instead of
+      // widening the page.
+      grid-template-columns: minmax(0, 1fr);
+      gap: 32px;
+    }
+  }
+
+  &__steps [role='tablist'] {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  &__cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 16px;
+    padding: 20px 0 0 16px;
+
+    > span {
+      font: 400 12px/1.4 var(--ff-mono);
+      color: var(--text-muted);
+    }
+
+    // Figma mobile: full-width button, note centred underneath.
+    @include below($bp-sm) {
+      flex-direction: column;
+      padding-left: 0;
+
+      .v8-btn {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.v8-step {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
+  padding: 16px;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: none;
+  color: inherit;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease;
+
+  &:hover:not(.is-active) {
+    background: color-mix(in srgb, var(--surface-card) 50%, transparent);
+  }
+
+  &.is-active {
+    background: var(--surface-card);
+    border-color: var(--border-subtle);
+  }
+
+  &__num {
+    font: 400 13px/1.4 var(--ff-mono);
+    color: var(--text-muted);
+  }
+
+  &.is-active &__num {
+    color: var(--accent-text);
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__title {
+    font-family: var(--ff-display);
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+  }
+
+  &__desc {
+    max-width: 360px;
+    font: 400 14px/1.55 var(--ff-sans);
+    color: var(--text-muted);
+  }
+
+  &.is-active &__desc {
+    color: var(--text-secondary);
+  }
+
+  // Thin timer bar while auto-cycling.
+  &__progress {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--accent-fill);
+    transform-origin: left;
+    animation: v8-step-progress linear forwards;
+    opacity: 0.7;
+  }
+}
+
+@keyframes v8-step-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+// ── Editor window ──
+.v8-editor {
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-editor);
+
+  &__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border-subtle);
+
+    .v8-dots i {
+      width: 10px;
+      height: 10px;
+      background: var(--border-strong);
+    }
+  }
+
+  &__views {
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    border-radius: 999px;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-base);
+  }
+
+  &__view {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border: 0;
+    border-radius: 999px;
+    background: none;
+    font: 400 13px/1.55 var(--ff-sans);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition:
+      background-color 0.25s ease,
+      color 0.25s ease;
+
+    svg {
+      width: 13px;
+      height: 13px;
+      color: var(--accent-fill);
+    }
+
+    &:hover:not(.is-active) {
+      color: var(--text-primary);
+    }
+
+    &.is-active {
+      background: var(--action-primary);
+      color: var(--action-on-primary);
+
+      svg {
+        color: currentColor;
+      }
+    }
+  }
+
+  &__tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  &__tab {
+    padding: 9px 16px;
+    border-top: 1px solid transparent;
+    font: 400 12px/1.4 var(--ff-mono);
+    color: var(--text-muted);
+    white-space: nowrap;
+
+    &.is-active {
+      background: var(--bg-base);
+      border-top-color: var(--accent-fill);
+      color: var(--text-primary);
+    }
+  }
+
+  &__body {
+    display: flex;
+    gap: 20px;
+    padding: 18px 0 24px;
+    overflow-x: auto;
+    background: var(--bg-base);
+    animation: v8-editor-swap 0.35s ease-out;
+  }
+
+  &__gutter {
+    width: 36px;
+    flex: none;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font: 400 13px/1.7 var(--ff-mono);
+    text-align: right;
+    color: var(--text-muted);
+    opacity: 0.6;
+    user-select: none;
+  }
+
+  &__code {
+    margin: 0;
+    padding-right: 20px;
+    font: inherit;
+  }
+
+  &__status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 16px;
+    border-top: 1px solid var(--border-subtle);
+    font: 400 12px/1.4 var(--ff-mono);
+    color: var(--text-muted);
+  }
+
+  &__ok {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--status-ok);
+
+    i {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+  }
+}
+
+@keyframes v8-editor-swap {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+// ── "Every project includes" strip ──
+.v8-includes {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid var(--border-subtle);
+
+  // Figma mobile keeps a 2 × 2 grid.
+  @include below($bp-md) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 20px;
+    font: 400 14px/1.55 var(--ff-sans);
+
+    @include below($bp-sm) {
+      padding: 16px 14px;
+      font-size: 13px;
+    }
+    box-shadow:
+      1px 0 0 var(--border-subtle),
+      0 1px 0 var(--border-subtle);
+  }
+
+  &__icon {
+    width: 20px;
+    height: 20px;
+    flex: none;
+    color: var(--accent-fill);
+  }
+}

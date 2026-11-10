@@ -1,0 +1,206 @@
+@use 'v8/tokens' as *;
+
+.v8-about {
+  .v8-section-header {
+    margin-bottom: 56px;
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: 320px minmax(0, 1fr);
+    gap: 80px;
+    align-items: start;
+
+    @include below($bp-md) {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+  }
+
+  &__me {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__portrait {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+    aspect-ratio: 320 / 400;
+
+    // Figma mobile: full-width portrait.
+    @include below($bp-md) {
+      max-width: none;
+      aspect-ratio: 1 / 1;
+    }
+    overflow: hidden;
+    border-radius: 18px;
+    border: 1px solid var(--border-subtle);
+    background: var(--surface-card);
+
+    img {
+      object-fit: cover;
+    }
+  }
+
+  &__bio {
+    margin: 0;
+    max-width: 320px;
+
+    @include below($bp-md) {
+      max-width: none;
+    }
+    color: var(--text-secondary);
+  }
+
+  &__story {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font: 500 15px/1 var(--ff-sans);
+    color: var(--text-primary);
+    text-decoration: none;
+
+    svg {
+      width: 15px;
+      height: 15px;
+      color: var(--accent-fill);
+      transition: transform 0.25s $ease-out;
+    }
+
+    &:hover svg {
+      transform: translateX(2px);
+    }
+  }
+}
+
+// ── Timeline ──
+.v8-timeline {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.v8-release {
+  display: grid;
+  grid-template-columns: 96px 14px minmax(0, 1fr);
+  gap: 24px;
+
+  @include below($bp-sm) {
+    grid-template-columns: 14px minmax(0, 1fr);
+    gap: 4px 16px;
+  }
+
+  &__period {
+    font: 400 12px/1.4 var(--ff-mono);
+    color: var(--text-muted);
+    text-align: right;
+    padding-top: 5px;
+
+    @include below($bp-sm) {
+      grid-column: 2;
+      text-align: left;
+      padding-top: 0;
+    }
+  }
+
+  &__rail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 8px;
+
+    @include below($bp-sm) {
+      grid-row: 1 / span 2;
+      grid-column: 1;
+    }
+
+    i {
+      width: 11px;
+      height: 11px;
+      flex: none;
+      border-radius: 50%;
+      border: 2px solid var(--text-muted);
+      background: var(--bg-raised);
+    }
+
+    &::after {
+      content: '';
+      flex: 1;
+      width: 1px;
+      background: var(--border-strong);
+    }
+  }
+
+  &:last-child &__rail::after {
+    display: none;
+  }
+
+  // Figma Interaction 06: the line draws top-to-bottom as each row enters.
+  .v8-js &__rail::after {
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.7s $ease-out calc(var(--reveal-delay, 0s) + 0.15s);
+  }
+  .v8-js &.is-visible &__rail::after {
+    transform: scaleY(1);
+  }
+
+  &.is-current &__rail i {
+    border-color: var(--accent-fill);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-fill) 15%, transparent);
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-bottom: 40px;
+  }
+
+  &:last-child &__body {
+    padding-bottom: 0;
+  }
+
+  &__role {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 10px;
+    margin: 0;
+    font-family: var(--ff-display);
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  &__version {
+    padding: 2px 7px;
+    border-radius: 5px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface-card-2);
+    font: 400 11px/1.4 var(--ff-mono);
+    letter-spacing: 0;
+    color: var(--text-secondary);
+  }
+
+  &.is-current &__version {
+    border-color: var(--accent-fill);
+    background: var(--accent-soft);
+    color: var(--accent-text);
+  }
+
+  &__org {
+    margin: 0;
+    font: 400 14px/1.55 var(--ff-sans);
+    color: var(--text-secondary);
+  }
+
+  &__desc {
+    margin: 0;
+    font: 400 14px/1.55 var(--ff-sans);
+    color: var(--text-muted);
+  }
+}

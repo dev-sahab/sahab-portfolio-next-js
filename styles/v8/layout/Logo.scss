@@ -1,0 +1,34 @@
+// The logo is an image (see Logo.tsx). Its height is set in `em` from the
+// root font-size, so it scales fluidly: exactly the Figma size (46px tall) at
+// 390px and wider, and smoothly smaller on narrower screens (about 9% per
+// 100px of width) down to a floor, so it never collides with the buttons
+// next to it.
+.v8-logo {
+  --logo-size: 26px;
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  font-size: clamp(15px, calc(var(--logo-size) - (390px - 100vw) * 0.09), var(--logo-size));
+  color: var(--text-primary);
+  text-decoration: none;
+
+  &__img {
+    display: block;
+    width: auto;
+    height: 1.78em;
+    max-width: none;
+  }
+
+  // One file per theme (the text colour is part of the image).
+  &__img--light {
+    display: none;
+  }
+}
+
+[data-theme='light'] .v8-logo__img--dark {
+  display: none;
+}
+
+[data-theme='light'] .v8-logo__img--light {
+  display: block;
+}

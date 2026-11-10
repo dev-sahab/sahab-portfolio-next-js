@@ -1,0 +1,79 @@
+@use 'v8/tokens' as *;
+
+// Display heading shared by every section (Figma: Bricolage Bold 64 / -2.24,
+// italic accent in Instrument Serif 68 / -1.02).
+.v8-h2 {
+  margin: 0;
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: clamp(40px, 4.6vw, 64px);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: var(--text-primary);
+  text-wrap: balance;
+}
+
+// Italic serif accent used inside every display heading.
+.v8-em {
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.0625em;
+  letter-spacing: -0.015em;
+  color: var(--accent-text);
+}
+
+.v8-section-header {
+  display: flex;
+  gap: 32px;
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
+
+  &__intro {
+    margin: 0;
+    max-width: 340px;
+    color: var(--text-secondary);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  &--split {
+    align-items: flex-end;
+    justify-content: space-between;
+
+    @include below($bp-md) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+    }
+  }
+
+  &--stacked {
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  &--center {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 28px;
+
+    .v8-section-header__main {
+      align-items: center;
+      gap: 28px;
+    }
+
+    .v8-section-header__intro {
+      max-width: 520px;
+      font-size: 19px;
+      line-height: 1.55;
+      letter-spacing: -0.005em;
+    }
+  }
+}

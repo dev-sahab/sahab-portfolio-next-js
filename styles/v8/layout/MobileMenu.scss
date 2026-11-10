@@ -1,0 +1,228 @@
+@use 'v8/tokens' as *;
+
+// Full-screen mobile menu sheet (Figma "Home v8 — Mobile menu (open)").
+// A fixed layer above the page and header; it has its own top bar (logo,
+// theme toggle, close) so the page header never shows through.
+.v8-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--bg-base);
+  color: var(--text-primary);
+
+  // Closed: faded out and nudged up. `translate` = the open/close slide,
+  // `transform` = the swipe-to-close drag (set from JS via --drag).
+  opacity: 0;
+  visibility: hidden;
+  translate: 0 -16px;
+  transform: translateY(var(--drag, 0px));
+  transition:
+    opacity 0.25s ease,
+    translate 0.25s $ease-out,
+    transform 0.25s $ease-out,
+    visibility 0s linear 0.25s;
+
+  // Opens / closes in 250ms (per the Figma note).
+  &.is-open {
+    opacity: 1;
+    visibility: visible;
+    translate: 0 0;
+    transition:
+      opacity 0.25s ease,
+      translate 0.25s $ease-out,
+      transform 0.25s $ease-out,
+      visibility 0s;
+  }
+
+  // Follows the finger while swiping up — no easing lag.
+  &.is-dragging {
+    transition: none;
+  }
+
+  @media (min-width: $bp-md) {
+    display: none;
+  }
+
+  // ── Top bar ──
+  &__bar {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    height: 64px;
+    padding: 0 var(--gutter);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  // Close button: accent-tinted so it reads as the "active" control.
+  &__close {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    border: 1px solid var(--accent-text);
+    background: var(--accent-soft);
+    color: var(--accent-text);
+    cursor: pointer;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  // ── Body ──
+  &__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 24px;
+    padding: 28px var(--gutter) calc(24px + env(safe-area-inset-bottom, 0px));
+  }
+
+  &__label {
+    margin: 0;
+    font: 500 12px/1 var(--ff-mono);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  &__links {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    a {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 0;
+      color: inherit;
+      text-decoration: none;
+
+      svg {
+        flex: none;
+        width: 20px;
+        height: 20px;
+        color: var(--text-secondary);
+        transition:
+          color 0.2s ease,
+          transform 0.25s $ease-out;
+      }
+
+      &:hover svg,
+      &:active svg,
+      &.is-active svg {
+        color: var(--accent-text);
+      }
+
+      &:hover svg,
+      &:active svg {
+        transform: translate(2px, -2px);
+      }
+    }
+  }
+
+  &__num {
+    font: 500 12px/1 var(--ff-mono);
+    letter-spacing: 0.04em;
+    color: var(--accent-text);
+  }
+
+  &__name {
+    flex: 1;
+    min-width: 0;
+    font-family: var(--ff-display);
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  // Search row — opens the full-screen search.
+  &__search {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border-subtle);
+    background: var(--surface-card);
+    color: var(--text-secondary);
+    font: 400 14px/1.55 var(--ff-sans);
+    text-align: left;
+    cursor: pointer;
+
+    svg {
+      flex: none;
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  &__cta {
+    width: 100%;
+  }
+
+  // Pushed to the bottom of the sheet.
+  &__email {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-top: auto;
+    padding-top: 24px;
+
+    span {
+      font: 400 14px/1.55 var(--ff-sans);
+      color: var(--text-muted);
+    }
+
+    a {
+      font: 400 13px/1.7 var(--ff-mono);
+      color: var(--accent-text);
+      text-decoration: none;
+    }
+  }
+
+  // ── Staggered entrance: rows rise in one after another when it opens ──
+  &__links li,
+  &__search,
+  &__cta,
+  &__email {
+    opacity: 0;
+    translate: 0 10px;
+    transition:
+      opacity 0.25s ease,
+      translate 0.25s ease;
+  }
+
+  &.is-open &__links li,
+  &.is-open &__search,
+  &.is-open &__cta,
+  &.is-open &__email {
+    opacity: 1;
+    translate: 0 0;
+    transition:
+      opacity 0.3s ease calc(0.04s + var(--i, 0) * 0.04s),
+      translate 0.4s $ease-out calc(0.04s + var(--i, 0) * 0.04s);
+  }
+}

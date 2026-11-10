@@ -1,0 +1,21 @@
+// Round logo badge (see TechIcon `variant="badge"`). Always a circle.
+.v8-tech-badge {
+  flex: none;
+  border-radius: 50%;
+
+  // White backing only for visibility: no padding, no border — the logo
+  // fills the disc edge to edge.
+  &--disc {
+    display: inline-grid;
+    place-items: center;
+    overflow: hidden;
+    background: #fff;
+    // Monochrome brands (Next.js…) inherit this so they stay dark on the white disc.
+    color: #16110e;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
