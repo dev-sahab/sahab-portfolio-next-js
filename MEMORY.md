@@ -6,6 +6,14 @@
 
 ---
 
+### 2026-11-11 — `main` was tampered with by two force-pushes; sanitized with a `-s ours` merge
+
+On 2026-11-10 (09:00 and 09:04 UTC) two force-pushes under the `dev-sahab` account replaced the real `main` tip `548698f` (the 404-page redesign) with `aa14129`. That commit has the identical 404 files **plus** hostile changes: a new `init` file (a harmless-looking module with a ~31 KB obfuscated blob on its last line), a second obfuscated blob appended after the real config in `postcss.config.mjs` (PostCSS runs on every build, so Vercel's production build executed it), `node init &&` prefixed onto the `dev`/`build`/`start` scripts, and `.gitignore` stripped of `.env` / `.env.local` (plus `config.bat` added to the ignore list). Vercel deployed it to production at 09:10 UTC.
+
+Fix: merged `origin/main` into `feat/v8-homepage` with `git merge -s ours`, so the merge keeps this branch's clean tree and none of the injected files, then merged the PR. History keeps the bad commit; the tree is clean. No secrets were ever committed (only `.env.example` is tracked).
+
+**Rules for future work:** never run `node init`; never remove `.env` / `.env.local` from `.gitignore`; if a config file has a line thousands of characters long, a script runs a file you don't recognise, or `init` / `config.bat` appears, stop and tell Sahab. All production secrets (MongoDB, `AUTH_SECRET`, `ADMIN_PASSWORD`, Cloudinary, Resend) and GitHub/Vercel tokens should be treated as exposed and rotated.
+
 ### 2026-11-10 — v8 homepage redesign built as a standalone `/v8` route
 
 Built Figma "Home v8" (file `mMrihrVbG8dz4bheB6Dd2k`, frames `68:1295` dark / `72:1348` light) as a separate route so it can replace the current homepage later without touching any existing page. Interactions were ported from `html-template/new/homepage-preview-v8.html` (⌘K command menu, hover-scroll screenshots, copy-email toast) plus the Figma-annotated ones (scroll-linked tool marquee, auto-cycling process steps, one-open accordion, theme toggle). Figma's placeholder icons were replaced with real logos via `react-icons/si` (registry: `lib/v8/tech.tsx`) and Lucide UI icons.
