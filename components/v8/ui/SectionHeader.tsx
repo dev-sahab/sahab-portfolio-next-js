@@ -11,12 +11,14 @@ interface SectionHeaderProps {
   title: string
   /** Intro copy; rendered beside the heading on desktop (`split`) or below it. */
   intro?: ReactNode
+  /** Optional trailing link/button shown under the intro (e.g. "All services →"). */
+  action?: ReactNode
   layout?: 'split' | 'stacked' | 'center'
   className?: string
 }
 
 /** Eyebrow + display heading (+ optional intro) used at the top of each section. */
-export default function SectionHeader({ id, eyebrow, title, intro, layout = 'split', className }: SectionHeaderProps) {
+export default function SectionHeader({ id, eyebrow, title, intro, action, layout = 'split', className }: SectionHeaderProps) {
   return (
     <Reveal className={cx('v8-section-header', `v8-section-header--${layout}`, className)}>
       <div className="v8-section-header__main">
@@ -25,7 +27,14 @@ export default function SectionHeader({ id, eyebrow, title, intro, layout = 'spl
           {renderRich(title)}
         </h2>
       </div>
-      {intro && <p className="v8-section-header__intro">{intro}</p>}
+      {action ? (
+        <div className="v8-section-header__aside">
+          {intro && <p className="v8-section-header__intro">{intro}</p>}
+          {action}
+        </div>
+      ) : (
+        intro && <p className="v8-section-header__intro">{intro}</p>
+      )}
     </Reveal>
   )
 }

@@ -15,6 +15,15 @@
     width: 100%;
     // Edge fade (Figma: 220px gradient each side).
     mask-image: linear-gradient(to right, transparent, #000 220px, #000 calc(100% - 220px), transparent);
+    // Drag to pan: horizontal drags are ours, vertical swipes still scroll the page.
+    cursor: grab;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+
+    &.is-dragging {
+      cursor: grabbing;
+    }
 
     @media (max-width: 640px) {
       mask-image: linear-gradient(to right, transparent, #000 48px, #000 calc(100% - 48px), transparent);

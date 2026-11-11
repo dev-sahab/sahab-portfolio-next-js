@@ -1,4 +1,5 @@
-import { Link2, Pencil, ShieldCheck, Tag } from 'lucide-react'
+import Link from 'next/link'
+import { ArrowRight, Link2, Pencil, ShieldCheck, Tag } from 'lucide-react'
 import { projectIncludes, services, servicesSection } from '@/content/v8/services'
 import { sectionIds } from '@/content/v8/site'
 import SectionHeader from '../../ui/SectionHeader'
@@ -18,6 +19,11 @@ export default function Services() {
           eyebrow={servicesSection.eyebrow}
           title={servicesSection.title}
           intro={servicesSection.intro}
+          action={
+            <Link href={servicesSection.cta.href} className="v8-link">
+              {servicesSection.cta.label} <ArrowRight className="v8-link__icon" aria-hidden="true" />
+            </Link>
+          }
         />
 
         <div className="v8-services__cards">

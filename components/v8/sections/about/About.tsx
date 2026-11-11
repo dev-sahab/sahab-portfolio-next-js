@@ -30,7 +30,12 @@ export default function About() {
           <ol className="v8-timeline">
             {timeline.map((entry, i) => (
               // Figma Interaction 06: each row fades in 80ms after the previous one.
-              <Reveal as="li" key={entry.role} delay={i * 0.08} className={cx('v8-release', entry.current && 'is-current')}>
+              <Reveal
+                as="li"
+                key={entry.role}
+                delay={i * 0.08}
+                className={cx('v8-release', entry.current && 'is-current')}
+              >
                 <span className="v8-release__period">{entry.period}</span>
                 <span className="v8-release__rail" aria-hidden="true">
                   <i />

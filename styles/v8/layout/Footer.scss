@@ -169,7 +169,8 @@
     flex-wrap: wrap;
     gap: 12px 24px;
     padding-top: 24px;
-    border-top: 1px solid var(--border-subtle);
+    // Same tone as the wordmark letters above (text-primary at 7%), so the line reads as their baseline.
+    border-top: 1px solid color-mix(in srgb, var(--text-primary) 7%, transparent);
     font: 400 13px/1.55 var(--ff-sans);
 
     p {

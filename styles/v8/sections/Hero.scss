@@ -248,6 +248,11 @@
   // scales them by --depth so the layers move at slightly different rates.
   translate: calc(var(--mx, 0px) * var(--depth, 1)) calc((var(--my, 0px) + var(--drift, 0px)) * var(--depth, 1));
   animation: v8-float-in 1s $ease-out 0.5s both;
+  // The floats layer itself ignores the pointer (so it never blocks the hero
+  // content beneath it), but the cards opt back in so their text is selectable.
+  pointer-events: auto;
+  user-select: text;
+  cursor: text;
 
   &--review {
     left: calc(50% - 614px);
@@ -396,13 +401,16 @@
   }
 
   &__ring-value {
-    stroke: var(--status-ok);
+    // ScoreRing sets --fill (0–100): the arc shifts from the accent to green as it fills.
+    stroke: color-mix(in oklch, var(--status-ok) calc(var(--fill, 100) * 1%), var(--accent-fill));
     stroke-linecap: round;
+    will-change: stroke-dashoffset;
   }
 
   &__ring-label {
     position: relative;
     font: 600 14px/1 var(--ff-mono);
+    font-variant-numeric: tabular-nums;
   }
 
   &__perf-text {

@@ -4,28 +4,7 @@ import CodeLines from '../../ui/CodeLines'
 import Stars from '../../ui/Stars'
 import TechIcon from '../../ui/TechIcon'
 import ParallaxFloats from './ParallaxFloats'
-
-/** Ring gauge for the "Performance budget" card. */
-function ScoreRing({ score, label }: { score: number; label: string }) {
-  const r = 23
-  const circumference = 2 * Math.PI * r
-  return (
-    <span className="v8-float__ring">
-      <svg viewBox="0 0 52 52" width="52" height="52" aria-hidden="true">
-        <circle cx="26" cy="26" r={r} className="v8-float__ring-track" />
-        <circle
-          cx="26"
-          cy="26"
-          r={r}
-          className="v8-float__ring-value"
-          strokeDasharray={circumference}
-          strokeDashoffset={circumference * (1 - score / 100)}
-        />
-      </svg>
-      <span className="v8-float__ring-label">{label}</span>
-    </span>
-  )
-}
+import ScoreRing from './ScoreRing'
 
 /**
  * The four tilted cards around the hero headline. Purely decorative (they

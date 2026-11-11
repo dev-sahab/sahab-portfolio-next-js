@@ -4,7 +4,7 @@ export const aboutSection = {
   eyebrow: '03 — About',
   title: 'Changelog. *Five*\n*years of releases.*' satisfies HeadingText,
   portrait: { src: '/v8/portrait.jpg', alt: 'Portrait of Sahab Uddin' },
-  bio: 'Five years in, I still check every page on a real phone. I care about clean code, fast load times and websites that bring in business, not just look good.',
+  bio: "I build websites for businesses that want results. After 300+ projects, my routine hasn't changed: clean code, fast pages, every screen tested. I build sites that earn their place: more enquiries and more sales, not just good looks.",
   storyLink: { label: 'Read my full story', href: '/about' },
 }
 

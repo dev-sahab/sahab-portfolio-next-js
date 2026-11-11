@@ -6,6 +6,16 @@
 
 ---
 
+### 2026-11-11 — v8 polish: SVG logo, real tech logos, services copy, marquee drag, hero card animation
+
+Supersedes parts of the 2026-11-10 v8 entry's follow-ups (below):
+- **Logo is now SVG** (`public/v8/logo-dark.svg` / `logo-light.svg`, plain `<img>` in `Logo.tsx`), built from the Figma **Home v7** frames (Dark `64:1200`, Light `65:1250`) — Sahab chose v7 over v8's logo (v8 has "/ full-stack", v7 "/full-stack"). Title/subtitle are Figma's own outlined paths; the person mark is a *raster* in Figma, so it was traced (potrace) from its 1254px original. To update: re-export those nodes with `download_assets` (svg) and rebuild. The old PNG logos are gone.
+- **Every tech logo is the real brand mark** — `lib/v8/monogram.tsx` was deleted. Crocoblock, n8n, Memberstack and Woo (W-in-circle) are inline components in `lib/v8/tech.tsx` (not in Simple Icons / react-icons); Memberstack's mark lives in `public/v8/logos/memberstack.svg`. Added Laravel, MySQL, PostgreSQL, Prisma.
+- **Tools marquee**: hover-pause removed; drag-to-pan added (one row at a time, with momentum). Scroll boost unchanged.
+- **Hero "Performance budget" card**: `ScoreRing.tsx` counts 0→90+ and fills the ring with a colour shift, starting exactly when the card's entry animation starts (SSR markup starts at 0 so the final value never flashes). Float cards are text-selectable (`pointer-events: auto` per card; the layer itself stays `none`).
+- **Services**: "View all services" link → `/services` (page doesn't exist yet — 404 until built); card copy reworked; `SectionHeader` got an optional `action` slot. Project count is **300+** site-wide (the "120+" in the timeline is only the PIXELVEGA role's figure).
+- About timeline line/dots/version badges use a soft accent tint; footer legal border matches the wordmark tone.
+
 ### 2026-11-11 — `main` was tampered with by two force-pushes; sanitized with a `-s ours` merge
 
 On 2026-11-10 (09:00 and 09:04 UTC) two force-pushes under the `dev-sahab` account replaced the real `main` tip `548698f` (the 404-page redesign) with `aa14129`. That commit has the identical 404 files **plus** hostile changes: a new `init` file (a harmless-looking module with a ~31 KB obfuscated blob on its last line), a second obfuscated blob appended after the real config in `postcss.config.mjs` (PostCSS runs on every build, so Vercel's production build executed it), `node init &&` prefixed onto the `dev`/`build`/`start` scripts, and `.gitignore` stripped of `.env` / `.env.local` (plus `config.bat` added to the ignore list). Vercel deployed it to production at 09:10 UTC.

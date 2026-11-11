@@ -20,6 +20,10 @@ const BOOST_DECAY = 4
  * viewports up to twice the list width (~2800px).
  */
 const COPIES = 4
+/** How quickly a released drag's momentum fades (per second). */
+const INERTIA_DECAY = 3.2
+/** Cap on release momentum, px/s, so a hard flick stays readable. */
+const MAX_FLING = 2400
 
 function Row({ tools, rowRef, label }: { tools: TechKey[]; rowRef: Ref<HTMLUListElement>; label: string }) {
   const items = Array.from({ length: COPIES }, () => tools).flat()
@@ -42,11 +46,15 @@ function Row({ tools, rowRef, label }: { tools: TechKey[]; rowRef: Ref<HTMLUList
  *  - Idle (or just sitting on the section): both rows drift slowly.
  *  - Scrolling down: row 1 slides left, row 2 right, faster the harder you scroll.
  *  - Scrolling up: the directions flip, and the idle drift keeps that direction.
+ *  - Drag with the mouse/finger: only the row you grab follows the pointer
+ *    (the other keeps drifting) and keeps a bit of momentum when released.
+ *    Hovering does not pause anything.
  * Positions wrap at one copy's width, so the loop is seamless. Runs only while
  * the section is on screen; static for reduced-motion users.
  */
 export default function ToolsMarquee() {
   const sectionRef = useRef<HTMLElement>(null)
+  const rowsRef = useRef<HTMLDivElement>(null)
   const rowA = useRef<HTMLUListElement>(null)
   const rowB = useRef<HTMLUListElement>(null)
 
@@ -54,17 +62,20 @@ export default function ToolsMarquee() {
     const section = sectionRef.current
     const a = rowA.current
     const b = rowB.current
-    if (!section || !a || !b) return
+    const rows = rowsRef.current
+    if (!section || !a || !b || !rows) return
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     // Width of one copy of the list (the loop period), re-measured on resize.
     let periodA = a.scrollWidth / COPIES
     let periodB = b.scrollWidth / COPIES
-    // Separate offsets so a hovered row can pause on its own.
     let offsetA = 0
     let offsetB = 0
-    let pausedA = false
-    let pausedB = false
+    // Drag state: which row is held, plus each row's pointer velocity (px/s)
+    // carried after release.
+    let dragRow: 'a' | 'b' | null = null
+    let inertiaA = 0
+    let inertiaB = 0
     let direction = 1 // 1 = scrolling down (row A moves left), -1 = up
     let boost = 0 // px/s added by recent scrolling
     let lastScrollY = window.scrollY
@@ -84,9 +95,18 @@ export default function ToolsMarquee() {
       const dt = lastTime ? Math.min((time - lastTime) / 1000, 0.1) : 0
       lastTime = time
       boost *= Math.exp(-BOOST_DECAY * dt)
-      // Hover pauses that row (Figma Interaction 03).
-      if (!pausedA) offsetA += direction * (periodA / IDLE_LOOP_S + boost) * dt
-      if (!pausedB) offsetB += direction * (periodB / IDLE_LOOP_S + boost) * dt
+      const decay = Math.exp(-INERTIA_DECAY * dt)
+      // The row being dragged is driven by the pointer alone; the other drifts on.
+      if (dragRow !== 'a') {
+        offsetA += direction * (periodA / IDLE_LOOP_S + boost) * dt
+        inertiaA = Math.abs(inertiaA * decay) < 1 ? 0 : inertiaA * decay
+        offsetA -= inertiaA * dt
+      }
+      if (dragRow !== 'b') {
+        offsetB += direction * (periodB / IDLE_LOOP_S + boost) * dt
+        inertiaB = Math.abs(inertiaB * decay) < 1 ? 0 : inertiaB * decay
+        offsetB += inertiaB * dt
+      }
       render()
       frame = visible ? requestAnimationFrame(tick) : 0
     }
@@ -118,24 +138,62 @@ export default function ToolsMarquee() {
       if (visible) start()
     })
 
-    const pause = (row: 'a' | 'b', value: boolean) => () => {
-      if (row === 'a') pausedA = value
-      else pausedB = value
+    // ── Drag to pan (one row at a time) ──
+    let lastX = 0
+    let lastMoveTime = 0
+    let velocity = 0
+    const onPointerDown = (e: PointerEvent) => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      // The row under the pointer: split halfway through the gap between the rows.
+      const split = (a.getBoundingClientRect().bottom + b.getBoundingClientRect().top) / 2
+      dragRow = e.clientY < split ? 'a' : 'b'
+      if (dragRow === 'a') inertiaA = 0
+      else inertiaB = 0
+      velocity = 0
+      lastX = e.clientX
+      lastMoveTime = performance.now()
+      rows.setPointerCapture(e.pointerId)
+      rows.classList.add('is-dragging')
     }
-    const hoverHandlers: [HTMLElement, string, () => void][] = [
-      [a, 'mouseenter', pause('a', true)],
-      [a, 'mouseleave', pause('a', false)],
-      [b, 'mouseenter', pause('b', true)],
-      [b, 'mouseleave', pause('b', false)],
-    ]
-    hoverHandlers.forEach(([el, type, fn]) => el.addEventListener(type, fn))
+    const onPointerMove = (e: PointerEvent) => {
+      if (!dragRow) return
+      const now = performance.now()
+      const dx = e.clientX - lastX
+      const dt = Math.max((now - lastMoveTime) / 1000, 0.001)
+      // Row A's offset runs against its travel, row B's with it.
+      if (dragRow === 'a') offsetA -= dx
+      else offsetB += dx
+      // Smoothed pointer velocity, becomes the momentum on release.
+      velocity = Math.max(-MAX_FLING, Math.min(MAX_FLING, velocity * 0.6 + (dx / dt) * 0.4))
+      lastX = e.clientX
+      lastMoveTime = now
+      render()
+    }
+    const endDrag = (e: PointerEvent) => {
+      if (!dragRow) return
+      // A pause before letting go means no fling.
+      const fling = performance.now() - lastMoveTime > 80 ? 0 : velocity
+      if (dragRow === 'a') inertiaA = fling
+      else inertiaB = fling
+      dragRow = null
+      if (rows.hasPointerCapture(e.pointerId)) rows.releasePointerCapture(e.pointerId)
+      rows.classList.remove('is-dragging')
+      start()
+    }
+    rows.addEventListener('pointerdown', onPointerDown)
+    rows.addEventListener('pointermove', onPointerMove)
+    rows.addEventListener('pointerup', endDrag)
+    rows.addEventListener('pointercancel', endDrag)
 
     render()
     io.observe(section)
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onResize)
     return () => {
-      hoverHandlers.forEach(([el, type, fn]) => el.removeEventListener(type, fn))
+      rows.removeEventListener('pointerdown', onPointerDown)
+      rows.removeEventListener('pointermove', onPointerMove)
+      rows.removeEventListener('pointerup', endDrag)
+      rows.removeEventListener('pointercancel', endDrag)
       io.disconnect()
       cancelAnimationFrame(frame)
       window.removeEventListener('scroll', onScroll)
@@ -146,7 +204,7 @@ export default function ToolsMarquee() {
   return (
     <section ref={sectionRef} className="v8-tools" aria-label={toolsHeading}>
       <Eyebrow tone="muted">{toolsHeading}</Eyebrow>
-      <div className="v8-tools__rows">
+      <div ref={rowsRef} className="v8-tools__rows">
         <Row tools={toolRows[0]} rowRef={rowA} label="CMS and front-end tools" />
         <Row tools={toolRows[1]} rowRef={rowB} label="App, design and automation tools" />
       </div>
