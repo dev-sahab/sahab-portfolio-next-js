@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { signOut, useSession } from 'next-auth/react'
 import {
   LayoutDashboard, FolderKanban, FileText, Star, Image as ImageIcon,
-  Settings, MessageSquare, FileQuestion, Users, LogOut, ExternalLink, ChevronDown, BarChart3, type LucideIcon
+  Settings, MessageSquare, FileQuestion, Users, LogOut, ExternalLink, ChevronDown, BarChart3, Plug, type LucideIcon
 } from 'lucide-react'
 import { can } from '@/lib/permissions'
 import '@/styles/components/dashboard/Sidebar.scss'
@@ -51,6 +51,7 @@ const nav: (NavLink | NavGroup)[] = [
   { href: '/dashboard/quotes', icon: FileQuestion, label: 'Quote Requests', perm: 'quotes.read' },
   { href: '/dashboard/settings', icon: Settings, label: 'Site Settings', perm: 'settings.write' },
   { href: '/dashboard/users', icon: Users, label: 'Users', perm: 'users.read' },
+  { href: '/dashboard/connected-apps', icon: Plug, label: 'Connected Apps' },
 ]
 
 function isChildActive(pathname: string, base: string, href: string) {

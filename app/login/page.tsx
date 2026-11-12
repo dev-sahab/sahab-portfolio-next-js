@@ -8,14 +8,16 @@ import { v8FontVars } from '@/lib/v8/fonts'
 
 /**
  * Where to go after signing in: the `callbackUrl` the dashboard guard (proxy.ts)
- * added, but only if it's a dashboard path on this site (no open redirects).
+ * or the OAuth consent page added, but only a dashboard path or /oauth/authorize
+ * on this site (no open redirects).
  */
 function nextUrl() {
   try {
     const raw = new URLSearchParams(window.location.search).get('callbackUrl')
     if (raw) {
       const url = new URL(raw, window.location.origin)
-      if (url.origin === window.location.origin && url.pathname.startsWith('/dashboard')) return url.pathname + url.search
+      // Dashboard pages, or the OAuth consent page when an AI app (MCP) is connecting.
+      if (url.origin === window.location.origin && (url.pathname.startsWith('/dashboard') || url.pathname === '/oauth/authorize')) return url.pathname + url.search
     }
   } catch {}
   return '/dashboard'

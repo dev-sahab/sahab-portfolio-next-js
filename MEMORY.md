@@ -6,6 +6,16 @@
 
 ---
 
+### 2026-11-12 — MCP server for Claude / ChatGPT (with OAuth login)
+
+- **What**: `POST /api/mcp` is a stateless Streamable-HTTP MCP server (plain JSON responses, no SSE, no sessions) so Claude and ChatGPT can manage the site as a custom connector. Tools live in `lib/mcp/tools.ts`, one zod schema each (validates the call and becomes the `inputSchema` via `z.toJSONSchema`).
+- **Access (Sahab's choice)**: read everything; create/edit projects and posts, **drafts unless `published: true`**; mark quotes/messages read. **No delete tools**, no media/users/settings. Each tool re-checks the caller's *current* role with `can()`/`canWriteContent()`, so the MCP can never do more than that user can in the dashboard. Slugs can't be changed over MCP (would break live links).
+- **Sign-in (Sahab's choice: full OAuth)**: `lib/oauth.ts` is a small OAuth 2.1 server: metadata under `/.well-known/*`, dynamic client registration (`/api/oauth/register`), consent page `/oauth/authorize` (dashboard login + Allow/Deny, server actions), `/api/oauth/token` (PKCE S256 only, single-use codes, refresh rotation; reusing a rotated refresh token revokes the whole app connection), `/api/oauth/revoke`. Only SHA-256 hashes of codes/tokens are stored (`OAuthClient`/`OAuthCode`/`OAuthToken`, TTL indexes clean up).
+- **CSP**: `/oauth/*` gets its own CSP with `form-action 'self' https: http://localhost:*` because Chrome applies `form-action` to the redirect after the Allow form posts back to claude.ai/chatgpt.com. Everything else keeps `form-action 'self'`.
+- **Login**: `app/login/page.tsx`'s `nextUrl()` allowlist accepts `/oauth/authorize` as a callbackUrl so the consent flow resumes after sign-in.
+- **Dashboard → Connected Apps** (`/dashboard/connected-apps`): the MCP URL + setup steps, and a list of live connections with Disconnect (own connections; admins see all).
+- Tested end to end on a production build: discovery, 401 + `WWW-Authenticate`, register, consent (no-JS form post), PKCE fail burns the code, token, all tools, draft stays 404 publicly, refresh rotation, reuse detection, revoke.
+
 ### 2026-11-12 — SEO + copy pass, 404 redesign
 
 - **Keyword map** (one main term per page): home = "freelance web developer" (+ WordPress/Webflow/web app developer), services = "web development services", projects = "web development portfolio", blog = "web development blog", contact = "hire a web developer", FAQ = "web development FAQ". Titles/descriptions live in each page's `pageMetadata()` call and `app/(v8)/layout.tsx` (home).

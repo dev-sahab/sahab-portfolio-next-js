@@ -123,5 +123,8 @@ Every component/page has its own `.scss` file, but none of them sit next to thei
 
 A handful of genuinely data-driven inline styles remain by design and should **not** be converted to classes: per-item colors/values computed from CMS data (e.g. `dashboard/page.tsx`'s stat-card icon color), tree-depth indentation in `CategoryCombobox`/`TaxonomyManager`, and CSS custom properties set from props (`Marquee`'s `--ms` speed, `components/site/SkillBar.tsx`'s `--w`). That last one is half CSS, half JS: `globals.css`'s `.skill-fill` starts at `width: 0` and only animates to `var(--w)` once a `.go` class is present, which `SkillBar.tsx` adds via an `IntersectionObserver` on scroll-into-view — reading only one of the two files makes it look like the bar does nothing.
 
+### MCP server (Claude / ChatGPT connector)
+`POST /api/mcp` is a stateless MCP server (tools in `lib/mcp/tools.ts`) behind an OAuth 2.1 server (`lib/oauth.ts`, `app/api/oauth/*`, consent page `app/oauth/authorize`). Each tool re-checks `can()`/`canWriteContent()` with the token user's current role; there are deliberately no delete tools and creates default to drafts. `/oauth/*` has its own CSP (`form-action` allows https so the Allow form can redirect back to the AI app). Connections: `/dashboard/connected-apps`. Details: the 2026-11-12 MCP entry in `MEMORY.md`.
+
 ### Deployment
 Vercel (region `sin1`, see `vercel.json`), MongoDB Atlas, Cloudinary for image storage, Resend for transactional email.

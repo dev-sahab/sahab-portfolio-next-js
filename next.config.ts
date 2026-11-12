@@ -121,7 +121,20 @@ const nextConfig: NextConfig = {
       { key: 'Content-Security-Policy', value: csp },
     ]
 
-    return [{ source: '/:path*', headers: securityHeaders }]
+    // The OAuth consent page posts a form that redirects back to the AI app
+    // (claude.ai, chatgpt.com, …). Chrome applies form-action to that redirect,
+    // so this one page allows https callbacks; the redirect_uri itself is
+    // checked against the app's registration before any redirect happens.
+    const oauthHeaders = securityHeaders.map((h) =>
+      h.key === 'Content-Security-Policy'
+        ? { ...h, value: csp.replace("form-action 'self'", "form-action 'self' https: http://localhost:* http://127.0.0.1:*") }
+        : h,
+    )
+
+    return [
+      { source: '/:path((?!oauth/).*)', headers: securityHeaders },
+      { source: '/oauth/:path*', headers: oauthHeaders },
+    ]
   },
 }
 

@@ -1,0 +1,89 @@
+// OAuth consent page (app/oauth/authorize). Builds on login.scss + the dashboard theme.
+.login-logo-img {
+  height: 42px;
+}
+
+.oauth-card {
+  max-width: 460px;
+}
+
+.oauth-title em {
+  font-size: 1em;
+  overflow-wrap: anywhere;
+}
+
+.oauth-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    position: relative;
+    padding-left: 26px;
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--text);
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 2px;
+      top: 6px;
+      width: 12px;
+      height: 7px;
+      border-left: 2px solid var(--accent);
+      border-bottom: 2px solid var(--accent);
+      transform: rotate(-45deg);
+    }
+  }
+}
+
+.oauth-note {
+  margin: 18px 0 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text2);
+}
+
+.oauth-redirect {
+  margin: 12px 0 0;
+  font: 400 12px/1.4 var(--f-m);
+  color: var(--muted);
+
+  code {
+    color: var(--text2);
+  }
+}
+
+.oauth-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 10px;
+  margin-top: 24px;
+
+  form {
+    display: flex;
+  }
+
+  .oauth-btn {
+    width: 100%;
+    margin-top: 0;
+  }
+}
+
+.oauth-btn--ghost {
+  height: 48px;
+  border-radius: 10px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--text);
+  font: 500 15px/1 var(--f-b);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--surface2);
+  }
+}

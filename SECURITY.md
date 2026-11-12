@@ -68,6 +68,7 @@ Deliberate trade-offs, not oversights — re-evaluate if the product's needs cha
 - **SVG uploads are allowed** (`app/api/upload/route.ts`'s `allowed` mime list). SVGs can carry embedded scripts — a known stored-XSS vector if a raw Cloudinary SVG URL is opened directly (not via `<img>`, which doesn't execute embedded `<script>`). Kept because logo/favicon uploads may legitimately need SVG. If this ever becomes a concern, the fix is removing `image/svg+xml` from the allowlist — a one-line change, deliberately not made preemptively.
 - **JWT sessions have no server-side revocation/blacklist.** Stateless JWT strategy means "logout" is client-side only; a stolen token remains valid until it expires. No infra exists today (Redis/DB session table) to blacklist on demand. Acceptable given the low-value target (staff dashboard, not a financial app) and short-lived nature of the risk window.
 - **`/api/setup` is unauthenticated by necessity** — it's the pre-auth bootstrap path for creating the first admin account. It's self-limiting (no-ops the moment any `User` exists) and only ever creates the exact account your own env vars specify — an attacker calling it gains nothing they didn't already control.
+- **MCP connections act as the user.** A connected AI app can do whatever the signing-in user's role allows *minus* deleting, media, users and settings (no tools for those). Tokens: 1 h access, 30 d rotating refresh; disconnect in Dashboard → Connected Apps. Dynamic client registration is open (rate-limited) by design, since that's how Claude/ChatGPT register; registration alone grants nothing without the owner's login + Allow.
 - **No MFA.** Single-factor credentials login only. Reasonable for a solo/small-team CMS; revisit if the user base grows.
 
 ## 6. Secrets handling
@@ -91,5 +92,7 @@ Copy this when writing `app/api/<new-resource>/route.ts`:
 - [ ] If the payload gets interpolated into an email/HTML template: `escapeHtml()` first.
 
 ## 8. Audit log
+
+- **2026-11-12** — Added MCP + OAuth 2.1 (`lib/oauth.ts`, `app/api/mcp`, `app/api/oauth/*`, `app/oauth/authorize`). PKCE S256 required, single-use hashed codes (10 min), hashed tokens, refresh rotation with reuse detection, redirect URIs limited to https (or http on localhost) and exact-matched, `/api/mcp` returns 401 + `WWW-Authenticate` with resource metadata, per-user rate limit, generic error messages from tools, no delete tools.
 
 - **2026-08-23** — Full 5-check security audit (Gitleaks/Bearer/production-audit/Trail-of-Bits/attacker's-perspective style, per a "vibe-coding security prompts" checklist PDF). Found and fixed: unauthenticated draft-content disclosure on projects/blog GET routes, missing security headers, missing rate limiting (login + contact + quote), internal error-message leakage across all 21 API route files, Mongo operator-injection via mass-assigned request bodies, unauthenticated destructive `/api/setup/taxonomy` endpoint, unescaped user input in notification emails. Everything above in §4 reflects the post-fix state. Full narrative: `MEMORY.md`.

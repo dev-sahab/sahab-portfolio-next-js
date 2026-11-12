@@ -153,9 +153,15 @@ Single-document collection (`findOneAndUpdate({}, body, {upsert:true})`). Profil
 ### Media
 `url, publicId(unique), filename, title, altText, caption, mimeType, width, height, size, folder, uploadedBy → User`.
 
+### OAuthClient / OAuthCode / OAuthToken (MCP connections)
+`OAuthClient`: `clientId(unique), clientName, redirectUris[], clientUri, logoUri` (dynamic registration). `OAuthCode`: `codeHash(unique), clientId, userId, redirectUri, codeChallenge, scope, resource, expiresAt(TTL)`. `OAuthToken`: `accessHash, refreshHash (unique), clientId, clientName, userId, scope, accessExpiresAt, refreshExpiresAt(TTL), revoked, lastUsedAt`. Only hashes are stored. See `lib/oauth.ts`.
+
 ## 6. Auth & permissions (summary)
 
 NextAuth v5, credentials-only, JWT strategy. `authorize()` checks `User` first, falls back to `ADMIN_EMAIL`/`ADMIN_PASSWORD` env vars (session `user.id` = literal `"env-admin"` in that case — guard with `Types.ObjectId.isValid()` before using it as a ref). Full detail, role matrix, and the permission-check pattern every API route follows: **[SECURITY.md § Authorization model](./SECURITY.md#authorization-model)**.
+
+### MCP server (AI apps)
+`POST /api/mcp` (stateless JSON-RPC MCP) authenticates with an OAuth bearer token from `lib/oauth.ts` and exposes the tools in `lib/mcp/tools.ts`, each permission-checked against the token user's current role. OAuth endpoints: `/.well-known/oauth-protected-resource`, `/.well-known/oauth-authorization-server`, `/api/oauth/{register,token,revoke}`, consent at `/oauth/authorize`. Connections are managed at `/dashboard/connected-apps`. No extra env vars.
 
 ## 7. Environment variables
 
