@@ -9,3 +9,17 @@
   font: 400 12px/1.4 var(--ff-mono);
   color: var(--text-secondary);
 }
+
+// The ⌘ glyph is tiny in Geist Mono; draw it from the system font at the
+// same visual height as the letter next to it.
+.v8-kbd__cmd {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 1.15em;
+  line-height: 1;
+}
+
+.v8-kbd:has(.v8-kbd__cmd) {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}

@@ -69,7 +69,7 @@ export default function Header() {
             <button type="button" className="v8-search-trigger" onClick={openSearch} aria-label="Search (Command K)">
               <Search className="v8-search-trigger__icon" aria-hidden="true" />
               <span className="v8-search-trigger__label">Search</span>
-              <Kbd className="v8-search-trigger__kbd">⌘K</Kbd>
+              <Kbd className="v8-search-trigger__kbd"><span className="v8-kbd__cmd">⌘</span>K</Kbd>
             </button>
             <ThemeToggle />
             <ButtonLink href={quoteHref} size="sm" className="v8-header__cta">

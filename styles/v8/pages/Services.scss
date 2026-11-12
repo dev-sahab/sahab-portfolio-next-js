@@ -7,7 +7,7 @@
 .v8-service-detail {
   &__grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 480px);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
     gap: 64px;
     align-items: start;
 
