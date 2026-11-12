@@ -39,9 +39,10 @@ const nextConfig: NextConfig = {
       { source: '/get-quote', destination: '/contact', permanent: true },
       { source: '/v8', destination: '/', permanent: true },
       // Only page paths: images in public/v8/ (logo, portrait…) must keep serving.
+      { source: '/v8/:page(about|services|projects|blog|contact|faq|privacy|terms|cookies)', destination: '/:page', permanent: true },
       {
-        source: '/v8/:page(about|services|projects|blog|contact|faq|privacy|terms|cookies)/:rest*',
-        destination: '/:page/:rest*',
+        source: '/v8/:page(about|services|projects|blog|contact|faq|privacy|terms|cookies)/:rest+',
+        destination: '/:page/:rest+',
         permanent: true,
       },
     ]
