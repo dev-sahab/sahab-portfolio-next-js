@@ -27,7 +27,7 @@ export const routes = {
   homeSection: (id: string) => `${V8_BASE || '/'}#${id}`,
 } as const
 
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://sahabuddin.me').replace(/\/$/, '')
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://sahabweb.vercel.app').replace(/\/$/, '')
 
 /** Absolute URL for canonical links, Open Graph and JSON-LD. */
 export const absoluteUrl = (path: string) => `${SITE_URL}${path.startsWith('/') ? path : `/${path}`}`
