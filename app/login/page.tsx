@@ -1,14 +1,27 @@
 'use client'
 import { useState } from 'react'
 import { signIn } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
 import { ArrowLeft, ArrowRight, Eye, EyeOff, Loader2 } from 'lucide-react'
 import '@/styles/pages/(dashboard)/theme.scss'
 import '@/styles/pages/login/login.scss'
 import { v8FontVars } from '@/lib/v8/fonts'
 
+/**
+ * Where to go after signing in: the `callbackUrl` the dashboard guard (proxy.ts)
+ * added, but only if it's a dashboard path on this site (no open redirects).
+ */
+function nextUrl() {
+  try {
+    const raw = new URLSearchParams(window.location.search).get('callbackUrl')
+    if (raw) {
+      const url = new URL(raw, window.location.origin)
+      if (url.origin === window.location.origin && url.pathname.startsWith('/dashboard')) return url.pathname + url.search
+    }
+  } catch {}
+  return '/dashboard'
+}
+
 export default function LoginPage() {
-  const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -19,13 +32,21 @@ export default function LoginPage() {
     e.preventDefault()
     setLoading(true)
     setError('')
-    const res = await signIn('credentials', { email, password, redirect: false })
-    setLoading(false)
-    if (res?.error) {
-      // Same message for a wrong email, wrong password or rate limit: don't reveal which.
-      setError('That email and password don’t match. Try again in a moment.')
-    } else {
-      router.push('/dashboard')
+    try {
+      const res = await signIn('credentials', { email, password, redirect: false })
+      if (!res || res.error) {
+        // Same message for a wrong email, wrong password or rate limit: don't reveal which.
+        setError('That email and password don’t match. Try again in a moment.')
+        setLoading(false)
+        return
+      }
+      // Full page load (not router.push): the dashboard is fetched fresh with the
+      // new session cookie, never from the client router cache, which may still
+      // hold the "signed out → /login" redirect from before.
+      window.location.assign(nextUrl())
+    } catch {
+      setError('Couldn’t reach the server. Check your connection and try again.')
+      setLoading(false)
     }
   }
 

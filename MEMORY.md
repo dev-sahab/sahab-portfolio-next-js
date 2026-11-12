@@ -6,6 +6,10 @@
 
 ---
 
+### 2026-11-12 — Live login showed "This page couldn't load"
+
+Next's built-in client error fallback appeared on the live login (fresh Chrome/Firefox loaded `/login` fine; the auth endpoints answered normally; every dashboard page rendered in a local production build). The login used `router.push('/dashboard')` after `signIn(..., { redirect: false })`; with `experimental.staleTimes.dynamic = 30` the client router can reuse a cached signed-out response for `/dashboard` (the proxy's redirect to `/login`) right after sign-in. Fix: after a successful sign-in, do a **full page load** (`window.location.assign`) to the proxy's `callbackUrl` (only same-origin `/dashboard…` paths, so no open redirect), with try/catch around `signIn`. Also added real error screens (`app/global-error.tsx`, `app/(dashboard)/error.tsx`, `app/login/error.tsx`, shared `components/ErrorScreen.tsx`) that show the actual message (or the server reference code) and a reload for stale-deploy chunk errors, instead of Next's blank default. Next 16 error boundaries receive `unstable_retry` (not `reset`).
+
 ### 2026-11-12 (later) — legal pages, cookie consent, Analytics dashboard, blog grid
 
 - **Legal pages** `/v8/privacy`, `/v8/terms`, `/v8/cookies` (`content/v8/legal.ts`, layout `components/v8/pages/legal/LegalDocument.tsx`). Written for a US/UK/EU client base (Sahab: not targeting Bangladesh): GDPR/UK GDPR Art. 13 items, US state rights + no sale/sharing + Global Privacy Control, governing law left generic (review). Retention periods (24 months enquiries / ~6 years clients) and governing law are flagged `review` — not legal advice.
