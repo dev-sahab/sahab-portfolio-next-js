@@ -81,7 +81,13 @@
     place-items: center;
     padding: 4px;
     border-radius: 6px;
-    background: var(--surface-card-2);
+    // Dark theme: a lighter chip (#383838) so dark logos (Next.js, Wix, Prisma) stay visible.
+    background: #383838;
     color: var(--text-primary);
   }
+}
+
+// Light theme keeps the regular light chip.
+[data-theme='light'] .v8 .v8-tool__icon {
+  background: var(--surface-card-2);
 }
