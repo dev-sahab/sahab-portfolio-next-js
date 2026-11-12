@@ -15,7 +15,7 @@ export const timeline: TimelineEntry[] = [
     role: 'Professional CMS Developer',
     version: 'v5 current',
     current: true,
-    org: 'Web agency · promoted from Jr. WordPress Developer',
+    org: 'PIXELVEGA · promoted from Jr. WordPress Developer',
     description:
       '120+ client projects, including 50+ Webflow builds: business sites, WooCommerce stores and CMS platforms with custom PHP, JavaScript and third-party integrations.',
   },

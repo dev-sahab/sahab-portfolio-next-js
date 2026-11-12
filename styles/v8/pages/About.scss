@@ -179,3 +179,83 @@
     border-color: color-mix(in srgb, var(--accent-fill) 70%, transparent);
   }
 }
+
+// ── "Now" strip under the hero ──
+.v8-now {
+  &__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  // Green "available" light with a slow ring, like a status page.
+  &__dot {
+    position: relative;
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: #22c55e;
+      animation: v8-now-ping 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      &::after {
+        animation: none;
+      }
+    }
+  }
+
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+
+    .v8-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 999px;
+      background: var(--surface-card);
+      font: 500 13px/1.4 var(--ff-sans);
+      color: var(--text-primary);
+      white-space: nowrap;
+
+      svg {
+        flex: none;
+      }
+    }
+  }
+
+  &__regions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  &__note {
+    font: 400 12.5px/1.4 var(--ff-mono);
+    color: var(--text-muted);
+  }
+}
+
+@keyframes v8-now-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  80%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}

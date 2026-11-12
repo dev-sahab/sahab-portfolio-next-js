@@ -9,6 +9,8 @@ import Timeline from '@/components/v8/sections/about/Timeline'
 import ToolsMarquee from '@/components/v8/sections/tools/ToolsMarquee'
 import { aboutSection } from '@/content/v8/about'
 import { aboutPage } from '@/content/v8/pages'
+import TechIcon from '@/components/v8/ui/TechIcon'
+import { TECH } from '@/lib/v8/tech'
 import { stats } from '@/content/v8/reviews'
 import { routes } from '@/lib/v8/routes'
 import { pageMetadata, personSchema } from '@/lib/v8/seo'
@@ -22,6 +24,50 @@ export const metadata = pageMetadata({
   image: aboutSection.portrait.src,
 })
 
+const { now } = aboutPage
+
+/** The strip under the hero: a live status, the platforms as logos, client regions as chips. */
+const nowMeta = [
+  { label: 'Focus', value: now.focus },
+  {
+    label: 'Freelance',
+    value: (
+      <span className="v8-now__status">
+        <span className="v8-now__dot" aria-hidden="true" />
+        {now.availability}
+      </span>
+    ),
+  },
+  {
+    label: 'Builds with',
+    value: (
+      <span className="v8-now__chips">
+        {now.stack.map((tech) => (
+          <span key={tech} className="v8-tag">
+            <TechIcon tech={tech} size={14} />
+            {TECH[tech].label}
+          </span>
+        ))}
+      </span>
+    ),
+  },
+  {
+    label: 'Works with',
+    value: (
+      <span className="v8-now__regions">
+        <span className="v8-now__chips">
+          {now.regions.map((region) => (
+            <span key={region} className="v8-tag">
+              {region}
+            </span>
+          ))}
+        </span>
+        <span className="v8-now__note">{now.regionsNote}</span>
+      </span>
+    ),
+  },
+]
+
 export default function AboutPage() {
   return (
     <>
@@ -30,7 +76,7 @@ export default function AboutPage() {
         eyebrow="Sahab Uddin, freelance web developer"
         title={aboutPage.title}
         intro={aboutSection.bio}
-        meta={aboutPage.now}
+        meta={nowMeta}
       />
 
       <section className="v8-section v8-story" aria-labelledby="v8-story-title">

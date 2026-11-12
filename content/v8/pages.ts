@@ -1,4 +1,4 @@
-import type { FaqItem, HeadingText } from './types'
+import type { FaqItem, HeadingText, TechKey } from './types'
 import { faqs } from './faq'
 
 /**
@@ -17,12 +17,14 @@ export const aboutPage = {
     'Along the way I worked as a web developer at Webeliyo and as a WordPress developer at TechNuxt, turning designs into Elementor sites, customizing WooCommerce stores and cutting load times by roughly 30%. Since 2025 I’ve focused on CMS builds: 120+ client projects so far, including 50+ Webflow sites.',
     'What hasn’t changed is how I work: one point of contact, a fixed price before anything starts, and a site your team can actually edit. For UI/UX design, SEO and marketing I bring in trusted partners, so you never have to manage five freelancers.',
   ],
-  now: [
-    { label: 'Focus', value: 'Business websites and web apps' },
-    { label: 'Freelance', value: 'Taking new projects' },
-    { label: 'Builds with', value: 'WordPress, Webflow and Next.js' },
-    { label: 'Works with', value: 'Clients worldwide, remotely' },
-  ],
+  /** The strip under the About hero (rendered with a status dot, logos and chips). */
+  now: {
+    focus: 'Business websites and web apps',
+    availability: 'Available for new projects',
+    stack: ['wordpress', 'webflow', 'nextjs'] as TechKey[],
+    regions: ['US', 'UK', 'Europe'],
+    regionsNote: 'and anywhere else, remotely',
+  },
   principles: [
     {
       title: 'Your requirements come first',
