@@ -56,7 +56,6 @@ export default function ContactPage() {
               <ContactTerminal
                 email={site.email}
                 timeZone={contactPage.timeZone}
-                location={contactPage.location}
                 utcOffset="UTC+6"
                 links={profiles.map((p) => ({ label: p.href.replace(/^https?:\/\//, ''), href: p.href }))}
               />

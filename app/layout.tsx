@@ -8,7 +8,7 @@ export const revalidate = 3600
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings() as { siteTitle?: string; siteDescription?: string; favicon?: string } | null
-  const title = settings?.siteTitle || 'Sahab Uddin Mintu'
+  const title = settings?.siteTitle || 'Sahab Uddin'
   const description = settings?.siteDescription || 'Fast, SEO-friendly WordPress, Webflow and custom websites by Sahab Uddin.'
   return {
     metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://sahabweb.vercel.app'),

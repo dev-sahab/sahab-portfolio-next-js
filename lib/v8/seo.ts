@@ -54,7 +54,6 @@ const person = {
   '@id': absoluteUrl(`${routes.about}#person`),
   name: site.name,
   // Full legal name; the public spelling everywhere (LinkedIn, legal documents) is "Sahab Uddin".
-  alternateName: site.legalName,
   url: absoluteUrl(routes.about),
   image: absoluteUrl('/v8/portrait.jpg'),
   jobTitle: 'Freelance Web Developer',

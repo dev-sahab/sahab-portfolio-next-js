@@ -106,7 +106,7 @@ export default function SettingsClient({ initialSettings }: { initialSettings: P
         <div className="settings-card">
           <h2 className="settings-h2">General</h2>
           <div className="settings-grid-2">
-            <div className="settings-row"><label className="settings-label">Site Title</label><input value={settings.siteTitle || ''} onChange={(e) => set('siteTitle', e.target.value)} className="settings-input" placeholder="Sahab Uddin Mintu" /></div>
+            <div className="settings-row"><label className="settings-label">Site Title</label><input value={settings.siteTitle || ''} onChange={(e) => set('siteTitle', e.target.value)} className="settings-input" placeholder="Sahab Uddin" /></div>
             <div className="settings-row"><label className="settings-label">Contact Email</label><input type="email" value={settings.contactEmail || ''} onChange={(e) => set('contactEmail', e.target.value)} className="settings-input" /></div>
             <div className="settings-row"><label className="settings-label">Contact Phone</label><input value={settings.contactPhone || ''} onChange={(e) => set('contactPhone', e.target.value)} className="settings-input" /></div>
           </div>
@@ -189,7 +189,7 @@ export default function SettingsClient({ initialSettings }: { initialSettings: P
         <div className="settings-card">
           <h2 className="settings-h2">Footer</h2>
           <div className="settings-row"><label className="settings-label">Footer Tagline</label><textarea value={settings.footerTagline || ''} onChange={(e) => set('footerTagline', e.target.value)} className="settings-input settings-textarea-80" placeholder="Building digital products that move businesses forward — one pixel at a time." /></div>
-          <div className="settings-row"><label className="settings-label">Copyright Text</label><input value={settings.footerCopyright || ''} onChange={(e) => set('footerCopyright', e.target.value)} className="settings-input" placeholder="© 2026 Sahab Uddin Mintu. All rights reserved." /></div>
+          <div className="settings-row"><label className="settings-label">Copyright Text</label><input value={settings.footerCopyright || ''} onChange={(e) => set('footerCopyright', e.target.value)} className="settings-input" placeholder="© 2026 Sahab Uddin. All rights reserved." /></div>
         </div>
       )}
 

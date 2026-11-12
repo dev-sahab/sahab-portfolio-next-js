@@ -104,7 +104,6 @@ export const contactPage = {
     { title: 'Build and review', text: 'Progress on a staging link you can click through before anything goes live.' },
   ],
   timeZone: 'Asia/Dhaka',
-  location: 'Sylhet, Bangladesh',
 }
 
 // ── FAQ ──

@@ -8,7 +8,6 @@ import LocalTime from './LocalTime'
 interface ContactTerminalProps {
   email: string
   timeZone: string
-  location: string
   /** e.g. "UTC+6" */
   utcOffset: string
   links: { label: string; href: string }[]

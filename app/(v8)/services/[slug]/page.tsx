@@ -14,7 +14,7 @@ import ProjectsBrowser from '@/components/v8/pages/projects/ProjectsBrowser'
 import { getServicePage, servicePages } from '@/content/v8/servicePages'
 import { getProjects } from '@/lib/v8/data'
 import { routes } from '@/lib/v8/routes'
-import { breadcrumbSchema, faqSchema, pageMetadata, singleServiceSchema } from '@/lib/v8/seo'
+import { faqSchema, pageMetadata, singleServiceSchema } from '@/lib/v8/seo'
 import { TECH } from '@/lib/v8/tech'
 import '@/styles/v8/sections/SelectedWork.scss'
 import '@/styles/v8/sections/Services.scss'
@@ -191,11 +191,6 @@ export default async function ServiceLandingPage({ params }: Params) {
         data={[
           singleServiceSchema({ name: page.eyebrow, description: page.metaDescription, url: routes.servicePage(page.slug), serviceType: page.keyword, startingPrice: page.startingPrice }),
           faqSchema(page.faqs),
-          breadcrumbSchema([
-            { name: 'Home', path: routes.home },
-            { name: 'Services', path: routes.services },
-            { name: page.keyword, path: routes.servicePage(page.slug) },
-          ]),
         ]}
       />
     </>

@@ -4,7 +4,7 @@ import type { NavLink, SocialLink } from './types'
 /** Site-wide identity + navigation for the v8 layout (header, footer, ⌘K menu). */
 export const site = {
   name: 'Sahab Uddin',
-  legalName: 'Sahab Uddin Mintu',
+  legalName: 'Sahab Uddin',
   role: '/ full-stack web developer',
   email: 'frshahab.me@gmail.com',
   location: 'Sylhet, Bangladesh',

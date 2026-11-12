@@ -40,15 +40,15 @@ export interface PriceRow {
 
 // One source for every price on the site (keep content/v8/faq.ts in step).
 const PRICES = {
-  landing: { label: 'Landing page, 1 to 3 pages', price: 'From $600', timeline: '1 to 2 weeks' },
-  wordpressSite: { label: 'Business website, 5 to 10 pages, WordPress and Elementor', price: '$1,500 to $4,000', timeline: '2 to 5 weeks' },
-  webflowSite: { label: 'Business website, 5 to 10 pages, Webflow with CMS', price: '$2,000 to $5,000', timeline: '3 to 5 weeks' },
-  woocommerce: { label: 'WooCommerce store', price: '$3,000 to $8,000', timeline: '5 to 10 weeks' },
-  wordpressToWebflow: { label: 'WordPress to Webflow migration', price: 'From $1,500', timeline: '2 to 4 weeks' },
-  nextjs: { label: 'Next.js site or WordPress to Next.js migration', price: '$4,000 to $12,000', timeline: '6 to 12 weeks' },
-  webApp: { label: 'Custom web app, first version', price: 'From $8,000', timeline: '10 to 16 weeks' },
-  maintenance: { label: 'Maintenance plan', price: '$150 to $400 per month', timeline: 'Ongoing' },
-  hourly: { label: 'Hourly and white label work', price: '$45 per hour', timeline: 'As needed' },
+  landing: { label: 'Landing page, 1 to 3 pages', price: 'From $200', timeline: '2 to 3 days' },
+  wordpressSite: { label: 'Business website, 5 to 10 pages, WordPress and Elementor', price: '$500 to $2,500', timeline: '1 to 2 weeks' },
+  webflowSite: { label: 'Business website, 5 to 10 pages, Webflow with CMS', price: '$800 to $3,000', timeline: '1 to 3 weeks' },
+  woocommerce: { label: 'WooCommerce store', price: '$1,000 to $4,000', timeline: '2 to 4 weeks' },
+  wordpressToWebflow: { label: 'WordPress to Webflow migration', price: 'From $1,000', timeline: '1 to 2 weeks' },
+  nextjs: { label: 'Next.js site or WordPress to Next.js migration', price: 'From $2,000', timeline: '3 to 6 weeks, final price after a call' },
+  webApp: { label: 'Custom web app or custom features', price: 'Custom quote', timeline: 'Priced after a call' },
+  maintenance: { label: 'Maintenance plan', price: '$100 to $300 per month', timeline: 'Ongoing' },
+  hourly: { label: 'Hourly and white label work', price: '$40 per hour', timeline: 'As needed' },
 } satisfies Record<string, PriceRow>
 
 const shared = {
@@ -65,7 +65,7 @@ export const servicePages: ServicePage[] = [
     slug: 'wordpress-developer',
     serviceId: 'wordpress',
     keyword: 'WordPress developer',
-    metaTitle: 'Hire a WordPress Developer: Elementor & WooCommerce Expert',
+    metaTitle: 'Hire a WordPress & Elementor Developer',
     metaDescription:
       'Freelance WordPress developer for Elementor, WooCommerce and Crocoblock sites. 300+ projects, fixed quotes and a staging link before launch.',
     eyebrow: 'WordPress developer for hire',
@@ -90,9 +90,9 @@ export const servicePages: ServicePage[] = [
     ],
     projectStacks: ['wordpress', 'woocommerce', 'elementor'],
     pricing: [PRICES.landing, PRICES.wordpressSite, PRICES.woocommerce, PRICES.maintenance],
-    startingPrice: 600,
+    startingPrice: 200,
     faqs: [
-      { id: 'wp-cost', question: 'How much does it cost to hire a WordPress developer?', answer: 'It depends on the size of the site. A landing page starts at $600 and is usually live in 1 to 2 weeks. Most 5 to 10 page business sites built with Elementor cost $1,500 to $4,000, and a WooCommerce store $3,000 to $8,000. If you want me to look after the site afterwards, maintenance is $150 to $400 a month.' },
+      { id: 'wp-cost', question: 'How much does it cost to hire a WordPress developer?', answer: 'It depends on the size of the site. A landing page starts at $200 and is usually live in 2 to 3 days. Most 5 to 10 page business sites built with Elementor cost $500 to $2,500 and take 1 to 2 weeks, and a WooCommerce store is $1,000 to $4,000. If you want me to look after the site afterwards, maintenance is $100 to $300 a month.' },
       { id: 'wp-elementor', question: 'Do you build with Elementor or custom code?', answer: 'Both. Most business sites are built with Elementor Pro so your team can edit them visually. When a feature needs it, I write a custom plugin or theme in PHP instead.' },
       { id: 'wp-existing', question: 'Can you fix or speed up my existing WordPress site?', answer: 'Yes. I start with a short audit of plugins, hosting and page weight, then send a fixed quote for the fixes. Most speed work is done without a redesign.' },
       { id: 'wp-woo', question: 'Can you build a WooCommerce store with my payment provider?', answer: 'Yes. WooCommerce works with Stripe, PayPal and most regional gateways. I set up products, shipping, taxes and the order emails, and test checkout before launch.' },
@@ -103,7 +103,7 @@ export const servicePages: ServicePage[] = [
     slug: 'webflow-developer',
     serviceId: 'webflow',
     keyword: 'Webflow developer',
-    metaTitle: 'Freelance Webflow Developer: Figma to Webflow & CMS',
+    metaTitle: 'Freelance Webflow Developer: Figma to Webflow',
     metaDescription:
       'Freelance Webflow developer: Figma to Webflow builds, CMS collections, interactions and Memberstack. 50+ Webflow sites shipped, fixed quote in 24 hours.',
     eyebrow: 'Freelance Webflow developer',
@@ -128,9 +128,9 @@ export const servicePages: ServicePage[] = [
     ],
     projectStacks: ['webflow', 'framer'],
     pricing: [PRICES.landing, PRICES.webflowSite, PRICES.wordpressToWebflow, PRICES.maintenance],
-    startingPrice: 600,
+    startingPrice: 200,
     faqs: [
-      { id: 'wf-cost', question: 'How much does it cost to hire a Webflow developer?', answer: 'A Webflow landing page starts at $600. A full 5 to 10 page site with CMS collections is usually $2,000 to $5,000 and takes 3 to 5 weeks. Moving an existing WordPress site to Webflow starts at $1,500. You’ll have a fixed number before I start, not an estimate that keeps growing.' },
+      { id: 'wf-cost', question: 'How much does it cost to hire a Webflow developer?', answer: 'A Webflow landing page starts at $200 and takes 2 to 3 days. A full 5 to 10 page site with CMS collections is usually $800 to $3,000 and takes 1 to 3 weeks. Moving an existing WordPress site to Webflow starts at $1,000. You’ll have a fixed number before I start, not an estimate that keeps growing.' },
       { id: 'wf-figma', question: 'Can you build my Figma design in Webflow exactly?', answer: 'Yes. I build every breakpoint from your Figma file and check it against the design on a staging link before launch. If something in the design will not work responsively, I flag it before building.' },
       { id: 'wf-migrate', question: 'Can you move my site from WordPress to Webflow?', answer: 'Yes. I rebuild the pages, import posts into the CMS and set up 301 redirects from every old URL, so you keep your search rankings.' },
       { id: 'wf-cms', question: 'Will my team be able to update the site?', answer: 'Yes. Content lives in CMS collections and the Webflow Editor, so your team can add posts, case studies and pages without touching the design.' },
@@ -141,7 +141,7 @@ export const servicePages: ServicePage[] = [
     slug: 'nextjs-developer',
     serviceId: 'apps',
     keyword: 'Next.js developer',
-    metaTitle: 'Next.js Developer for Hire: Headless WordPress & Web Apps',
+    metaTitle: 'Next.js Developer for Hire: Sites & Web Apps',
     metaDescription:
       'Next.js developer for custom web apps, dashboards and WordPress to Next.js migrations. Faster pages, no lost rankings, fixed price up front.',
     eyebrow: 'Next.js developer for hire',
@@ -166,9 +166,9 @@ export const servicePages: ServicePage[] = [
     ],
     projectStacks: ['nextjs', 'react', 'nodejs', 'laravel'],
     pricing: [PRICES.nextjs, PRICES.webApp, PRICES.maintenance],
-    startingPrice: 4000,
+    startingPrice: 2000,
     faqs: [
-      { id: 'nx-cost', question: 'How much does it cost to hire a Next.js developer?', answer: 'A Next.js website, or moving a WordPress site to Next.js, is usually $4,000 to $12,000 and takes 6 to 12 weeks. A custom web app starts at $8,000 for the first version, which takes 10 to 16 weeks. The range is wide because the projects are. Once we’ve talked through what it needs to do, you get a fixed price.' },
+      { id: 'nx-cost', question: 'How much does it cost to hire a Next.js developer?', answer: 'A Next.js website, or moving a WordPress site to Next.js, starts at $2,000 and usually takes 3 to 6 weeks. The final price depends on the custom features and integrations it needs, so we talk it through on a call first, and then you get a fixed quote.' },
       { id: 'nx-migrate', question: 'Will I lose my Google rankings if I move from WordPress to Next.js?', answer: 'Not if the move is planned. I keep the same URLs where possible, add 301 redirects for the rest, carry over titles, descriptions and schema, and resubmit the sitemap in Search Console.' },
       { id: 'nx-headless', question: 'Can I keep editing in WordPress?', answer: 'Yes. With a headless setup WordPress stays your editor and Next.js only serves the pages. Your team keeps the editor it knows.' },
       { id: 'nx-hosting', question: 'Where will the site be hosted?', answer: 'Usually Vercel, which handles scaling and SSL. I can also deploy to your own server or cloud account.' },
@@ -179,7 +179,7 @@ export const servicePages: ServicePage[] = [
     slug: 'white-label-for-agencies',
     serviceId: 'agencies',
     keyword: 'White label web development',
-    metaTitle: 'White Label WordPress & Webflow Developer for Agencies',
+    metaTitle: 'White Label WordPress Developer for Agencies',
     metaDescription:
       'Outsource WordPress, Elementor and Webflow builds to one reliable developer. Your brand, your client, fixed quotes and on-time delivery.',
     eyebrow: 'White label web development for agencies',
@@ -204,10 +204,10 @@ export const servicePages: ServicePage[] = [
     ],
     projectStacks: ['wordpress', 'elementor', 'webflow'],
     pricing: [PRICES.hourly, PRICES.landing, PRICES.wordpressSite],
-    startingPrice: 45,
+    startingPrice: 40,
     faqs: [
       { id: 'wl-nda', question: 'Will you sign an NDA and stay invisible to my client?', answer: 'Yes. I work under your brand, sign an NDA if you need one, and only talk to your client if you ask me to.' },
-      { id: 'wl-pricing', question: 'How much does it cost to hire a white label web developer?', answer: 'My rate for agency and white label work is $45 an hour. If you’d rather have a fixed price, a landing page starts at $600 and a 5 to 10 page WordPress site is $1,500 to $4,000. Either way you know the cost up front, so you can set your own margin.' },
+      { id: 'wl-pricing', question: 'How much does it cost to hire a white label web developer?', answer: 'My rate for agency and white label work is $40 an hour. If you’d rather have a fixed price, a landing page starts at $200 and a 5 to 10 page WordPress site is $500 to $2,500. Either way you know the cost up front, so you can set your own margin.' },
       { id: 'wl-time', question: 'What time zone do you work in?', answer: 'GMT+6. That overlaps with UK and European mornings and US evenings, so work often moves forward overnight for you.' },
       { id: 'wl-tools', question: 'Can you work in our tools?', answer: 'Yes. I can work in your Slack, ClickUp, Asana or Jira, and in your hosting and Webflow accounts.' },
     ],
