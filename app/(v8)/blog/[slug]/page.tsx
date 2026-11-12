@@ -67,7 +67,7 @@ export default async function BlogPostPage({ params }: Params) {
         intro={post.excerpt}
       >
         <div className="v8-byline">
-          <Image src={aboutSection.portrait.src} alt="" width={44} height={44} className="v8-byline__avatar" />
+          <Image src={aboutSection.portrait.src} alt={site.name} width={44} height={44} className="v8-byline__avatar" />
           <div>
             <p className="v8-byline__name">{site.name}</p>
             <p className="v8-post-meta">

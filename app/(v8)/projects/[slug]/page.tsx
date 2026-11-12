@@ -137,7 +137,7 @@ export default async function ProjectPage({ params }: Params) {
                   {gallery.map((src, i) => (
                     <li key={src}>
                       <a href={src} target="_blank" rel="noopener noreferrer" aria-label={`Open screen ${i + 1} full size`}>
-                        <Image src={src} alt={`${project.title}, screen ${i + 1}`} width={1200} height={900} sizes="(max-width: 960px) 100vw, 560px" />
+                        <Image src={src} alt={`${project.title} website, page ${i + 1}, built with ${platforms[0] ?? 'custom code'}`} width={1200} height={900} sizes="(max-width: 960px) 100vw, 560px" />
                       </a>
                     </li>
                   ))}

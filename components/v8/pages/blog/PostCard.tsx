@@ -12,7 +12,7 @@ export function FeaturedPost({ post, headingLevel = 'h2' }: { post: PostSummary;
     <article className="v8-post-feature v8-spotlight">
       <Link href={routes.post(post.slug)} className="v8-post-feature__media" tabIndex={-1} aria-hidden="true">
         {post.coverImage ? (
-          <Image src={post.coverImage} alt="" fill sizes="(max-width: 960px) 100vw, 600px" preload />
+          <Image src={post.coverImage} alt={post.title} fill sizes="(max-width: 960px) 100vw, 600px" preload />
         ) : (
           <span className="v8-post-feature__placeholder">{post.category?.name ?? 'Notes'}</span>
         )}
@@ -43,7 +43,7 @@ export function PostCard({ post, headingLevel = 'h2' }: { post: PostSummary; hea
     <article className="v8-post-card v8-spotlight">
       <div className="v8-post-card__media">
         {post.coverImage ? (
-          <Image src={post.coverImage} alt="" fill sizes="(max-width: 640px) 100vw, (max-width: 960px) 50vw, 380px" />
+          <Image src={post.coverImage} alt={post.title} fill sizes="(max-width: 640px) 100vw, (max-width: 960px) 50vw, 380px" />
         ) : (
           <span className="v8-post-feature__placeholder">{post.category?.name ?? 'Notes'}</span>
         )}
