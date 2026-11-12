@@ -6,6 +6,15 @@
 
 ---
 
+### 2026-11-12 — SEO + copy pass, 404 redesign
+
+- **Keyword map** (one main term per page): home = "freelance web developer" (+ WordPress/Webflow/web app developer), services = "web development services", projects = "web development portfolio", blog = "web development blog", contact = "hire a web developer", FAQ = "web development FAQ". Titles/descriptions live in each page's `pageMetadata()` call and `app/(v8)/layout.tsx` (home).
+- **Homepage h1** is now the small label above the slogan (`hero.eyebrow`: "Freelance web developer for WordPress, Webflow & web apps"); the big slogan is a styled `<p>`. `Eyebrow` takes `as`/`id` for this.
+- Service detail sections use `servicesPage.details[id].heading` (keyword headings); project pages are titled "{Project}: {Platform} Website Project"; project image alt text names the stack. Meta descriptions are trimmed at a word boundary (≤155 chars).
+- JSON-LD: richer `Person` (jobTitle, knowsAbout, sameAs, image) + `WebSite` on the homepage. Default share image `public/og.png` (1200×630, rendered once with `next/og`) is used by `pageMetadata()` whenever a page has no image of its own.
+- Copy: no em dashes in visible text (section eyebrows use "01 / Work"; date ranges use an en dash), plainer wording throughout. Facts only from existing copy.
+- **404** (`components/v8/pages/NotFoundContent.tsx` + `NotFoundParts.tsx`, `styles/v8/pages/NotFound.scss`): outlined "404" with an ember sweep, Back home + ⌘K search, and a terminal showing the requested path and the real pages. **No fade-in entrance animations on this page**: for a missing project/post Next serves an empty `__next_error__` shell and renders the not-found in the browser, where entrance animations never start and left the content invisible. Only looping ambient animation is used.
+
 ### 2026-11-12 — v8 is the main site; old site backed up and removed
 
 - **Backup first**: branch `backup/old-site` + tag `old-site-backup-2026-11-12` (commit `55fb1f6`) hold the full previous site. Restore by checking out that branch.

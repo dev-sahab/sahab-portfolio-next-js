@@ -16,7 +16,7 @@ import '@/styles/v8/sections/Reviews.scss'
 import '@/styles/v8/pages/About.scss'
 
 export const metadata = pageMetadata({
-  title: 'About',
+  title: 'About Me: Freelance Web & WordPress Developer',
   description: aboutPage.description,
   path: routes.about,
   image: aboutSection.portrait.src,
@@ -63,7 +63,7 @@ export default function AboutPage() {
             id="v8-principles-title"
             eyebrow="How I work"
             title={'Four habits,\n*every project.*'}
-            intro="The parts of the job clients mention most in reviews, kept on purpose."
+            intro="How I run every project, and what clients mention most in their reviews."
           />
           <ol className="v8-principles__list">
             {aboutPage.principles.map((p, i) => (
@@ -83,7 +83,7 @@ export default function AboutPage() {
             id="v8-changelog-title"
             eyebrow="Changelog"
             title={'Every role,\n*in release order.*'}
-            intro="From a first hand-coded page to leading CMS builds for agency clients."
+            intro="From a first hand-coded page in 2018 to leading WordPress and Webflow builds for agency clients."
             layout="stacked"
             className="v8-changelog__head"
           />

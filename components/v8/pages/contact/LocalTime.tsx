@@ -14,5 +14,5 @@ export default function LocalTime({ timeZone }: { timeZone: string }) {
     return () => window.clearInterval(id)
   }, [timeZone])
 
-  return <span suppressHydrationWarning>{time ?? '—'}</span>
+  return <span suppressHydrationWarning>{time ?? '…'}</span>
 }

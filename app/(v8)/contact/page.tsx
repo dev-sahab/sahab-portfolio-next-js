@@ -16,7 +16,7 @@ import '@/styles/v8/sections/Contact.scss'
 import '@/styles/v8/sections/Faq.scss'
 import '@/styles/v8/pages/Contact.scss'
 
-export const metadata = pageMetadata({ title: 'Contact', description: contactPage.description, path: routes.contact })
+export const metadata = pageMetadata({ title: 'Hire a Freelance Web Developer · Free Quote', description: contactPage.description, path: routes.contact })
 
 export default function ContactPage() {
   const profiles = socials.filter((s) => s.kind !== 'email')
@@ -26,7 +26,7 @@ export default function ContactPage() {
       <PageHero
         crumbs={[{ label: 'Contact', href: routes.contact }]}
         eyebrow="Contact"
-        title={contactSection.title}
+        title={'Hire a web developer.\n*Get a plan in 24 hours.*'}
         intro={contactSection.intro}
       />
 

@@ -32,9 +32,11 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params
   const project = await getProject(slug)
   if (!project) return { title: 'Project not found', robots: { index: false } }
+  const platform = project.stack[0] ? TECH[project.stack[0]].label : 'Website'
   return pageMetadata({
-    title: project.title,
-    description: project.summary.slice(0, 160),
+    // e.g. "Hightailpet: WordPress Website Project": a long-tail search, not just the name.
+    title: `${project.title}: ${platform} Website Project`,
+    description: (project.summary.length > 155 ? `${project.summary.slice(0, 152).replace(/\s+\S*$/, '')}…` : project.summary),
     path: routes.project(project.slug),
     image: project.image || undefined,
     noIndex: project.noIndex,

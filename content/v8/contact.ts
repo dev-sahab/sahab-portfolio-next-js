@@ -1,7 +1,7 @@
 import type { HeadingText } from './types'
 
 export const contactSection = {
-  eyebrow: '06 — Contact',
+  eyebrow: '06 / Contact',
   title: 'Bring the idea. *Get*\n*a plan* in 24 hours.' satisfies HeadingText,
   intro:
     'Share a Figma file, a rough brief or just the idea. You’ll get a reply within 24 hours with next steps and a fixed quote.',
@@ -21,5 +21,5 @@ export const quoteForm = {
     message: 'A few lines about your business and what you want the site to do…',
   },
   note: 'No commitment. You get a plan and a fixed quote first.',
-  submit: 'Send — get a plan in 24 hours',
+  submit: 'Send and get a plan in 24 hours',
 }

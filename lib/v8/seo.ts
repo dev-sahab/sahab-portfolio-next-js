@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
-import { site } from '@/content/v8/site'
+import { site, socials } from '@/content/v8/site'
 import { V8_BASE, absoluteUrl, routes } from './routes'
+
+export const DEFAULT_OG_IMAGE = absoluteUrl('/og.png')
 
 /** True while v8 is a preview under /v8 — every page stays out of search until launch. */
 export const IS_PREVIEW = V8_BASE !== ''
@@ -24,7 +26,8 @@ interface PageMetaInput {
  */
 export function pageMetadata({ title, description, path, image, type = 'website', publishedTime, modifiedTime, noIndex }: PageMetaInput): Metadata {
   const url = absoluteUrl(path)
-  const images = image ? [{ url: image, alt: title }] : undefined
+  // Pages without their own picture share the branded card (public/og.png, 1200×630).
+  const images = image ? [{ url: image, alt: title }] : [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630, alt: `${site.name}, freelance web developer` }]
   return {
     title,
     description,
@@ -39,7 +42,7 @@ export function pageMetadata({ title, description, path, image, type = 'website'
       images,
       ...(type === 'article' ? { publishedTime, modifiedTime, authors: [site.name] } : {}),
     },
-    twitter: { card: image ? 'summary_large_image' : 'summary', title: `${title} · ${site.name}`, description, images: image ? [image] : undefined },
+    twitter: { card: 'summary_large_image', title: `${title} · ${site.name}`, description, images: [images[0].url] },
     robots: IS_PREVIEW || noIndex ? { index: false, follow: !IS_PREVIEW } : undefined,
   }
 }
@@ -50,10 +53,41 @@ const person = {
   '@type': 'Person',
   '@id': absoluteUrl(`${routes.about}#person`),
   name: site.name,
+  alternateName: site.legalName,
   url: absoluteUrl(routes.about),
-  jobTitle: 'Web developer',
+  image: absoluteUrl('/v8/portrait.jpg'),
+  jobTitle: 'Freelance Web Developer',
+  description: 'Freelance web developer building WordPress, WooCommerce and Webflow websites and custom web apps.',
+  knowsAbout: [
+    'Web development',
+    'WordPress development',
+    'WooCommerce',
+    'Elementor',
+    'Webflow',
+    'Framer',
+    'Web application development',
+    'React',
+    'Next.js',
+    'Node.js',
+    'Laravel',
+    'PHP',
+    'Technical SEO',
+    'Website performance',
+  ],
+  sameAs: socials.filter((s) => s.href.startsWith('http')).map((s) => s.href),
   address: { '@type': 'PostalAddress', addressLocality: 'Sylhet', addressCountry: 'BD' },
 }
+
+/** Homepage: the site itself, owned by the person above. */
+export const websiteSchema = () => ({
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': absoluteUrl(`${routes.home}#website`),
+  name: `${site.name} · Freelance Web Developer`,
+  url: absoluteUrl(routes.home),
+  inLanguage: 'en',
+  publisher: { '@id': person['@id'] },
+})
 
 export const personSchema = () => ({ '@context': 'https://schema.org', ...person })
 

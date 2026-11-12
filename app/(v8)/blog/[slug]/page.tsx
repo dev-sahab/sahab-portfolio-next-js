@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   if (!post) return { title: 'Article not found', robots: { index: false } }
   return pageMetadata({
     title: post.title,
-    description: post.excerpt.slice(0, 160),
+    description: post.excerpt.length > 155 ? `${post.excerpt.slice(0, 152).replace(/\s+\S*$/, '')}…` : post.excerpt,
     path: routes.post(post.slug),
     image: post.coverImage,
     type: 'article',

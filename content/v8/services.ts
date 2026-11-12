@@ -2,10 +2,10 @@ import { routes } from '@/lib/v8/routes'
 import type { HeadingText, Service } from './types'
 
 export const servicesSection = {
-  eyebrow: '02 — Services',
+  eyebrow: '02 / Services',
   title: 'Hire me like a\nstudio, *work with*\n*one developer.*' satisfies HeadingText,
   intro:
-    'One point of contact for your whole website. I build it, and my trusted partners cover UI/UX design, SEO and marketing — no chasing five freelancers.',
+    'WordPress, Webflow and custom web app development with one point of contact. I build it, and trusted partners handle UI/UX design, SEO and marketing, so you’re not managing five freelancers.',
   /** Text link under the intro → the full services page. */
   cta: { label: 'View all services', href: routes.services },
 }
@@ -20,7 +20,7 @@ export const services: Service[] = [
     stack: ['wordpress', 'woocommerce', 'elementor', 'php'],
     title: 'WordPress and\nWooCommerce',
     description:
-      'Custom WordPress development with Elementor, Crocoblock and WooCommerce: themes, plugins and online stores that are fast and easy to manage.',
+      'Custom WordPress development with Elementor, Crocoblock and WooCommerce. Themes, plugins and online stores that load fast and are easy to run.',
     features: [
       'Custom themes and plugin development',
       'WooCommerce stores and checkout flows',
@@ -36,7 +36,7 @@ export const services: Service[] = [
     stack: ['webflow', 'framer', 'make', 'n8n'],
     title: 'Webflow\nand Framer',
     description:
-      'Webflow and Framer development with a clean Client-First structure, CMS, interactions and integrations your team can run.',
+      'Webflow and Framer websites with a clean Client-First structure, a CMS your team can update, smooth interactions and the integrations you need.',
     features: [
       'CMS collections and interactions',
       'Memberstack logins and gated content',
@@ -52,7 +52,7 @@ export const services: Service[] = [
     stack: ['nextjs', 'nodejs', 'laravel', 'mongodb'],
     title: 'Custom apps\nand automation',
     description:
-      'Custom web apps, dashboards and automation built around how your business works, on whichever platform or stack suits the job.',
+      'Custom web apps, dashboards and automation built around how your business actually works, on the stack that fits the job.',
     features: [
       'Fast React and Next.js front ends',
       'The right back end for your logic: Node.js, Laravel and more',

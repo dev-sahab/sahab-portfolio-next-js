@@ -27,11 +27,12 @@ export default function Hero() {
       <HeroFloats />
 
       <div className="v8-container v8-hero__content">
-        <Eyebrow className="v8-rise">{hero.eyebrow}</Eyebrow>
+        {/* SEO: the small label is the page's h1 (it says what I do); the big slogan stays a visual headline. */}
+        <Eyebrow as="h1" id="v8-hero-title" className="v8-rise">
+          {hero.eyebrow}
+        </Eyebrow>
 
-        <h1 id="v8-hero-title" className="v8-hero__title v8-rise v8-rise--1">
-          {renderRich(hero.title)}
-        </h1>
+        <p className="v8-hero__title v8-rise v8-rise--1">{renderRich(hero.title)}</p>
 
         <p className="v8-hero__lede v8-rise v8-rise--2">{renderRich(hero.lede)}</p>
 

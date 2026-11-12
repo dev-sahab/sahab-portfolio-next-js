@@ -2,10 +2,10 @@ import { routes } from '@/lib/v8/routes'
 import type { HeadingText, Project } from './types'
 
 export const workSection = {
-  eyebrow: '01 — Selected work',
+  eyebrow: '01 / Selected work',
   title: 'Recent client sites,\n*live and in use.*' satisfies HeadingText,
-  intro: 'A few recent WordPress, WooCommerce and Webflow builds. Hover a screen to scroll the full page.',
-  footerNote: '300+ projects delivered — browse more WordPress and Webflow work.',
+  intro: 'A few recent WordPress, WooCommerce and Webflow websites I built for clients. Hover a screen to scroll the whole page.',
+  footerNote: '300+ projects delivered so far. See more WordPress, Webflow and web app work.',
   allProjects: { label: 'See all projects', href: routes.projects },
 }
 

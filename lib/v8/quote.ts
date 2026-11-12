@@ -77,7 +77,7 @@ export function buildQuoteMailto(data: QuoteRequest): string {
     '',
     data.message.trim(),
   ]
-  const subject = `Project enquiry — ${data.projectType} (${data.name.trim()})`
+  const subject = `Project enquiry: ${data.projectType} (${data.name.trim()})`
   return `mailto:${site.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`
 }
 

@@ -11,7 +11,7 @@ import { faqs } from './faq'
 export const aboutPage = {
   title: 'Five years of *shipping*\n*websites that work.*' satisfies HeadingText,
   description:
-    'Sahab Uddin is a web developer from Sylhet, Bangladesh: 300+ WordPress, Webflow and custom projects, a 5.0 rating across 200+ reviews, and one point of contact from idea to launch.',
+    'Sahab Uddin is a freelance web developer and WordPress developer with 300+ WordPress, Webflow and web app projects and a 5.0 rating from 200+ reviews.',
   story: [
     'I wrote my first page in HTML and CSS in 2018, self-taught, and kept going. By 2021 I was building WordPress sites for clients on Upwork and Fiverr, and I still do: 300+ projects later, with a 5.0 average across 200+ reviews.',
     'Along the way I worked as a web developer at Webeliyo and as a WordPress developer at TechNuxt, turning designs into Elementor sites, customising WooCommerce stores and cutting load times by roughly 30%. Today I’m a Professional CMS Developer at PIXELVEGA, with 120+ client projects shipped there, including 50+ Webflow builds.',
@@ -45,11 +45,11 @@ export const aboutPage = {
 
 // ── Services ──
 export const servicesPage = {
-  title: 'Hire me like a studio,\n*work with one developer.*' satisfies HeadingText,
+  title: 'Web development services,\n*from one developer.*' satisfies HeadingText,
   description:
-    'WordPress and WooCommerce, Webflow and Framer, and custom web apps with automation. Fixed quotes, a staging link to review, and support after launch.',
+    'WordPress and WooCommerce development, Webflow and Framer sites, and custom web app development. Fixed quotes, a staging link to review, support after launch.',
   intro:
-    'One point of contact for your whole website. I build it, and my trusted partners cover UI/UX design, SEO and marketing.',
+    'You work with me directly, from the first call to launch. I build the site or app myself, and trusted partners cover UI/UX design, SEO and marketing when you need them.',
   meta: [
     { label: 'First reply', value: 'Within 24 hours' },
     { label: 'Pricing', value: 'Fixed quote, up front' },
@@ -59,6 +59,7 @@ export const servicesPage = {
   /** Extra detail per service card id (content/v8/services.ts). */
   details: {
     wordpress: {
+      heading: 'WordPress and *WooCommerce development*',
       deliverables: [
         'Custom themes and plugin development',
         'WooCommerce stores, products and checkout flows',
@@ -69,6 +70,7 @@ export const servicesPage = {
       fit: 'You want a site or shop your team can run day to day, with room to grow through plugins.',
     },
     webflow: {
+      heading: 'Webflow and *Framer development*',
       deliverables: [
         'Webflow and Framer builds with a clean Client-First structure',
         'CMS collections, interactions and animation',
@@ -79,6 +81,7 @@ export const servicesPage = {
       fit: 'You care about design detail and want your marketing team to publish pages without a developer.',
     },
     apps: {
+      heading: 'Custom web app *development*',
       deliverables: [
         'Fast React and Next.js front ends',
         'The right back end for your logic: Node.js, Laravel and more',
@@ -88,13 +91,13 @@ export const servicesPage = {
       ],
       fit: 'Your website needs to do real work: logins, data, dashboards or automated workflows.',
     },
-  } as Record<string, { deliverables: string[]; fit: string }>,
+  } as Record<string, { heading: string; deliverables: string[]; fit: string }>,
 }
 
 // ── Contact ──
 export const contactPage = {
   description:
-    'Tell Sahab Uddin about your website project. Share a Figma file, a brief or just the idea, and get a reply within 24 hours with next steps and a fixed quote.',
+    'Hire a freelance web developer for your WordPress, Webflow or web app project. Share a Figma file, a brief or just the idea and get a fixed quote within 24 hours.',
   steps: [
     { title: 'Reply within 24 hours', text: 'Questions about your goals, plus a first look at the scope.' },
     { title: 'Plan and fixed quote', text: 'What gets built, on which platform, what it costs and when it launches.' },
@@ -111,7 +114,7 @@ const faq = (id: string) => faqs.find((f) => f.id === id)!
 // rest of the site's copy (services, process, "every project includes").
 export const faqPage = {
   description:
-    'Answers to common questions about working with Sahab Uddin: pricing, timelines, platforms, editing your site and support after launch.',
+    'Answers to common web development questions: what a website costs, how long it takes, WordPress vs Webflow, editing your site and support after launch.',
   groups: [
     {
       id: 'pricing',

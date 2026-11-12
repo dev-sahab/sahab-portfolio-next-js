@@ -98,7 +98,7 @@ export function useCopy() {
         )
       }
       if (!ok) ok = legacyCopy(value)
-      notify(ok ? message : `Couldn’t copy — ${value}`, durationMs)
+      notify(ok ? message : `Couldn’t copy. Here it is: ${value}`, durationMs)
       return ok
     },
     [notify],

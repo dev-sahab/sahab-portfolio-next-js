@@ -12,9 +12,9 @@ import '@/styles/v8/pages/Blog.scss'
 export const revalidate = 3600
 
 const DESCRIPTION =
-  'Articles by Sahab Uddin on WordPress, Webflow, site speed and the business side of websites: practical notes from 300+ client projects.'
+  'A web development blog by a working freelance developer: practical notes on WordPress, Webflow, site speed and SEO from 300+ client projects.'
 
-export const metadata = pageMetadata({ title: 'Blog', description: DESCRIPTION, path: routes.blog })
+export const metadata = pageMetadata({ title: 'Web Development Blog: WordPress, Webflow & Site Speed', description: DESCRIPTION, path: routes.blog })
 
 export default async function BlogPage() {
   const [posts, settings] = await Promise.all([getPosts(), getSiteSettings()])
@@ -27,8 +27,8 @@ export default async function BlogPage() {
       <PageHero
         crumbs={[{ label: 'Blog', href: routes.blog }]}
         eyebrow="Blog"
-        title={'Notes on building\n*for the web.*'}
-        intro="Practical write-ups on WordPress, Webflow and site speed, plus what actually moves the needle for small businesses online."
+        title={'Web development notes\n*from real client work.*'}
+        intro="Practical write-ups on WordPress, Webflow, site speed and SEO, plus what actually helps a small business get more from its website."
         meta={[
           { label: 'Articles', value: String(posts.length) },
           { label: 'Topics', value: topics.join(', ') || 'Web development' },

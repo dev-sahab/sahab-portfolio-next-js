@@ -12,9 +12,9 @@ import '@/styles/v8/pages/Projects.scss'
 export const revalidate = 3600
 
 const DESCRIPTION =
-  'WordPress, WooCommerce and Webflow sites built by Sahab Uddin for real businesses: service companies, online stores and landing pages, all live and in use.'
+  'Web development portfolio of Sahab Uddin: WordPress, WooCommerce and Webflow websites for service businesses, online stores and landing pages, all live.'
 
-export const metadata = pageMetadata({ title: 'Projects', description: DESCRIPTION, path: routes.projects })
+export const metadata = pageMetadata({ title: 'Web Development Portfolio: WordPress & Webflow Projects', description: DESCRIPTION, path: routes.projects })
 
 export default async function ProjectsPage() {
   const projects = await getProjects()
@@ -27,8 +27,8 @@ export default async function ProjectsPage() {
       <PageHero
         crumbs={[{ label: 'Projects', href: routes.projects }]}
         eyebrow="Selected work"
-        title={'Client sites,\n*live and in use.*'}
-        intro="A selection of recent builds. Hover a screen to scroll the full page, or open a project for the details."
+        title={'Web development work,\n*live and in use.*'}
+        intro="Recent websites I built for clients on WordPress, WooCommerce and Webflow. Hover a screen to scroll the whole page, or open a project for the details."
         meta={[
           { label: 'Shown here', value: `${projects.length} ${projects.length === 1 ? 'project' : 'projects'}` },
           { label: 'Delivered overall', value: '300+ projects' },

@@ -1,11 +1,12 @@
 import type { HeadingText, TechKey } from './types'
 
 export const hero = {
-  eyebrow: 'WordPress, Webflow & full-stack web developer',
+  /** The page's h1 (styled small, above the slogan): the search phrase the homepage targets. */
+  eyebrow: 'Freelance web developer for WordPress, Webflow & web apps',
   title: 'Websites,\n*engineered*\nto convert.' satisfies HeadingText,
   /** `**bold**` segments render in the primary text colour. */
   lede:
-    'I’m Sahab Uddin, a web developer building **fast, SEO-friendly websites** for 5+ years. From first idea to launch and beyond, **everything in one place**.',
+    'I’m Sahab Uddin. For 5+ years I’ve built **fast, SEO-friendly websites** and web apps for businesses around the world. One developer from the first idea to launch, and **still here after**.',
   capabilities: [
     { icon: 'pen', label: 'UI/UX design' },
     { icon: 'code', label: 'Development' },

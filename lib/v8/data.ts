@@ -8,7 +8,9 @@ import '@/models/Tag'
 import { sanitizeContent } from '@/lib/sanitize'
 import { calculateReadTime } from '@/lib/utils'
 import type { PostDetail, PostSummary, ProjectDetail } from '@/content/v8/types'
-import { toTechKeys } from './tech'
+import { TECH, toTechKeys } from './tech'
+
+const TECH_LABELS = Object.fromEntries(Object.entries(TECH).map(([k, v]) => [k, v.label])) as Record<string, string>
 import { routes } from './routes'
 
 /**
@@ -73,7 +75,7 @@ function toProject(doc: Doc): ProjectDetail {
     stackExtra: extra,
     domain: hostOf(liveUrl) ?? doc.slug,
     image: safeUrl(doc.coverImage) ?? '',
-    imageAlt: `${doc.title} website`,
+    imageAlt: `${doc.title} website${keys.length ? `, built with ${keys.map((k) => TECH_LABELS[k]).join(' and ')}` : ''}`,
     caseStudyHref: routes.project(doc.slug),
     liveUrl,
     githubUrl: safeUrl(doc.githubUrl),

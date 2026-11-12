@@ -12,7 +12,7 @@ import { faqSchema, pageMetadata } from '@/lib/v8/seo'
 import '@/styles/v8/sections/Faq.scss'
 import '@/styles/v8/pages/Faq.scss'
 
-export const metadata = pageMetadata({ title: 'FAQ', description: faqPage.description, path: routes.faq })
+export const metadata = pageMetadata({ title: 'Web Development FAQ: Cost, Timelines & Platforms', description: faqPage.description, path: routes.faq })
 
 export default function FaqPage() {
   const total = faqPage.groups.reduce((n, g) => n + g.items.length, 0)
@@ -22,7 +22,7 @@ export default function FaqPage() {
       <PageHero
         crumbs={[{ label: 'FAQ', href: routes.faq }]}
         eyebrow="FAQ"
-        title={faqSection.title}
+        title={'Questions about\n*your new website.*'}
         intro={faqSection.intro}
         meta={[
           { label: 'Questions', value: String(total) },

@@ -1,7 +1,7 @@
 import type { HeadingText, Stat, Testimonial } from './types'
 
 export const reviewsSection = {
-  eyebrow: '04 — Reviews',
+  eyebrow: '04 / Reviews',
   title: 'Clients *come back.*' satisfies HeadingText,
 }
 

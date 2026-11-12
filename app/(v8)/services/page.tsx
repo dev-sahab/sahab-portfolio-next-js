@@ -21,7 +21,7 @@ import '@/styles/v8/sections/Services.scss'
 import '@/styles/v8/sections/Faq.scss'
 import '@/styles/v8/pages/Services.scss'
 
-export const metadata = pageMetadata({ title: 'Services', description: servicesPage.description, path: routes.services })
+export const metadata = pageMetadata({ title: 'Web Development Services: WordPress, Webflow & Web Apps', description: servicesPage.description, path: routes.services })
 
 const INCLUDE_ICONS = { tag: Tag, link: Link2, pencil: Pencil, shield: ShieldCheck } as const
 
@@ -62,7 +62,7 @@ export default function ServicesPage() {
               <Reveal className="v8-service-detail__intro">
                 <span className="v8-service-detail__num">{String(i + 1).padStart(2, '0')}</span>
                 <h2 id={`v8-service-${service.id}`} className="v8-service-detail__title">
-                  {renderRich(service.title)}
+                  {renderRich(detail?.heading ?? service.title)}
                 </h2>
                 <p className="v8-service-detail__desc">{service.description}</p>
                 <ul className="v8-service-detail__stack" aria-label="Tools">
@@ -148,7 +148,7 @@ export default function ServicesPage() {
 
       <JsonLd
         data={serviceSchema(
-          services.map((s) => ({ name: s.title.replace('\n', ' '), description: s.description, url: routes.service(s.id) })),
+          services.map((s) => ({ name: (servicesPage.details[s.id]?.heading ?? s.title).replace(/[*\n]/g, ' ').replace(/\s+/g, ' ').trim(), description: s.description, url: routes.service(s.id) })),
         )}
       />
     </>

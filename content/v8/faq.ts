@@ -1,13 +1,12 @@
 import type { FaqItem, HeadingText } from './types'
 
 export const faqSection = {
-  eyebrow: '05 — FAQ',
+  eyebrow: '05 / FAQ',
   title: 'Questions,\n*answered.*' satisfies HeadingText,
-  intro: 'The things clients usually ask before the first message. Anything else, just email me.',
+  intro: 'What clients usually ask before hiring a web developer. If your question isn’t here, just email me.',
 }
 
-// NOTE: only the first answer exists in the Figma file. The other four are
-// drafted from copy used elsewhere on the page — review before launch.
+// Answers are drafted from copy used elsewhere on the site; review if anything changes.
 export const faqs: FaqItem[] = [
   {
     id: 'cost',
@@ -25,7 +24,7 @@ export const faqs: FaqItem[] = [
     id: 'editing',
     question: 'Can I edit the site myself after launch?',
     answer:
-      'Yes. Sites are built in WordPress, Webflow or Framer so your team can update text, images and pages without touching code — and I stay on call for fixes after launch.',
+      'Yes. Sites are built in WordPress, Webflow or Framer, so your team can update text, images and pages without touching code. I also stay on call for fixes after launch.',
   },
   {
     id: 'partners',
