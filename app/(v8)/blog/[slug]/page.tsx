@@ -90,7 +90,7 @@ export default async function BlogPostPage({ params }: Params) {
       {post.coverImage && (
         <div className="v8-container">
           <div className="v8-article-cover">
-            <Image src={post.coverImage} alt={post.title} fill sizes="(max-width: 1424px) 100vw, 1360px" preload />
+            <Image src={post.coverImage} alt={post.title} fill sizes="(max-width: 1344px) 100vw, 1280px" preload />
           </div>
         </div>
       )}

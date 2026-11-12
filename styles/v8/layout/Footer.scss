@@ -124,10 +124,10 @@
 
   // Sized from the *content width* (viewport minus gutters), not the
   // viewport, so the whole word always fits inside the container:
-  // desktop 535px @ 1360px (39.3%), mobile 120px @ 350px (34.3%, Figma
+  // desktop 503px @ 1280px (39.3%), mobile 120px @ 350px (34.3%, Figma
   // mobile). Clipped at ~62% of the letter height ("peeking").
   &__wordmark {
-    --wm-size: min(535px, calc((100vw - var(--gutter) * 2) * 0.393));
+    --wm-size: min(503px, calc((100vw - var(--gutter) * 2) * 0.393));
     position: relative;
     height: calc(var(--wm-size) * 0.62);
     overflow: hidden;
