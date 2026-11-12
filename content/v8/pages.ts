@@ -14,11 +14,11 @@ export const aboutPage = {
     'Sahab Uddin is a freelance web developer and WordPress developer with 300+ WordPress, Webflow and web app projects and a 5.0 rating from 200+ reviews.',
   story: [
     'I wrote my first page in HTML and CSS in 2018, self-taught, and kept going. By 2021 I was building WordPress sites for clients on Upwork and Fiverr, and I still do: 300+ projects later, with a 5.0 average across 200+ reviews.',
-    'Along the way I worked as a web developer at Webeliyo and as a WordPress developer at TechNuxt, turning designs into Elementor sites, customizing WooCommerce stores and cutting load times by roughly 30%. Today I’m a Professional CMS Developer at PIXELVEGA, with 120+ client projects shipped there, including 50+ Webflow builds.',
+    'Along the way I worked as a web developer at Webeliyo and as a WordPress developer at TechNuxt, turning designs into Elementor sites, customizing WooCommerce stores and cutting load times by roughly 30%. Since 2025 I’ve focused on CMS builds: 120+ client projects so far, including 50+ Webflow sites.',
     'What hasn’t changed is how I work: one point of contact, a fixed price before anything starts, and a site your team can actually edit. For UI/UX design, SEO and marketing I bring in trusted partners, so you never have to manage five freelancers.',
   ],
   now: [
-    { label: 'Now', value: 'Professional CMS Developer at PIXELVEGA' },
+    { label: 'Focus', value: 'Business websites and web apps' },
     { label: 'Freelance', value: 'Taking new projects' },
     { label: 'Builds with', value: 'WordPress, Webflow and Next.js' },
     { label: 'Works with', value: 'Clients worldwide, remotely' },
