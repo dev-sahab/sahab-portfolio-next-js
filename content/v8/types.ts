@@ -78,6 +78,8 @@ export interface ProjectDetail extends Project {
   client?: string
   duration?: string
   githubUrl?: string
+  /** "Hide from search engines" (dashboard Publish box): kept out of the sitemap. */
+  noIndex?: boolean
   /** Sanitised HTML from the dashboard editor. */
   content: string
   gallery: string[]

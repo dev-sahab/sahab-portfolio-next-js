@@ -1,39 +1,19 @@
 import type { Metadata } from 'next'
-import { Syne, Outfit, JetBrains_Mono } from 'next/font/google'
+import { v8FontVars } from '@/lib/v8/fonts'
 import { getSiteSettings } from '@/lib/publicData'
 import './globals.css'
 import '../styles/main.scss'
 
 export const revalidate = 3600
 
-const syne = Syne({
-  subsets: ['latin'],
-  variable: '--font-syne',
-  display: 'swap',
-  weight: ['400', '600', '700', '800'],
-})
-
-const outfit = Outfit({
-  subsets: ['latin'],
-  variable: '--font-outfit',
-  display: 'swap',
-  weight: ['300', '400', '500', '600'],
-})
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-mono',
-  display: 'swap',
-  weight: ['300', '400'],
-})
-
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings() as { siteTitle?: string; siteDescription?: string; favicon?: string } | null
   const title = settings?.siteTitle || 'Sahab Uddin Mintu'
-  const description = settings?.siteDescription || 'WordPress & MERN developer turning Figma into pixel-perfect, high-converting websites.'
+  const description = settings?.siteDescription || 'Fast, SEO-friendly WordPress, Webflow and custom websites by Sahab Uddin.'
   return {
     metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://shahabweb.vercel.app'),
-    title: { default: `${title} — WordPress & MERN Developer`, template: `%s — ${title}` },
+    // The public site (app/(v8)/layout.tsx) sets its own titles; this covers dashboard + login.
+    title: { default: title, template: `%s · ${title}` },
     description,
     keywords: ['WordPress', 'MERN', 'Webflow', 'Framer', 'Developer', 'Freelance'],
     authors: [{ name: title }],
@@ -54,7 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           __html: `(function(){try{var t=localStorage.getItem('sahab-theme')||'dark';document.documentElement.setAttribute('data-theme',t)}catch(e){}})()`,
         }} />
       </head>
-      <body className={`${syne.variable} ${outfit.variable} ${jetbrainsMono.variable}`}>
+      <body className={v8FontVars}>
         {children}
       </body>
     </html>

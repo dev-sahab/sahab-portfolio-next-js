@@ -1,11 +1,9 @@
 /**
- * Every v8 URL in one place.
- *
- * The v8 site is a preview under `/v8` until it replaces the current site.
- * To launch it at the root, set `V8_BASE` to '' (and move the route folders
- * out of `app/v8/`): every link, canonical URL and breadcrumb follows.
+ * Every public URL in one place. The site lives at the root (`app/(v8)`);
+ * `V8_BASE` is kept so the whole site could be moved under a prefix again
+ * by changing one value (links, canonicals and breadcrumbs follow).
  */
-export const V8_BASE: string = '/v8'
+export const V8_BASE: string = ''
 
 const at = (path: string) => `${V8_BASE}${path}` || '/'
 

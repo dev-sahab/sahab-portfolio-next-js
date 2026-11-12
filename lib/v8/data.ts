@@ -78,6 +78,7 @@ function toProject(doc: Doc): ProjectDetail {
     liveUrl,
     githubUrl: safeUrl(doc.githubUrl),
     featured: Boolean(doc.featured),
+    noIndex: Boolean(doc.noIndex),
     client: doc.client || undefined,
     duration: doc.duration || undefined,
     content: doc.content ? cleanHtml(doc.content) : '',
@@ -87,7 +88,7 @@ function toProject(doc: Doc): ProjectDetail {
   }
 }
 
-/** Published projects, featured first then newest. Excludes `noIndex` ones only from search, not from the page. */
+/** Published projects, featured first then newest (`noIndex` ones stay on the page, only the sitemap skips them). */
 export const getProjects = cache(async (): Promise<ProjectDetail[]> => {
   try {
     await connectDB()

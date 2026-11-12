@@ -2,48 +2,35 @@ import { revalidatePath } from 'next/cache'
 import { routes } from '@/lib/v8/routes'
 
 /**
- * Public pages are cached (see each app/(site) page's `export const
- * revalidate`) rather than force-dynamic, so a dashboard write needs to
- * explicitly tell Next which cached paths just went stale. One function per
- * content type, called from the matching API route(s) right after a
- * successful mutation — keeps "which paths does X affect" in one place
- * instead of repeated inline revalidatePath calls scattered across routes.
+ * Public pages are statically cached (`export const revalidate` in each
+ * app/(v8) page), so a dashboard write tells Next which cached paths just
+ * went stale. One function per content type, called from the matching API
+ * route(s) right after a successful mutation.
  */
 
 export function revalidateProjects() {
-  revalidatePath('/portfolio')
-  revalidatePath('/portfolio/[slug]', 'page')
-  revalidatePath('/')
-  // v8 site (see lib/v8/routes.ts)
   revalidatePath(routes.projects)
   revalidatePath(`${routes.projects}/[slug]`, 'page')
+  revalidatePath('/sitemap.xml')
 }
 
 export function revalidateBlog() {
-  revalidatePath('/blog')
-  revalidatePath('/blog/[slug]', 'page')
-  revalidatePath('/')
   revalidatePath(routes.blog)
   revalidatePath(`${routes.blog}/[slug]`, 'page')
+  revalidatePath('/sitemap.xml')
 }
 
 export function revalidateTestimonials() {
-  revalidatePath('/')
+  revalidatePath(routes.home)
 }
 
 export function revalidateSettings() {
-  // Nav/footer/metadata come from SiteSettings and render on every page.
+  // Settings (e.g. blog columns, favicon) can affect any page.
   revalidatePath('/', 'layout')
 }
 
 export function revalidateTaxonomy() {
-  // Category/tag names & slugs show up on both listing and detail pages.
-  revalidatePath('/portfolio')
-  revalidatePath('/portfolio/[slug]', 'page')
-  revalidatePath('/blog')
-  revalidatePath('/blog/[slug]', 'page')
-  revalidatePath(routes.projects)
-  revalidatePath(`${routes.projects}/[slug]`, 'page')
-  revalidatePath(routes.blog)
-  revalidatePath(`${routes.blog}/[slug]`, 'page')
+  // Category/tag names show on listing and detail pages.
+  revalidateProjects()
+  revalidateBlog()
 }

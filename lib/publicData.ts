@@ -1,12 +1,6 @@
 import { cache } from 'react'
 import connectDB from './mongodb'
 import SiteSettingsModel from '@/models/SiteSettings'
-import Project from '@/models/Project'
-import BlogPost from '@/models/BlogPost'
-// Registered so populate('category')/populate('tags') below can resolve the
-// ref — same reason every route/page that populates these already does this.
-import '@/models/Category'
-import '@/models/Tag'
 
 /**
  * Public-site data fetchers shared across a layout + a page + generateMetadata
@@ -27,14 +21,4 @@ export const getSiteSettings = cache(async () => {
     console.error('Error fetching site settings:', error)
     return null
   }
-})
-
-export const getProjectBySlug = cache(async (slug: string) => {
-  await connectDB()
-  return Project.findOne({ slug, published: true }).populate('category').populate('tags').lean()
-})
-
-export const getBlogPostBySlug = cache(async (slug: string) => {
-  await connectDB()
-  return BlogPost.findOne({ slug, published: true }).populate('category').populate('tags').lean()
 })

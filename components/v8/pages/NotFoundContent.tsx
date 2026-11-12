@@ -1,14 +1,11 @@
-import type { Metadata } from 'next'
 import { headerNav } from '@/content/v8/site'
 import { routes } from '@/lib/v8/routes'
-import { ButtonLink } from '@/components/v8/ui/Button'
-import Eyebrow from '@/components/v8/ui/Eyebrow'
+import { ButtonLink } from '../ui/Button'
+import Eyebrow from '../ui/Eyebrow'
 import '@/styles/v8/ui/PageHero.scss'
 
-export const metadata: Metadata = { title: 'Page not found', robots: { index: false, follow: false } }
-
-/** 404 inside the v8 layout (unknown /v8 URLs and missing projects/posts). */
-export default function V8NotFound() {
+/** 404 content in the v8 style (used by both not-found files). */
+export default function NotFoundContent() {
   return (
     <section className="v8-page-hero v8-404" aria-labelledby="v8-page-title">
       <div className="v8-page-hero__bg" aria-hidden="true">

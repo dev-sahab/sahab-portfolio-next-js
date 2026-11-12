@@ -30,6 +30,22 @@ const nextConfig: NextConfig = {
     // and is silently ignored here, breaking bare `@use 'variables'` imports.
     loadPaths: [path.join(__dirname, 'styles')],
   },
+  // Old URLs → their pages on the current site (permanent, so search engines
+  // move their ranking over). /v8/* was the preview address of this design.
+  async redirects() {
+    return [
+      { source: '/portfolio', destination: '/projects', permanent: true },
+      { source: '/portfolio/:slug', destination: '/projects/:slug', permanent: true },
+      { source: '/get-quote', destination: '/contact', permanent: true },
+      { source: '/v8', destination: '/', permanent: true },
+      // Only page paths: images in public/v8/ (logo, portrait…) must keep serving.
+      {
+        source: '/v8/:page(about|services|projects|blog|contact|faq|privacy|terms|cookies)/:rest*',
+        destination: '/:page/:rest*',
+        permanent: true,
+      },
+    ]
+  },
   async headers() {
     // Baseline security headers (vibe-coding pre-deploy checklist, prompt 3
     // check #4) applied to every response. `next/font/google` self-hosts the

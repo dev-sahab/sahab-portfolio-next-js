@@ -6,6 +6,16 @@
 
 ---
 
+### 2026-11-12 — v8 is the main site; old site backed up and removed
+
+- **Backup first**: branch `backup/old-site` + tag `old-site-backup-2026-11-12` (commit `55fb1f6`) hold the full previous site. Restore by checking out that branch.
+- `app/v8` → `app/(v8)` (route group) with `V8_BASE = ''`; `app/(site)`, its components (`components/site/*` except `socialIcons.tsx`, still used by the dashboard's `SocialLinksEditor`) and styles were deleted. `IS_PREVIEW` is now false, so pages are indexable with canonical URLs on the live domain.
+- The site frame moved into `components/v8/layout/V8Shell.tsx` so the root `app/not-found.tsx` (unmatched URLs render outside every route group) shows the same header/footer; 404 content is `components/v8/pages/NotFoundContent.tsx`.
+- `next.config.ts` redirects (308): `/portfolio` → `/projects`, `/portfolio/:slug` → `/projects/:slug`, `/get-quote` → `/contact`, `/v8` → `/`, `/v8/<page>…` → `/<page>…`. The `/v8/...` rule lists page names explicitly because **`public/v8/` still holds the logos and portrait** — a catch-all `/v8/:path*` redirect broke those images.
+- `app/sitemap.ts` / `robots.ts` use `lib/v8/data.ts` + `routes` (projects marked noIndex are skipped). `lib/revalidatePublic.ts` revalidates the new paths.
+- Root layout: dropped the old Syne/Outfit/JetBrains fonts (body uses the v8 fonts); title pattern now only for dashboard/login — the `(v8)` layout uses `title.absolute` so the root template isn't stacked on top. Favicon = the v8 person mark (`app/icon.png`, `app/apple-icon.png`).
+- `app/globals.css` pruned with postcss from 26.7 KB to 4 KB: only rules the dashboard/login still use remain. Dashboard Settings tabs for the old Navbar/Footer menus no longer drive the public site.
+
 ### 2026-11-12 — Live login showed "This page couldn't load"
 
 Next's built-in client error fallback appeared on the live login (fresh Chrome/Firefox loaded `/login` fine; the auth endpoints answered normally; every dashboard page rendered in a local production build). The login used `router.push('/dashboard')` after `signIn(..., { redirect: false })`; with `experimental.staleTimes.dynamic = 30` the client router can reuse a cached signed-out response for `/dashboard` (the proxy's redirect to `/login`) right after sign-in. Fix: after a successful sign-in, do a **full page load** (`window.location.assign`) to the proxy's `callbackUrl` (only same-origin `/dashboard…` paths, so no open redirect), with try/catch around `signIn`. Also added real error screens (`app/global-error.tsx`, `app/(dashboard)/error.tsx`, `app/login/error.tsx`, shared `components/ErrorScreen.tsx`) that show the actual message (or the server reference code) and a reload for stale-deploy chunk errors, instead of Next's blank default. Next 16 error boundaries receive `unstable_retry` (not `reset`).
