@@ -106,13 +106,42 @@ export default async function ServiceLandingPage({ params }: Params) {
         </div>
       </section>
 
+      {page.pricing && page.pricing.length > 0 && (
+        <section className="v8-section v8-service-detail" aria-labelledby="v8-service-pricing">
+          <div className="v8-container v8-service-detail__grid">
+            <Reveal className="v8-service-detail__intro">
+              <SectionHeader
+                id="v8-service-pricing"
+                eyebrow="Pricing"
+                title={page.serviceId === 'agencies' ? 'What white label work\n*costs.*' : `What a ${page.keyword.replace(/ developer$/i, '')} project\n*costs.*`}
+                layout="stacked"
+              />
+              <p className="v8-service-detail__desc">Every project gets a fixed quote before work starts. Prices in USD.</p>
+            </Reveal>
+            <Reveal delay={0.08} className="v8-service-detail__card">
+              <ul className="v8-service-detail__list v8-price-list">
+                {page.pricing.map((row) => (
+                  <li key={row.label}>
+                    <span className="v8-price-list__item">
+                      {row.label}
+                      <span className="v8-price-list__time">{row.timeline}</span>
+                    </span>
+                    <strong className="v8-price-list__price">{row.price}</strong>
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          </div>
+        </section>
+      )}
+
       {proof.length > 0 && (
         <section className="v8-section v8-projects" aria-labelledby="v8-service-work">
           <div className="v8-container">
             <SectionHeader
               id="v8-service-work"
               eyebrow="Recent work"
-              title={`Recent ${page.keyword.replace(/ developer$/i, '')}\n*projects.*`}
+              title={page.serviceId === 'agencies' ? 'Recent white label\n*projects.*' : `Recent ${page.keyword.replace(/ developer$/i, '')}\n*projects.*`}
               layout="stacked"
             />
             <ProjectsBrowser projects={proof} />
@@ -160,7 +189,7 @@ export default async function ServiceLandingPage({ params }: Params) {
 
       <JsonLd
         data={[
-          singleServiceSchema({ name: page.eyebrow, description: page.metaDescription, url: routes.servicePage(page.slug), serviceType: page.keyword }),
+          singleServiceSchema({ name: page.eyebrow, description: page.metaDescription, url: routes.servicePage(page.slug), serviceType: page.keyword, startingPrice: page.startingPrice }),
           faqSchema(page.faqs),
           breadcrumbSchema([
             { name: 'Home', path: routes.home },

@@ -140,3 +140,31 @@
     padding-top: 88px;
   }
 }
+
+// ── Pricing rows on the service landing pages ──
+.v8-price-list {
+  li {
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 24px;
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__time {
+    font: 400 12.5px/1.4 var(--ff-mono);
+    color: var(--text-muted);
+  }
+
+  &__price {
+    flex: none;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-align: right;
+    white-space: nowrap;
+  }
+}

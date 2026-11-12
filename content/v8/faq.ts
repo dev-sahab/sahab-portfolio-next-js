@@ -12,13 +12,13 @@ export const faqs: FaqItem[] = [
     id: 'cost',
     question: 'How much does a website cost?',
     answer:
-      'Every project gets a fixed price once I understand it, whether you bring a Figma file or just an idea. You’ll know the full cost and scope before any work starts.',
+      'Most business websites cost $1,500 to $5,000. A landing page starts at $600, a 5 to 10 page WordPress site is $1,500 to $4,000, a Webflow site with CMS is $2,000 to $5,000, and a WooCommerce store is $3,000 to $8,000. Custom web apps start at $8,000. You get a fixed quote in USD before any work starts.',
   },
   {
     id: 'timeline',
     question: 'How long does it take?',
     answer:
-      'It depends on the scope. A landing page can go live within days, while a full site or store takes longer. You get a clear timeline together with the fixed quote, before anything starts.',
+      'A landing page takes 1 to 2 weeks, a business website 2 to 5 weeks, an online store 5 to 10 weeks, and a custom web app 10 to 16 weeks for the first version. You get a clear timeline together with the fixed quote, before anything starts.',
   },
   {
     id: 'editing',
