@@ -12,6 +12,13 @@ Four keyword landing pages at `/services/<slug>` (`app/(v8)/services/[slug]/page
 
 The code fallback for the site URL (`lib/v8/routes.ts`, `app/layout.tsx`) stays `https://sahabweb.vercel.app` until sahabuddin.me actually resolves (it had no DNS when this was merged); otherwise an unset env var would point every canonical, sitemap entry and OG URL at a dead domain. To move: point the domain at Vercel, add it to the project, then set `NEXT_PUBLIC_SITE_URL=https://sahabuddin.me` in Vercel and redeploy.
 
+### 2026-11-13 — Starting prices and timelines (AEO), schema and alt text
+
+- **Prices (USD, Sahab's ranges)** answer "how much does a website cost" directly: landing page from $600 (1 to 2 weeks), WordPress business site $1,500 to $4,000 (2 to 5 weeks), Webflow site with CMS $2,000 to $5,000 (3 to 5 weeks), WooCommerce $3,000 to $8,000 (5 to 10 weeks), WordPress to Webflow from $1,500 (2 to 4 weeks), Next.js site or migration $4,000 to $12,000 (6 to 12 weeks), custom web app from $8,000 (10 to 16 weeks), maintenance $150 to $400/month, hourly and white label $45/hour. Don't add numbers beyond these.
+- Where they live: the `cost`/`timeline` answers in `content/v8/faq.ts` (also used by the homepage FAQ and the /faq page, so they can't drift), and `PRICES` in `content/v8/servicePages.ts`, which feeds each service page's Pricing section, its "How much does it cost to hire a …" FAQ, and `startingPrice`. Change a price in both places.
+- `singleServiceSchema` now has an `Offer` with the page's `startingPrice`. That is the lowest *project* price (WordPress/Webflow $600, Next.js $4,000, agencies $45/hour), not the $150 maintenance plan, so the schema never claims a site costs $150.
+- Blog: byline photo alt is the author's name, post card thumbnails use the post title, `articleSchema` adds `author.url`, `publisher` and the default OG image when there's no cover. Project gallery alt: "{title} website, page N, built with {platform}". The project H1 was left alone: the model has no industry field, and its category is the platform name.
+
 ### 2026-11-12 — Name spelling: always "Sahab Uddin"
 
 Sahab's LinkedIn and legal documents use "Sahab Uddin" (legal name "Sahab Uddin Mintu"), so the "Shahab Uddin" alternate spelling was removed from the Person JSON-LD (`lib/v8/seo.ts`) and `/llms.txt`. Don't add other spellings back. The two client review quotes that say "Shahab" are left as the clients wrote them.
