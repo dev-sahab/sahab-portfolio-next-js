@@ -6,6 +6,14 @@
 
 ---
 
+### 2026-11-12 — Cleanup: unused packages, assets, Tailwind utilities
+
+- `app/globals.css` now imports only `tailwindcss/preflight.css` instead of the full `tailwindcss`. Tailwind was scanning the source and generating ~160 utility classes from ordinary words (`.hidden`, `.table`, `.border`, `.container`…) that sat in `@layer utilities` and always lost to our own unlayered CSS. Global CSS went from ~17 KB to ~9 KB; the reset and all of our own CSS are byte-for-byte the same as before (checked by diffing the built CSS).
+- Removed unused packages: `@auth/mongodb-adapter`, `@hookform/resolvers`, `react-hook-form`, `gsap` (only a GSAP *icon* is shown in the tools list, from `react-icons`), `@types/mongoose` (old v5 types; mongoose ships its own), `@types/bcryptjs` (bcryptjs 3 ships its own).
+- Removed unused public files: the Next starter SVGs and the old site's `images/profile/shahabuddin.png` (520 KB; not referenced in code or in the database).
+- `tsconfig.tsbuildinfo` is now gitignored (build cache that changed on every type check).
+- Kept on purpose: `components/v8/layout/FooterSimple.tsx` (+ its SCSS), the footer backup Sahab asked to keep.
+
 ### 2026-11-12 — MCP server for Claude / ChatGPT (with OAuth login)
 
 - **What**: `POST /api/mcp` is a stateless Streamable-HTTP MCP server (plain JSON responses, no SSE, no sessions) so Claude and ChatGPT can manage the site as a custom connector. Tools live in `lib/mcp/tools.ts`, one zod schema each (validates the call and becomes the `inputSchema` via `z.toJSONSchema`).

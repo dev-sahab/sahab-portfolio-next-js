@@ -1,4 +1,7 @@
-@import "tailwindcss";
+/* Only Tailwind's preflight reset is used (the site has its own utilities in
+   styles/_utilities.scss); the full import generated ~160 unused classes. */
+@layer theme, base, components, utilities;
+@import "tailwindcss/preflight.css" layer(base);
 
 /* ── DESIGN TOKENS ── */
 :root {

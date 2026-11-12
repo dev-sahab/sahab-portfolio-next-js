@@ -11,7 +11,7 @@
 | Language | TypeScript | ^5 |
 | Database | MongoDB Atlas via Mongoose | mongoose ^9.8.0 |
 | Auth | NextAuth (Auth.js) v5, credentials provider, JWT sessions | ^5.0.0-beta.32 |
-| Styling | Plain global SCSS (no CSS Modules, no Tailwind despite it being installed) | sass ^1.102.0 |
+| Styling | Plain global SCSS (no CSS Modules; Tailwind is only used for its preflight reset in `app/globals.css`) | sass ^1.102.0 |
 | Rich text editor | react-quill-new | ^3.8.3 |
 | HTML sanitization | sanitize-html | ^2.17.7 |
 | Animation | GSAP + ScrollTrigger | ^3.15.0 |
