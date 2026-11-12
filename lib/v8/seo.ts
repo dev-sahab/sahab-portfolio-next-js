@@ -53,8 +53,8 @@ const person = {
   '@type': 'Person',
   '@id': absoluteUrl(`${routes.about}#person`),
   name: site.name,
-  // Every spelling clients and profiles use, so search engines treat them as one person.
-  alternateName: [site.legalName, 'Shahab Uddin'],
+  // Full legal name; the public spelling everywhere (LinkedIn, legal documents) is "Sahab Uddin".
+  alternateName: site.legalName,
   url: absoluteUrl(routes.about),
   image: absoluteUrl('/v8/portrait.jpg'),
   jobTitle: 'Freelance Web Developer',

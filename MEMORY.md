@@ -12,6 +12,10 @@ Four keyword landing pages at `/services/<slug>` (`app/(v8)/services/[slug]/page
 
 The code fallback for the site URL (`lib/v8/routes.ts`, `app/layout.tsx`) stays `https://sahabweb.vercel.app` until sahabuddin.me actually resolves (it had no DNS when this was merged); otherwise an unset env var would point every canonical, sitemap entry and OG URL at a dead domain. To move: point the domain at Vercel, add it to the project, then set `NEXT_PUBLIC_SITE_URL=https://sahabuddin.me` in Vercel and redeploy.
 
+### 2026-11-12 — Name spelling: always "Sahab Uddin"
+
+Sahab's LinkedIn and legal documents use "Sahab Uddin" (legal name "Sahab Uddin Mintu"), so the "Shahab Uddin" alternate spelling was removed from the Person JSON-LD (`lib/v8/seo.ts`) and `/llms.txt`. Don't add other spellings back. The two client review quotes that say "Shahab" are left as the clients wrote them.
+
 ### 2026-11-12 — Cleanup: unused packages, assets, Tailwind utilities
 
 - `app/globals.css` now imports only `tailwindcss/preflight.css` instead of the full `tailwindcss`. Tailwind was scanning the source and generating ~160 utility classes from ordinary words (`.hidden`, `.table`, `.border`, `.container`…) that sat in `@layer utilities` and always lost to our own unlayered CSS. Global CSS went from ~17 KB to ~9 KB; the reset and all of our own CSS are byte-for-byte the same as before (checked by diffing the built CSS).

@@ -22,7 +22,7 @@ export async function GET() {
     '',
     '> Freelance web developer building WordPress, WooCommerce, Webflow and Next.js websites and web apps for businesses and agencies. 300+ projects delivered since 2021, rated 5.0 across 200+ reviews. Fixed quotes, a reply within 24 hours, and support after launch.',
     '',
-    'Sahab Uddin (also written Shahab Uddin) works with clients in the US, UK and Europe as one point of contact, bringing in partners for UI/UX design, SEO and marketing.',
+    'Sahab Uddin works with clients in the US, UK and Europe as one point of contact, bringing in partners for UI/UX design, SEO and marketing.',
     '',
     '## Services',
     '',
