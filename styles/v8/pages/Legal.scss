@@ -1,0 +1,118 @@
+@use 'v8/tokens' as *;
+
+.v8-legal {
+  .v8-prose > section + section {
+    margin-top: 2.6em;
+  }
+
+  // Sections wrap the paragraphs, so give their children the prose rhythm.
+  .v8-prose section > * {
+    margin: 0;
+  }
+
+  .v8-prose section > * + * {
+    margin-top: 1em;
+  }
+
+  .v8-prose section > h2 + * {
+    margin-top: 0.8em;
+  }
+
+  .v8-prose h2 {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-top: 0;
+  }
+
+  // On narrow screens the contents list is hidden (Blog.scss); keep sections tight.
+  @include below($bp-md) {
+    padding-top: 48px;
+  }
+
+  &__num {
+    font: 500 13px/1 var(--ff-mono);
+    letter-spacing: 0;
+    color: var(--accent-text);
+  }
+
+  &__more {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 64px;
+
+    @include below($bp-sm) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px 22px;
+    border-radius: 14px;
+    border: 1px solid var(--border-subtle);
+    background: var(--surface-card);
+    font: 600 18px/1.25 var(--ff-display);
+    color: var(--text-primary);
+    text-decoration: none;
+    transition:
+      border-color 0.25s ease,
+      translate 0.4s $ease-out;
+
+    span {
+      font: 500 11.5px/1 var(--ff-mono);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    &:hover {
+      border-color: var(--border-strong);
+      translate: 0 -2px;
+    }
+  }
+}
+
+// Cookie table (only shown when tracking tools are configured).
+.v8-legal-table {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+
+  table {
+    width: 100%;
+    min-width: 620px;
+    border-collapse: collapse;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  th,
+  td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border-subtle);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    font: 500 11.5px/1.4 var(--ff-mono);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    background: var(--surface-card);
+  }
+
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  td span {
+    display: block;
+    font-size: 12.5px;
+    color: var(--text-muted);
+  }
+}

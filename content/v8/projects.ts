@@ -1,3 +1,4 @@
+import { routes } from '@/lib/v8/routes'
 import type { HeadingText, Project } from './types'
 
 export const workSection = {
@@ -5,13 +6,12 @@ export const workSection = {
   title: 'Recent client sites,\n*live and in use.*' satisfies HeadingText,
   intro: 'A few recent WordPress, WooCommerce and Webflow builds. Hover a screen to scroll the full page.',
   footerNote: '300+ projects delivered — browse more WordPress and Webflow work.',
-  allProjects: { label: 'See all projects', href: '/portfolio' },
+  allProjects: { label: 'See all projects', href: routes.projects },
 }
 
 const CLOUDINARY = 'https://res.cloudinary.com/lzhmop14/image/upload/w_1400,q_auto,f_auto'
 
-// TODO: point `caseStudyHref` at each project's real /portfolio/[slug] once
-// the slugs are confirmed — until then they land on the portfolio index.
+// `caseStudyHref` = the project's page; slugs match the CMS (dashboard) entries.
 export const projects: Project[] = [
   {
     slug: 'hightailpet',
@@ -24,7 +24,7 @@ export const projects: Project[] = [
     domain: 'hightailpet.com',
     image: `${CLOUDINARY}/v1788022802/sahab-projects/hightail-3ups3s.jpg`,
     imageAlt: 'Hightailpet homepage',
-    caseStudyHref: '/portfolio',
+    caseStudyHref: routes.project('hightailpet'),
     liveUrl: 'https://hightailpet.com/',
     featured: true,
   },
@@ -38,7 +38,7 @@ export const projects: Project[] = [
     domain: 'mylipscare.com',
     image: `${CLOUDINARY}/v1787933058/sahab-projects/glamlip-hc04mh.jpg`,
     imageAlt: 'GLAMLIP store homepage',
-    caseStudyHref: '/portfolio',
+    caseStudyHref: routes.project('glamlip-mylipscare'),
     liveUrl: 'https://mylipscare.com/',
     menuIcon: 'woocommerce',
   },
@@ -52,7 +52,7 @@ export const projects: Project[] = [
     domain: 'truntria landing page',
     image: `${CLOUDINARY}/v1788019309/sahab-projects/truntria-yst300.jpg`,
     imageAlt: 'TruNtria landing page',
-    caseStudyHref: '/portfolio',
+    caseStudyHref: routes.project('truntria'),
     menuIcon: 'elementor',
   },
 ]

@@ -1,0 +1,90 @@
+@use 'v8/tokens' as *;
+
+.v8-faq-page {
+  padding-top: 72px;
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 64px;
+    align-items: start;
+
+    @include below($bp-md) {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+  }
+
+  &__nav {
+    position: sticky;
+    top: calc(var(--nav-h) + 24px);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    @include below($bp-md) {
+      position: static;
+    }
+
+    ol {
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    li a {
+      display: flex;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 15px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s ease;
+
+      span {
+        font: 500 12px/1.9 var(--ff-mono);
+        color: var(--accent-text);
+      }
+
+      &:hover {
+        color: var(--text-primary);
+      }
+    }
+  }
+
+  &__label {
+    margin: 0;
+    font: 500 12px/1 var(--ff-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  &__groups {
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+  }
+
+  &__title {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin: 0 0 12px;
+    font-family: var(--ff-display);
+    font-weight: 700;
+    font-size: clamp(26px, 2.6vw, 34px);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+
+    span {
+      font: 500 13px/1 var(--ff-mono);
+      letter-spacing: 0;
+      color: var(--accent-text);
+    }
+  }
+}

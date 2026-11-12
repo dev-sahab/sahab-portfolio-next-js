@@ -1,3 +1,4 @@
+import { routes } from '@/lib/v8/routes'
 import type { HeadingText, TimelineEntry } from './types'
 
 export const aboutSection = {
@@ -5,7 +6,7 @@ export const aboutSection = {
   title: 'Changelog. *Five*\n*years of releases.*' satisfies HeadingText,
   portrait: { src: '/v8/portrait.jpg', alt: 'Portrait of Sahab Uddin' },
   bio: "I build websites for businesses that want results. After 300+ projects, my routine hasn't changed: clean code, fast pages, every screen tested. I build sites that earn their place: more enquiries and more sales, not just good looks.",
-  storyLink: { label: 'Read my full story', href: '/about' },
+  storyLink: { label: 'Read my full story', href: routes.about },
 }
 
 export const timeline: TimelineEntry[] = [

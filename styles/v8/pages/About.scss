@@ -1,0 +1,181 @@
+@use 'v8/tokens' as *;
+
+// ── Story: portrait + text ──
+.v8-story {
+  padding-top: 88px;
+
+  &__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+    gap: 72px;
+    align-items: start;
+
+    @include below($bp-md) {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+  }
+
+  &__portrait {
+    position: sticky;
+    top: calc(var(--nav-h) + 24px);
+
+    @include below($bp-md) {
+      position: static;
+      max-width: 420px;
+    }
+  }
+
+  &__photo {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: 18px;
+    border: 1px solid var(--border-subtle);
+    background: var(--surface-card-2);
+
+    img {
+      object-fit: cover;
+      object-position: center 20%;
+    }
+  }
+
+  &__caption {
+    position: absolute;
+    left: 14px;
+    bottom: 14px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: rgba(11, 11, 12, 0.72);
+    backdrop-filter: blur(8px);
+    font: 400 12px/1.4 var(--ff-mono);
+    color: #f4f2ee;
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    > p {
+      margin: 0;
+      max-width: 620px;
+      font-size: 17.5px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    .v8-stats {
+      margin-top: 28px;
+    }
+  }
+
+  &__label {
+    margin: 0 0 4px;
+    font: 500 12px/1 var(--ff-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  &__lead.v8-reveal,
+  &__lead {
+    font-family: var(--ff-display);
+    font-size: clamp(22px, 2.2vw, 28px) !important;
+    font-weight: 500;
+    line-height: 1.35 !important;
+    letter-spacing: -0.02em;
+    color: var(--text-primary) !important;
+  }
+}
+
+// ── Principles ──
+.v8-principles {
+  .v8-section-header {
+    margin-bottom: 56px;
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    @include below($bp-sm) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 28px;
+    border-radius: 16px;
+    border: 1px solid var(--border-subtle);
+    background: var(--surface-card);
+
+    h3 {
+      margin: 12px 0 0;
+      font-family: var(--ff-display);
+      font-weight: 600;
+      font-size: 22px;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    p {
+      margin: 0;
+      color: var(--text-secondary);
+    }
+  }
+
+  &__num {
+    font: 500 12px/1 var(--ff-mono);
+    color: var(--accent-text);
+  }
+}
+
+// ── Changelog ──
+.v8-changelog__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+  gap: 64px;
+  align-items: start;
+
+  @include below($bp-md) {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+.v8-changelog__head {
+  position: sticky;
+  top: calc(var(--nav-h) + 24px);
+
+  @include below($bp-md) {
+    position: static;
+  }
+}
+
+.v8-about-cta .v8-cta-band {
+  padding-top: 120px;
+
+  @include below($bp-md) {
+    padding-top: 88px;
+  }
+}
+
+// About page timeline: a clearly visible rail (the homepage keeps its lighter one).
+.v8-changelog {
+  .v8-release__rail::after {
+    width: 2px;
+    background: color-mix(in srgb, var(--accent-fill) 45%, transparent);
+  }
+
+  .v8-release__rail i {
+    border-color: color-mix(in srgb, var(--accent-fill) 70%, transparent);
+  }
+}

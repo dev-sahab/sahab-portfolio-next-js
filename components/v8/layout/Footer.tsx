@@ -2,11 +2,12 @@ import type { ComponentType } from 'react'
 import Link from 'next/link'
 import { Mail } from 'lucide-react'
 import { FaGithub, FaLinkedinIn } from 'react-icons/fa'
-import { footerNav, legalNav, site, socials } from '@/content/v8/site'
+import { footerColumns, legalNav, site, socials } from '@/content/v8/site'
 import type { SocialLink } from '@/content/v8/types'
 import Logo from './Logo'
 import Wordmark from './Wordmark'
 import Reveal from '../ui/Reveal'
+import CookieSettingsButton from '../consent/CookieSettingsButton'
 import '@/styles/v8/layout/Footer.scss'
 
 const SOCIAL_ICONS: Record<SocialLink['kind'], ComponentType<{ className?: string }>> = {
@@ -19,7 +20,7 @@ function NavItem({ href, label }: { href: string; label: string }) {
   return href.startsWith('/') ? <Link href={href}>{label}</Link> : <a href={href}>{label}</a>
 }
 
-/** Figma "Footer (D5 · peeking)": links row, clipped giant wordmark, legal bar. */
+/** Figma "Footer (D5 · peeking)": brand + link columns, clipped giant wordmark, legal bar. (Single-row version backed up in FooterSimple.tsx.) */
 export default function Footer() {
   return (
     <footer className="v8-footer">
@@ -27,31 +28,44 @@ export default function Footer() {
       <div className="v8-container">
         {/* Each piece rises in on scroll, one after another (same reveal as the sections). */}
         <div className="v8-footer__top">
-          <Reveal>
+          <Reveal className="v8-footer__brand">
             <Logo />
+            <p className="v8-footer__tagline">
+              Fast, SEO-friendly websites on WordPress, Webflow and custom code. Based in {site.location}, working worldwide.
+            </p>
+            <ul className="v8-footer__socials">
+              {socials.map(({ kind, label, href }) => {
+                const Icon = SOCIAL_ICONS[kind]
+                const external = href.startsWith('http')
+                return (
+                  <li key={kind}>
+                    <a
+                      href={href}
+                      aria-label={label}
+                      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    >
+                      <Icon className="v8-footer__social-icon" />
+                    </a>
+                  </li>
+                )
+              })}
+            </ul>
           </Reveal>
-          <Reveal as="nav" delay={0.1} aria-label="Footer" className="v8-footer__nav">
-            {footerNav.map((link) => (
-              <NavItem key={link.href} {...link} />
+
+          <nav aria-label="Footer" className="v8-footer__columns">
+            {footerColumns.map((column, i) => (
+              <Reveal key={column.title} delay={0.08 * (i + 1)} className="v8-footer__col">
+                <p className="v8-footer__col-title">{column.title}</p>
+                <ul>
+                  {column.links.map((link) => (
+                    <li key={link.href}>
+                      <NavItem {...link} />
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
             ))}
-          </Reveal>
-          <Reveal as="ul" delay={0.2} className="v8-footer__socials">
-            {socials.map(({ kind, label, href }) => {
-              const Icon = SOCIAL_ICONS[kind]
-              const external = href.startsWith('http')
-              return (
-                <li key={kind}>
-                  <a
-                    href={href}
-                    aria-label={label}
-                    {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                  >
-                    <Icon className="v8-footer__social-icon" />
-                  </a>
-                </li>
-              )
-            })}
-          </Reveal>
+          </nav>
         </div>
 
         <Wordmark />
@@ -64,6 +78,7 @@ export default function Footer() {
             {legalNav.map((link) => (
               <NavItem key={link.label} {...link} />
             ))}
+            <CookieSettingsButton />
           </nav>
         </Reveal>
       </div>

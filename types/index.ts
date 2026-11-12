@@ -102,6 +102,8 @@ export interface SocialLink {
 }
 
 export interface SiteSettings {
+  /** Blog listing: cards per row on desktop (2 or 3). */
+  blogColumns?: 2 | 3
   _id?: string
   name: string
   tagline: string

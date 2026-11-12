@@ -200,30 +200,6 @@
 }
 
 // ── Entry animation (HTML template's `.rise`) ──
-.v8-rise {
-  animation: v8-rise 0.9s $ease-out both;
-
-  &--1 {
-    animation-delay: 0.08s;
-  }
-  &--2 {
-    animation-delay: 0.16s;
-  }
-  &--3 {
-    animation-delay: 0.24s;
-  }
-  &--4 {
-    animation-delay: 0.4s;
-  }
-}
-
-@keyframes v8-rise {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-}
-
 // ── Floating cards (positions taken from the 1440 frame, relative to centre) ──
 .v8-hero__floats {
   position: absolute;

@@ -1,0 +1,139 @@
+@use 'v8/tokens' as v8;
+
+// v8 look for the dashboard and login page.
+//
+// Every dashboard stylesheet is written against the old site's tokens
+// (--bg, --surface, --accent, --f-d…). Instead of rewriting them all, this
+// scope redefines those names with the v8 palette and type, so the whole
+// admin matches the public site. Light/dark follows the same `data-theme`
+// switch as the site.
+.dash-v8 {
+  @include v8.theme-dark;
+
+  --bg: var(--bg-base);
+  --surface: var(--surface-card);
+  --surface2: var(--surface-card-2);
+  --border: var(--border-subtle);
+  --border2: var(--border-strong);
+  --text: var(--text-primary);
+  --text2: var(--text-secondary);
+  --muted: var(--text-muted);
+  --accent: var(--accent-fill);
+  /* Text/icons on an accent fill. */
+  --accent-ink: #ffffff;
+
+  /* Chart series, validated for colour-blind separation + contrast on the card surface (dataviz validator). */
+  --chart-1: #ec5530;
+  --chart-2: #4b8ee6;
+
+  --f-d: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --f-b: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --f-m: var(--font-geist-mono), ui-monospace, monospace;
+  --r: 10px;
+
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--f-b);
+  -webkit-font-smoothing: antialiased;
+
+  ::selection {
+    background: rgba(255, 92, 57, 0.32);
+    color: var(--text);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  // Global buttons/inputs from app/globals.css, in the v8 style.
+  .btn {
+    border-radius: 10px;
+    font-family: var(--f-b);
+    font-size: 13.5px;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .btn-accent {
+    background: var(--action-primary);
+    border-color: var(--action-primary);
+    color: var(--action-on-primary);
+
+    &:hover {
+      background: color-mix(in srgb, var(--action-primary) 88%, #fff);
+      border-color: transparent;
+      color: var(--action-on-primary);
+    }
+  }
+
+  .btn-outline:hover {
+    border-color: var(--text-muted);
+    color: var(--text);
+    background: var(--surface);
+  }
+
+  .form-input {
+    border-radius: 10px;
+    background: var(--bg);
+
+    &:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+    }
+  }
+
+  .tag.green {
+    border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+    color: var(--accent-text);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--f-d);
+    letter-spacing: -0.02em;
+  }
+}
+
+[data-theme='light'] .dash-v8 {
+  @include v8.theme-light;
+
+  --chart-1: #d93f17;
+  --chart-2: #2563eb;
+}
+
+// Page canvas behind the dashboard / login (overscroll, short pages).
+html:has(.dash-v8) {
+  background: #0b0b0c;
+}
+
+html[data-theme='light']:has(.dash-v8) {
+  background: #fafafa;
+}
+
+html:has(.dash-v8) body {
+  background: transparent;
+}
+
+// Sidebar / login logo: one file per theme.
+.dash-logo {
+  display: block;
+  height: 34px;
+  width: auto;
+
+  &--light {
+    display: none;
+  }
+}
+
+[data-theme='light'] .dash-logo--dark {
+  display: none;
+}
+
+[data-theme='light'] .dash-logo--light {
+  display: block;
+}

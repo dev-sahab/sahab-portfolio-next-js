@@ -7,7 +7,7 @@
 }
 
 .dash-heading {
-  color: #f0ede6;
+  color: var(--text);
   font-family: var(--f-d);
   font-weight: 700;
 }
@@ -19,7 +19,7 @@
 }
 
 .dash-subtitle {
-  color: #9a9a9a;
+  color: var(--text2);
   font-size: 14px;
 }
 
@@ -31,8 +31,8 @@
 }
 
 .dash-card {
-  background: #1a1a1a;
-  border: 1px solid #2a2a2a;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
   border-radius: 12px;
   padding: 24px;
 }
@@ -69,7 +69,7 @@
   font-size: 32px;
   font-family: var(--f-d);
   font-weight: 800;
-  color: #f0ede6;
+  color: var(--text);
   margin-bottom: 4px;
 }
 
@@ -78,7 +78,7 @@
   font-size: 10px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: #555;
+  color: var(--muted);
   margin-bottom: 6px;
 }
 
@@ -113,7 +113,7 @@
 }
 
 .dash-empty-text {
-  color: #555;
+  color: var(--muted);
   font-size: 14px;
 }
 
@@ -122,7 +122,7 @@
   align-items: center;
   gap: 12px;
   padding: 10px 12px;
-  background: #111;
+  background: var(--surface);
   border-radius: 8px;
 }
 
@@ -130,7 +130,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #222;
+  background: var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -139,7 +139,7 @@
   flex-shrink: 0;
 
   &--contact {
-    color: #b8ff4f;
+    color: var(--accent);
   }
 
   &--quote {
@@ -155,7 +155,7 @@
 .dash-activity-name {
   font-weight: 600;
   font-size: 13px;
-  color: #f0ede6;
+  color: var(--text);
   display: flex;
   align-items: center;
   gap: 6px;
@@ -168,7 +168,7 @@
   display: inline-block;
 
   &--contact {
-    background: #b8ff4f;
+    background: var(--accent);
   }
 
   &--quote {
@@ -178,7 +178,7 @@
 
 .dash-activity-email {
   font-size: 12px;
-  color: #555;
+  color: var(--muted);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -186,5 +186,5 @@
 
 .dash-activity-service {
   font-size: 12px;
-  color: #555;
+  color: var(--muted);
 }

@@ -50,13 +50,46 @@ const nextConfig: NextConfig = {
     // click handler, menu, form is dead). Production builds don't use eval,
     // so the shipped policy stays strict.
     const isDev = process.env.NODE_ENV !== 'production'
+
+    // Analytics / marketing tools (lib/v8/consent.ts): their domains are
+    // allowed only when the tool's ID is set, and the scripts themselves
+    // still load only after the visitor consents.
+    const tools = {
+      ga: Boolean(process.env.NEXT_PUBLIC_GA_ID),
+      clarity: Boolean(process.env.NEXT_PUBLIC_CLARITY_ID),
+      meta: Boolean(process.env.NEXT_PUBLIC_META_PIXEL_ID),
+      ads: Boolean(process.env.NEXT_PUBLIC_GOOGLE_ADS_ID),
+      linkedin: Boolean(process.env.NEXT_PUBLIC_LINKEDIN_PARTNER_ID),
+    }
+    const google = tools.ga || tools.ads
+    const extra = (list: [boolean, string][]) =>
+      list.filter(([on]) => on).map(([, domains]) => ` ${domains}`).join('')
+    const toolScripts = extra([
+      [google, 'https://www.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net'],
+      [tools.clarity, 'https://www.clarity.ms https://*.clarity.ms'],
+      [tools.meta, 'https://connect.facebook.net'],
+      [tools.linkedin, 'https://snap.licdn.com'],
+    ])
+    const toolConnect = extra([
+      [google, 'https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://www.google.com https://googleads.g.doubleclick.net https://*.doubleclick.net'],
+      [tools.clarity, 'https://*.clarity.ms https://c.bing.com'],
+      [tools.meta, 'https://www.facebook.com https://connect.facebook.net'],
+      [tools.linkedin, 'https://px.ads.linkedin.com'],
+    ])
+    const toolImages = extra([
+      [google, 'https://*.google-analytics.com https://www.googletagmanager.com https://www.google.com https://googleads.g.doubleclick.net https://*.doubleclick.net'],
+      [tools.clarity, 'https://*.clarity.ms https://c.bing.com'],
+      [tools.meta, 'https://www.facebook.com'],
+      [tools.linkedin, 'https://px.ads.linkedin.com'],
+    ])
+
     const csp = [
       "default-src 'self'",
-      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}`,
+      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}${toolScripts}`,
       "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: blob: https://res.cloudinary.com https://*.cloudinary.com https://images.unsplash.com https://*.vercel.app",
+      `img-src 'self' data: blob: https://res.cloudinary.com https://*.cloudinary.com https://images.unsplash.com https://*.vercel.app${toolImages}`,
       "font-src 'self' data:",
-      "connect-src 'self'",
+      `connect-src 'self'${toolConnect}`,
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",

@@ -1,0 +1,152 @@
+@use 'v8/tokens' as *;
+
+// Long-form CMS HTML (blog posts, project write-ups) from the dashboard's
+// rich editor: h2/h3, lists, quotes, code, links, images.
+.v8-prose {
+  font-size: 17.5px;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  overflow-wrap: break-word;
+
+  > * {
+    margin: 0;
+  }
+
+  > * + * {
+    margin-top: 1.15em;
+  }
+
+  h2,
+  h3 {
+    color: var(--text-primary);
+    font-family: var(--ff-display);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    scroll-margin-top: calc(var(--nav-h) + 24px);
+  }
+
+  h2 {
+    margin-top: 2.2em;
+    font-size: clamp(26px, 2.4vw, 32px);
+    line-height: 1.15;
+  }
+
+  h3 {
+    margin-top: 1.8em;
+    font-size: 21px;
+    line-height: 1.3;
+  }
+
+  h2 + *,
+  h3 + * {
+    margin-top: 0.7em;
+  }
+
+  strong,
+  b {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  a {
+    color: var(--accent-text);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    text-decoration-color: color-mix(in srgb, var(--accent-text) 45%, transparent);
+    transition: text-decoration-color 0.2s ease;
+
+    &:hover {
+      text-decoration-color: currentColor;
+    }
+  }
+
+  ul,
+  ol {
+    padding-left: 1.3em;
+
+    li + li {
+      margin-top: 0.45em;
+    }
+  }
+
+  // Global CSS resets list-style, so set it back. Quill 2 writes bullet lists
+  // as <ol><li data-list="bullet">.
+  ul,
+  li[data-list='bullet'] {
+    list-style: disc;
+  }
+
+  ol,
+  li[data-list='ordered'] {
+    list-style: decimal;
+  }
+
+  ul li::marker,
+  li[data-list='bullet']::marker {
+    color: var(--accent-fill);
+  }
+
+  li[data-list='ordered']::marker,
+  ol li::marker {
+    font-family: var(--ff-mono);
+    font-size: 0.85em;
+    color: var(--accent-text);
+  }
+
+  blockquote {
+    padding: 4px 0 4px 22px;
+    border-left: 2px solid var(--accent-fill);
+    font-family: var(--ff-serif);
+    font-style: italic;
+    font-size: 1.3em;
+    line-height: 1.45;
+    color: var(--text-primary);
+  }
+
+  code {
+    padding: 2px 6px;
+    border-radius: 5px;
+    background: var(--surface-card-2);
+    font-family: var(--ff-mono);
+    font-size: 0.86em;
+    color: var(--text-primary);
+  }
+
+  pre {
+    overflow-x: auto;
+    padding: 18px 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface-card);
+    font: 400 14px/1.7 var(--ff-mono);
+    color: var(--text-primary);
+
+    code {
+      padding: 0;
+      background: none;
+      font-size: inherit;
+    }
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    border: 1px solid var(--border-subtle);
+  }
+
+  hr {
+    height: 1px;
+    border: 0;
+    background: var(--border-subtle);
+  }
+
+  // Quill's indent classes.
+  @for $i from 1 through 4 {
+    .ql-indent-#{$i} {
+      margin-left: #{$i * 1.5}em;
+    }
+  }
+}

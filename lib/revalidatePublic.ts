@@ -1,4 +1,5 @@
 import { revalidatePath } from 'next/cache'
+import { routes } from '@/lib/v8/routes'
 
 /**
  * Public pages are cached (see each app/(site) page's `export const
@@ -13,12 +14,17 @@ export function revalidateProjects() {
   revalidatePath('/portfolio')
   revalidatePath('/portfolio/[slug]', 'page')
   revalidatePath('/')
+  // v8 site (see lib/v8/routes.ts)
+  revalidatePath(routes.projects)
+  revalidatePath(`${routes.projects}/[slug]`, 'page')
 }
 
 export function revalidateBlog() {
   revalidatePath('/blog')
   revalidatePath('/blog/[slug]', 'page')
   revalidatePath('/')
+  revalidatePath(routes.blog)
+  revalidatePath(`${routes.blog}/[slug]`, 'page')
 }
 
 export function revalidateTestimonials() {
@@ -36,4 +42,8 @@ export function revalidateTaxonomy() {
   revalidatePath('/portfolio/[slug]', 'page')
   revalidatePath('/blog')
   revalidatePath('/blog/[slug]', 'page')
+  revalidatePath(routes.projects)
+  revalidatePath(`${routes.projects}/[slug]`, 'page')
+  revalidatePath(routes.blog)
+  revalidatePath(`${routes.blog}/[slug]`, 'page')
 }

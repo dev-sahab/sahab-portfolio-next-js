@@ -1,6 +1,6 @@
 .testimonial-card {
-  background: #1a1a1a;
-  border: 1px solid #2a2a2a;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
   border-radius: 8px;
   padding: 16px 18px;
 }
@@ -17,7 +17,7 @@
   border-radius: 50%;
   overflow: hidden;
   position: relative;
-  background: #222;
+  background: var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -46,12 +46,12 @@
 .testimonial-name {
   font-weight: 600;
   font-size: 14px;
-  color: #f0ede6;
+  color: var(--text);
 }
 
 .testimonial-role {
   font-size: 11px;
-  color: #555;
+  color: var(--muted);
   font-family: var(--f-m);
 }
 
@@ -62,7 +62,7 @@
 
 .testimonial-text {
   font-size: 13px;
-  color: #9a9a9a;
+  color: var(--text2);
   line-height: 1.6;
   font-style: italic;
 }
@@ -75,33 +75,33 @@
 
 .testimonial-edit-btn {
   padding: 6px 12px;
-  background: #222;
-  border: 1px solid #2a2a2a;
+  background: var(--border);
+  border: 1px solid var(--border2);
   border-radius: 6px;
   font-size: 11px;
-  color: #9a9a9a;
+  color: var(--text2);
   cursor: pointer;
   font-family: var(--f-m);
 
   &:hover {
-    color: #f0ede6;
+    color: var(--text);
   }
 }
 
 .testimonial-feature-btn {
   padding: 6px 12px;
-  background: #222;
-  border: 1px solid #2a2a2a;
+  background: var(--border);
+  border: 1px solid var(--border2);
   border-radius: 6px;
   font-size: 11px;
-  color: #9a9a9a;
+  color: var(--text2);
   cursor: pointer;
   font-family: var(--f-m);
 
   &.is-featured {
-    background: rgba(184, 255, 79, 0.12);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
     border-color: #b8ff4f33;
-    color: #b8ff4f;
+    color: var(--accent);
   }
 }
 
@@ -120,8 +120,8 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #b8ff4f;
-  color: #0a0a0a;
+  background: var(--accent);
+  color: var(--accent-ink);
   padding: 10px 20px;
   border-radius: 8px;
   font-size: 13px;
@@ -146,14 +146,14 @@
   font-size: 24px;
   font-weight: 700;
   font-family: var(--f-d);
-  color: #f0ede6;
+  color: var(--text);
   letter-spacing: -0.02em;
   margin-bottom: 4px;
 }
 
 .testimonials-subtitle {
   font-size: 14px;
-  color: #9a9a9a;
+  color: var(--text2);
 }
 
 .testimonials-list {

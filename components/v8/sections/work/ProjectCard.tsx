@@ -15,6 +15,10 @@ interface ProjectCardProps {
   project: Project
   variant?: 'featured' | 'standard'
   delay?: number
+  /** Element id prefix (the homepage uses `project` for ⌘K deep links). */
+  idPrefix?: string
+  /** Heading level for the title (h2 on listing pages, h3 inside a section). */
+  as?: 'h2' | 'h3'
 }
 
 /**
@@ -22,7 +26,7 @@ interface ProjectCardProps {
  * anywhere on the card scrolls the full-page screenshot, as in the HTML
  * prototype.
  */
-export default function ProjectCard({ project, variant = 'standard', delay = 0 }: ProjectCardProps) {
+export default function ProjectCard({ project, variant = 'standard', delay = 0, idPrefix = 'project', as: Title = 'h3' }: ProjectCardProps) {
   const frame = useRef<BrowserFrameHandle>(null)
   const cursor = useRef<HTMLSpanElement>(null)
   const featured = variant === 'featured'
@@ -30,7 +34,7 @@ export default function ProjectCard({ project, variant = 'standard', delay = 0 }
   return (
     <Reveal delay={delay} className={cx('v8-project', featured && 'v8-project--featured')}>
       <article
-        id={`project-${project.slug}`}
+        id={idPrefix ? `${idPrefix}-${project.slug}` : undefined}
         className="v8-project__inner"
         onMouseEnter={() => frame.current?.scrollDown()}
         onMouseLeave={() => frame.current?.scrollBack()}
@@ -60,17 +64,25 @@ export default function ProjectCard({ project, variant = 'standard', delay = 0 }
 
         <div className="v8-project__details">
           <div className="v8-project__title-row">
-            <h3 className="v8-project__title">{project.title}</h3>
+            <Title className="v8-project__title">{project.title}</Title>
             <span className="v8-project__year">{project.year}</span>
           </div>
           <p className="v8-project__summary">{project.summary}</p>
 
           <ul className="v8-project__tags" aria-label="Project type and stack">
-            <li className="v8-tag v8-tag--filled">{project.category}</li>
+            {/* Skip the category chip when it just repeats a platform ("WordPress"). */}
+            {!project.stack.some((t) => TECH[t].label.toLowerCase() === project.category.toLowerCase()) && (
+              <li className="v8-tag v8-tag--filled">{project.category}</li>
+            )}
             {project.stack.map((tech) => (
               <li key={tech} className="v8-tag">
                 <TechIcon tech={tech} size={18} variant="badge" />
                 {TECH[tech].label}
+              </li>
+            ))}
+            {project.stackExtra?.map((name) => (
+              <li key={name} className="v8-tag">
+                {name}
               </li>
             ))}
           </ul>

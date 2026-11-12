@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { site } from '@/content/v8/site'
 import '@/styles/v8/layout/Logo.scss'
 
@@ -12,12 +13,19 @@ import '@/styles/v8/layout/Logo.scss'
  * A plain <img> on purpose: SVG needs no next/image optimisation.
  */
 export default function Logo({ href = '#top', onClick }: { href?: string; onClick?: () => void }) {
+  // In-page anchors stay plain <a>s so the smooth-scroll handler (SmoothScroll.tsx) gets them.
+  const Anchor = href.startsWith('#') ? 'a' : Link
   return (
-    <a href={href} className="v8-logo" aria-label={`${site.name}, back to top`} onClick={onClick}>
+    <Anchor
+      href={href}
+      className="v8-logo"
+      aria-label={href.startsWith('#') ? `${site.name}, back to top` : `${site.name}, home`}
+      onClick={onClick}
+    >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/v8/logo-dark.svg" alt="" width={188} height={47} className="v8-logo__img v8-logo__img--dark" />
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/v8/logo-light.svg" alt="" width={188} height={47} className="v8-logo__img v8-logo__img--light" />
-    </a>
+    </Anchor>
   )
 }

@@ -1,3 +1,4 @@
+import { routes } from '@/lib/v8/routes'
 import type { NavLink, SocialLink } from './types'
 
 /** Site-wide identity + navigation for the v8 layout (header, footer, ⌘K menu). */
@@ -20,15 +21,48 @@ export const sectionIds = {
   contact: 'contact',
 } as const
 
+/**
+ * Primary navigation, in the order a visitor decides: what you offer →
+ * proof → who you are → reading → questions → contact.
+ */
 export const headerNav: NavLink[] = [
-  { label: 'Work', href: `#${sectionIds.work}` },
-  { label: 'Services', href: `#${sectionIds.services}` },
-  { label: 'About', href: `#${sectionIds.about}` },
-  { label: 'Reviews', href: `#${sectionIds.reviews}` },
-  { label: 'FAQ', href: `#${sectionIds.faq}` },
+  { label: 'Services', href: routes.services },
+  { label: 'Work', href: routes.projects },
+  { label: 'About', href: routes.about },
+  { label: 'Blog', href: routes.blog },
+  { label: 'FAQ', href: routes.faq },
+  { label: 'Contact', href: routes.contact },
 ]
 
-export const footerNav: NavLink[] = [...headerNav, { label: 'Blog', href: '/blog' }]
+/** Footer link columns (components/v8/layout/Footer.tsx). */
+export const footerColumns: { title: string; links: NavLink[] }[] = [
+  {
+    title: 'Explore',
+    links: [
+      { label: 'Home', href: routes.home },
+      { label: 'Services', href: routes.services },
+      { label: 'Work', href: routes.projects },
+      { label: 'About', href: routes.about },
+    ],
+  },
+  {
+    title: 'Resources',
+    links: [
+      { label: 'Blog', href: routes.blog },
+      { label: 'FAQ', href: routes.faq },
+    ],
+  },
+  {
+    title: 'Get in touch',
+    links: [
+      { label: 'Contact', href: routes.contact },
+      { label: 'Email me', href: `mailto:${site.email}` },
+    ],
+  },
+]
+
+/** Single-row footer links, used by the backup FooterSimple.tsx. */
+export const footerNav: NavLink[] = headerNav
 
 export const socials: SocialLink[] = [
   { kind: 'github', label: 'GitHub', href: 'https://github.com/dev-sahab' },
@@ -36,9 +70,8 @@ export const socials: SocialLink[] = [
   { kind: 'email', label: 'Email', href: `mailto:${site.email}` },
 ]
 
-// TODO: these pages don't exist yet — point them at real routes before launch.
 export const legalNav: NavLink[] = [
-  { label: 'Privacy Policy', href: '#' },
-  { label: 'Terms of Service', href: '#' },
-  { label: 'Cookie Policy', href: '#' },
+  { label: 'Privacy Policy', href: routes.privacy },
+  { label: 'Terms of Service', href: routes.terms },
+  { label: 'Cookie Policy', href: routes.cookies },
 ]

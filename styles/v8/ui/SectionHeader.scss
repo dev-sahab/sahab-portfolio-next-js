@@ -13,16 +13,6 @@
   text-wrap: balance;
 }
 
-// Italic serif accent used inside every display heading.
-.v8-em {
-  font-family: var(--ff-serif);
-  font-style: italic;
-  font-weight: 400;
-  font-size: 1.0625em;
-  letter-spacing: -0.015em;
-  color: var(--accent-text);
-}
-
 .v8-section-header {
   display: flex;
   gap: 32px;

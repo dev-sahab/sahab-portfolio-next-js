@@ -7,6 +7,7 @@ import { FaGithub, FaLinkedinIn } from 'react-icons/fa'
 import { cx } from '@/lib/v8/cx'
 import { toggleTheme } from '@/lib/v8/theme'
 import { lockScroll, scrollToTarget } from '@/lib/v8/smoothScroll'
+import { routes } from '@/lib/v8/routes'
 import { FOCUS_QUOTE_EVENT } from '@/lib/v8/quote'
 import { sectionIds } from '@/content/v8/site'
 import TechIcon from '../ui/TechIcon'
@@ -96,6 +97,11 @@ export default function CommandMenu({ open, onClose }: CommandMenuProps) {
         break
       case 'scroll':
         // Wait a frame so the scroll lock is released before scrolling.
+        // The section only exists on the homepage; from any other page, go there.
+        if (!document.getElementById(action.target)) {
+          router.push(action.target === sectionIds.contact ? routes.contact : routes.homeSection(action.target))
+          break
+        }
         requestAnimationFrame(() => {
           scrollToTarget(action.target)
           if (action.target === sectionIds.contact) window.dispatchEvent(new Event(FOCUS_QUOTE_EVENT))

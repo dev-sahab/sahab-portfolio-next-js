@@ -1,0 +1,180 @@
+@use 'v8/tokens' as *;
+
+// Inner-page hero: same grid + ember glow as the homepage hero, but anchored
+// top-left and left-aligned, so every page reads as part of one system.
+.v8-page-hero {
+  position: relative;
+  overflow: hidden;
+  // Pulled up under the transparent header, like the homepage hero.
+  margin-top: calc(var(--nav-h) * -1);
+  padding: calc(var(--nav-h) + 64px) 0 64px;
+  border-bottom: 1px solid var(--border-subtle);
+
+  @include below($bp-md) {
+    padding: calc(var(--nav-h) + 40px) 0 48px;
+  }
+
+  &__bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  &__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    background-size: 96px 96px;
+    background-position: center top;
+    mask-image: radial-gradient(ellipse 70% 90% at 22% 0%, #000 25%, transparent 72%);
+  }
+
+  &__glow {
+    position: absolute;
+    left: 8%;
+    top: -180px;
+    width: 560px;
+    max-width: 80vw;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, var(--glow), transparent);
+    filter: blur(30px);
+  }
+
+  &__inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  &__title {
+    margin: 4px 0 0;
+    max-width: 15ch;
+    font-family: var(--ff-display);
+    font-weight: 700;
+    font-size: clamp(46px, 6.4vw, 92px);
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+    color: var(--text-primary);
+    text-wrap: balance;
+
+    .v8-em {
+      font-size: 1.06em;
+      letter-spacing: -0.02em;
+    }
+  }
+
+  &--compact &__title {
+    max-width: 22ch;
+    font-size: clamp(36px, 4.6vw, 64px);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+  }
+
+  &__intro {
+    max-width: 620px;
+    margin: 0;
+    font-size: clamp(17px, 1.4vw, 19px);
+    line-height: 1.55;
+    letter-spacing: -0.005em;
+    color: var(--text-secondary);
+  }
+
+  &__extra {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 14px;
+    margin-top: 4px;
+  }
+
+  // "Spec sheet" strip: mono labels, values in the body font.
+  &__meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 18px 32px;
+    width: 100%;
+    margin: 20px 0 0;
+    padding-top: 22px;
+    border-top: 1px solid var(--border-subtle);
+
+    div {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    dt {
+      font: 500 11px/1.4 var(--ff-mono);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    dd {
+      margin: 0;
+      font: 500 15px/1.45 var(--ff-sans);
+      color: var(--text-primary);
+      overflow-wrap: anywhere;
+
+      a {
+        color: var(--accent-text);
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+          text-underline-offset: 3px;
+        }
+      }
+    }
+  }
+}
+
+// Breadcrumb path — mono, slash-separated, echoing the logo's "/full-stack".
+.v8-crumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font: 400 12.5px/1.4 var(--ff-mono);
+  color: var(--text-muted);
+
+  li {
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  li + li::before {
+    content: '/';
+    margin: 0 10px;
+    color: var(--accent-text);
+    opacity: 0.7;
+  }
+
+  a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--text-primary);
+    }
+  }
+
+  [aria-current='page'] {
+    max-width: 40ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--text-secondary);
+  }
+}

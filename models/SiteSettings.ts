@@ -31,6 +31,8 @@ const SiteSettingsSchema = new Schema({
   footerCopyright: { type: String },
   contactEmail: { type: String },
   contactPhone: { type: String },
+  // Blog listing layout on the public site: cards per row on desktop.
+  blogColumns: { type: Number, enum: [2, 3], default: 3 },
 }, { timestamps: true })
 
 export default models.SiteSettings || model('SiteSettings', SiteSettingsSchema)

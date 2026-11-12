@@ -9,14 +9,14 @@
 }
 
 .quotes-empty {
-  color: #555;
+  color: var(--muted);
   text-align: center;
   padding: 60px;
 }
 
 .quote-item {
-  background: #1a1a1a;
-  border: 1px solid #2a2a2a;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
   border-radius: 8px;
 }
 
@@ -33,7 +33,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #222;
+  background: var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -51,7 +51,7 @@
 .quote-name {
   font-weight: 600;
   font-size: 14px;
-  color: #f0ede6;
+  color: var(--text);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -61,13 +61,13 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #b8ff4f;
+  background: var(--accent);
   display: inline-block;
 }
 
 .quote-meta {
   font-size: 12px;
-  color: #555;
+  color: var(--muted);
 }
 
 .quote-timeline-badge {
@@ -82,7 +82,7 @@
 
 .quote-body {
   padding: 0 18px 18px;
-  border-top: 1px solid #2a2a2a;
+  border-top: 1px solid var(--border2);
   margin-top: 8px;
   padding-top: 16px;
 }
@@ -95,7 +95,7 @@
 }
 
 .quote-detail-card {
-  background: #111;
+  background: var(--surface);
   border-radius: 6px;
   padding: 10px 14px;
 }
@@ -105,13 +105,13 @@
   font-family: var(--f-m);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #555;
+  color: var(--muted);
   margin-bottom: 3px;
 }
 
 .quote-detail-value {
   font-size: 13px;
-  color: #f0ede6;
+  color: var(--text);
 }
 
 .quote-features {
@@ -123,7 +123,7 @@
   font-family: var(--f-m);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #555;
+  color: var(--muted);
   margin-bottom: 6px;
 }
 
@@ -135,16 +135,16 @@
 
 .quote-feature-tag {
   padding: 3px 10px;
-  background: #222;
+  background: var(--border);
   border-radius: 100px;
   font-size: 11px;
-  color: #9a9a9a;
+  color: var(--text2);
   font-family: var(--f-m);
 }
 
 .quote-notes {
   font-size: 13px;
-  color: #9a9a9a;
+  color: var(--text2);
   line-height: 1.7;
 }
 
@@ -152,8 +152,8 @@
   display: inline-flex;
   margin-top: 14px;
   padding: 8px 16px;
-  background: #b8ff4f;
-  color: #0a0a0a;
+  background: var(--accent);
+  color: var(--accent-ink);
   border-radius: 6px;
   font-size: 12px;
   font-weight: 600;

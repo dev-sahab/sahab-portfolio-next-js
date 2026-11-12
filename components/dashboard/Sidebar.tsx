@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { signOut, useSession } from 'next-auth/react'
 import {
   LayoutDashboard, FolderKanban, FileText, Star, Image as ImageIcon,
-  Settings, MessageSquare, FileQuestion, Users, LogOut, ExternalLink, ChevronDown, type LucideIcon
+  Settings, MessageSquare, FileQuestion, Users, LogOut, ExternalLink, ChevronDown, BarChart3, type LucideIcon
 } from 'lucide-react'
 import { can } from '@/lib/permissions'
 import '@/styles/components/dashboard/Sidebar.scss'
@@ -26,6 +26,7 @@ type NavGroup = {
 
 const nav: (NavLink | NavGroup)[] = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Overview' },
+  { href: '/dashboard/analytics', icon: BarChart3, label: 'Analytics', perm: 'analytics.read' },
   {
     icon: FolderKanban, label: 'Projects', base: '/dashboard/projects', perm: 'projects.read',
     children: [
@@ -80,9 +81,12 @@ export default function DashboardSidebar() {
     <aside className="dashboard-sidebar">
       {/* Logo */}
       <div className="sidebar-logo">
-        <div className="sidebar-logo-text">
-          Sahab<span className="sidebar-logo-dot">.</span>
-        </div>
+        <Link href="/dashboard" aria-label="Dashboard home" className="sidebar-logo-link">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/v8/logo-dark.svg" alt="Sahab Uddin" width={136} height={34} className="dash-logo dash-logo--dark" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/v8/logo-light.svg" alt="" width={136} height={34} className="dash-logo dash-logo--light" />
+        </Link>
         <div className="sidebar-logo-sub">
           Dashboard
         </div>

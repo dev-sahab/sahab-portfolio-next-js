@@ -1,3 +1,4 @@
+import { routes } from '@/lib/v8/routes'
 import type { HeadingText, Service } from './types'
 
 export const servicesSection = {
@@ -6,16 +7,15 @@ export const servicesSection = {
   intro:
     'One point of contact for your whole website. I build it, and my trusted partners cover UI/UX design, SEO and marketing — no chasing five freelancers.',
   /** Text link under the intro → the full services page. */
-  cta: { label: 'View all services', href: '/services' },
+  cta: { label: 'View all services', href: routes.services },
 }
 
-// TODO: point each `href` at its service page once those exist — until then
-// the whole card leads to the quote form.
+// Each card links to its detailed section on the services page.
 export const services: Service[] = [
   {
     id: 'wordpress',
     variant: 'deep',
-    href: '#contact',
+    href: routes.service('wordpress'),
     badge: 'Most requested',
     stack: ['wordpress', 'woocommerce', 'elementor', 'php'],
     title: 'WordPress and\nWooCommerce',
@@ -32,7 +32,7 @@ export const services: Service[] = [
   {
     id: 'webflow',
     variant: 'plain',
-    href: '#contact',
+    href: routes.service('webflow'),
     stack: ['webflow', 'framer', 'make', 'n8n'],
     title: 'Webflow\nand Framer',
     description:
@@ -48,7 +48,7 @@ export const services: Service[] = [
   {
     id: 'apps',
     variant: 'accent',
-    href: '#contact',
+    href: routes.service('apps'),
     stack: ['nextjs', 'nodejs', 'laravel', 'mongodb'],
     title: 'Custom apps\nand automation',
     description:

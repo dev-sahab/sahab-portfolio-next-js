@@ -1,9 +1,12 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
+import Link from 'next/link'
 import { Menu, Search } from 'lucide-react'
 import { headerNav } from '@/content/v8/site'
 import { hero } from '@/content/v8/hero'
+import { routes } from '@/lib/v8/routes'
 import { cx } from '@/lib/v8/cx'
 import { useCommandMenu } from '../command/CommandMenuProvider'
 import { ButtonLink } from '../ui/Button'
@@ -16,41 +19,20 @@ import '@/styles/v8/layout/Header.scss'
 /** Figma Interaction 01: blurred background + border after this much scroll. */
 const SCROLLED_AT = 80
 
-/** Tracks which nav section is currently in view (scroll-spy). */
-function useActiveSection(ids: string[]) {
-  const [active, setActive] = useState<string | null>(null)
-
-  useEffect(() => {
-    const sections = ids.map((id) => document.getElementById(id)).filter((el): el is HTMLElement => !!el)
-    if (!sections.length) return
-    const visible = new Map<string, number>()
-
-    // A thin band ~35% down the viewport decides the "current" section.
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) visible.set(entry.target.id, entry.boundingClientRect.top)
-          else visible.delete(entry.target.id)
-        }
-        const current = [...visible.entries()].sort((a, b) => b[1] - a[1])[0]
-        setActive(current ? current[0] : null)
-      },
-      { rootMargin: '-35% 0px -60% 0px' },
-    )
-    sections.forEach((s) => io.observe(s))
-    return () => io.disconnect()
-  }, [ids])
-
-  return active
+/** The nav link for the current page (`/v8/projects/foo` → Work). */
+export function useActiveHref() {
+  const pathname = usePathname() ?? ''
+  return headerNav.find((l) => pathname === l.href || pathname.startsWith(`${l.href}/`))?.href ?? null
 }
-
-const NAV_IDS = headerNav.map((l) => l.href.replace('#', ''))
 
 export default function Header() {
   const { open: openSearch } = useCommandMenu()
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const active = useActiveSection(NAV_IDS)
+  const active = useActiveHref()
+  const isHome = usePathname() === routes.home
+  // On the homepage the quote form is a section below; elsewhere it's the contact page.
+  const quoteHref = isHome ? hero.primaryCta.href : routes.contact
   const closeMenu = useCallback(() => setMenuOpen(false), [])
 
   useEffect(() => {
@@ -65,19 +47,19 @@ export default function Header() {
       <header className={cx('v8-header', scrolled && 'is-scrolled')}>
         <div className="v8-container v8-header__bar">
           <div className="v8-header__left">
-            <Logo />
+            <Logo href={isHome ? '#top' : routes.home} />
             <nav aria-label="Primary" className="v8-header__nav">
               {headerNav.map((link) => {
-                const isActive = active === link.href.slice(1)
+                const isActive = active === link.href
                 return (
-                  <a
+                  <Link
                     key={link.href}
                     href={link.href}
                     className={cx(isActive && 'is-active')}
-                    aria-current={isActive ? 'true' : undefined}
+                    aria-current={isActive ? 'page' : undefined}
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 )
               })}
             </nav>
@@ -90,7 +72,7 @@ export default function Header() {
               <Kbd className="v8-search-trigger__kbd">⌘K</Kbd>
             </button>
             <ThemeToggle />
-            <ButtonLink href={hero.primaryCta.href} size="sm" className="v8-header__cta">
+            <ButtonLink href={quoteHref} size="sm" className="v8-header__cta">
               {hero.primaryCta.label}
             </ButtonLink>
             <button
@@ -108,7 +90,7 @@ export default function Header() {
       </header>
 
       {/* Full-screen sheet; a sibling of <header> so the header's backdrop-filter can't affect its fixed positioning. */}
-      <MobileMenu open={menuOpen} active={active} onClose={closeMenu} onSearch={openSearch} />
+      <MobileMenu open={menuOpen} active={active} quoteHref={quoteHref} isHome={isHome} onClose={closeMenu} onSearch={openSearch} />
     </>
   )
 }

@@ -87,6 +87,16 @@ html.lenis.lenis-smooth {
   }
 }
 
+// Italic serif accent used inside every display heading (homepage sections and inner pages).
+.v8-em {
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.0625em;
+  letter-spacing: -0.015em;
+  color: var(--accent-text);
+}
+
 .v8-skip {
   position: absolute;
   left: -9999px;
@@ -172,6 +182,31 @@ html.lenis.lenis-smooth {
   overflow: hidden;
   clip: rect(0 0 0 0);
   white-space: nowrap;
+}
+
+// ── Load-in rise (page headings; shared by the homepage hero and inner pages) ──
+.v8-rise {
+  animation: v8-rise 0.9s $ease-out both;
+
+  &--1 {
+    animation-delay: 0.08s;
+  }
+  &--2 {
+    animation-delay: 0.16s;
+  }
+  &--3 {
+    animation-delay: 0.24s;
+  }
+  &--4 {
+    animation-delay: 0.4s;
+  }
+}
+
+@keyframes v8-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
 }
 
 // ── Scroll reveal (see components/v8/ui/Reveal.tsx) ─────────────────────────

@@ -32,7 +32,7 @@ export default async function DashboardPage() {
   const stats = await getStats()
 
   const cards = [
-    { label: 'Projects', value: stats.projects, icon: FolderKanban, href: '/dashboard/projects', color: '#b8ff4f' },
+    { label: 'Projects', value: stats.projects, icon: FolderKanban, href: '/dashboard/projects', color: '#ff5c39' },
     { label: 'Blog Posts', value: stats.posts, icon: FileText, href: '/dashboard/blog', color: '#60a5fa' },
     { label: 'Testimonials', value: stats.testimonials, icon: Star, href: '/dashboard/testimonials', color: '#fbbf24' },
     { label: 'Contacts', value: stats.contacts, icon: MessageSquare, href: '/dashboard/contacts', color: '#f472b6', badge: stats.unreadContacts },

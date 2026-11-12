@@ -1,0 +1,240 @@
+@use 'v8/tokens' as *;
+
+// ── Hero stack value ──
+.v8-detail-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+
+  > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+}
+
+// ── Big screenshot ──
+.v8-detail {
+  padding-top: 56px;
+}
+
+.v8-showcase {
+  border-radius: 14px;
+
+  .v8-browser__viewport {
+    height: clamp(320px, 52vw, 620px);
+  }
+
+  &:hover .v8-browser {
+    border-color: color-mix(in srgb, var(--text-primary) 22%, transparent);
+  }
+}
+
+// ── Write-up + spec card ──
+.v8-detail-body {
+  padding-top: 88px;
+
+  &__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 64px;
+    align-items: start;
+
+    @include below($bp-md) {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+  }
+
+  &__main {
+    max-width: 720px;
+  }
+
+  &__label {
+    margin: 0 0 20px;
+    font: 500 12px/1 var(--ff-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  &__aside {
+    position: sticky;
+    top: calc(var(--nav-h) + 24px);
+
+    @include below($bp-md) {
+      position: static;
+      order: -1;
+    }
+  }
+}
+
+// Editor-window card: the project as a little JSON file.
+.v8-spec {
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-card);
+
+  &__bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 40px;
+    padding: 0 14px;
+    border-bottom: 1px solid var(--border-subtle);
+    font: 400 12px/1 var(--ff-mono);
+    color: var(--text-secondary);
+  }
+
+  &__dots {
+    display: inline-flex;
+    gap: 6px;
+
+    i {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--border-strong);
+    }
+  }
+
+  &__body {
+    margin: 0;
+    padding: 16px 18px 18px;
+    font: 400 13px/1.7 var(--ff-mono);
+
+    div {
+      display: grid;
+      grid-template-columns: 88px minmax(0, 1fr);
+      gap: 12px;
+      padding: 7px 0;
+      border-bottom: 1px dashed var(--border-subtle);
+
+      &:last-child {
+        border-bottom: 0;
+      }
+    }
+
+    dt {
+      color: var(--code-keyword);
+
+      &::after {
+        content: ':';
+        color: var(--text-muted);
+      }
+    }
+
+    dd {
+      margin: 0;
+      color: var(--code-string);
+      overflow-wrap: anywhere;
+
+      a {
+        color: var(--code-var);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+    }
+  }
+}
+
+// ── Gallery ──
+.v8-detail-gallery {
+  margin-top: 56px;
+
+  ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    @include below($bp-sm) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  a {
+    display: block;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    border-radius: 12px;
+    border: 1px solid var(--border-subtle);
+    background: var(--surface-card-2);
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    transition: transform 0.6s $ease-out;
+  }
+
+  a:hover img {
+    transform: scale(1.03);
+  }
+}
+
+// ── Previous / next (projects and blog) ──
+.v8-pager {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding-bottom: 96px;
+
+  @include below($bp-sm) {
+    grid-template-columns: 1fr;
+  }
+
+  &__link {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 24px 26px;
+    border-radius: 14px;
+    border: 1px solid var(--border-subtle);
+    background: var(--surface-card);
+    text-decoration: none;
+    transition:
+      border-color 0.25s ease,
+      translate 0.4s $ease-out;
+
+    &:hover {
+      border-color: var(--border-strong);
+      translate: 0 -2px;
+    }
+
+    &--next {
+      align-items: flex-end;
+      text-align: right;
+    }
+  }
+
+  &__dir {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font: 500 12px/1 var(--ff-mono);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  &__title {
+    font-family: var(--ff-display);
+    font-weight: 600;
+    font-size: clamp(20px, 2vw, 26px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+}

@@ -69,6 +69,40 @@ export interface Project {
   featured?: boolean
   /** Logo shown for this project in the ⌘K menu (defaults to the first stack item). */
   menuIcon?: TechKey
+  /** Stack entries with no logo in the registry, shown as plain tags. */
+  stackExtra?: string[]
+}
+
+/** A project as loaded from the CMS for the projects pages. */
+export interface ProjectDetail extends Project {
+  client?: string
+  duration?: string
+  githubUrl?: string
+  /** Sanitised HTML from the dashboard editor. */
+  content: string
+  gallery: string[]
+  createdAt?: string
+  updatedAt?: string
+}
+
+export interface PostSummary {
+  slug: string
+  title: string
+  excerpt: string
+  coverImage?: string
+  category: { name: string; slug: string } | null
+  tags: { name: string; slug: string }[]
+  /** ISO dates. */
+  publishedAt: string
+  updatedAt: string
+  readTime: number
+  featured: boolean
+}
+
+export interface PostDetail extends PostSummary {
+  /** Sanitised HTML with ids on its h2 headings. */
+  content: string
+  toc: { id: string; text: string }[]
 }
 
 export interface Service {

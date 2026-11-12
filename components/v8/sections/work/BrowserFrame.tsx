@@ -61,7 +61,7 @@ const BrowserFrame = forwardRef<BrowserFrameHandle, BrowserFrameProps>(function 
         <span className="v8-browser__address">{domain}</span>
       </div>
       <div ref={viewport} className="v8-browser__viewport" data-name={domain}>
-        {!failed && (
+        {!failed && src && (
           <Image
             ref={image}
             src={src}
@@ -69,7 +69,7 @@ const BrowserFrame = forwardRef<BrowserFrameHandle, BrowserFrameProps>(function 
             width={1400}
             height={4200}
             sizes="(max-width: 960px) 100vw, 650px"
-            priority={priority}
+            preload={priority}
             className="v8-browser__shot"
             onError={() => setFailed(true)}
           />

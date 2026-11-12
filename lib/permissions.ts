@@ -42,6 +42,7 @@ export const PERMISSIONS: Record<UserRole, string[]> = {
     'categories.read', 'categories.write',
     'tags.read', 'tags.write',
     'media.read', 'media.write',
+    'analytics.read',
   ],
   author: [
     'blog.read', 'blog.write.own',

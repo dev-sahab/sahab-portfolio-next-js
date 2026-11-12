@@ -118,6 +118,27 @@ export default function SettingsClient({ initialSettings }: { initialSettings: P
         </div>
       )}
 
+      {tab === 'General' && (
+        <div className="settings-card">
+          <h2 className="settings-h2">Blog page</h2>
+          <div className="settings-grid-2">
+            <div className="settings-row">
+              <label className="settings-label" htmlFor="blog-columns">Cards per row (desktop)</label>
+              <select
+                id="blog-columns"
+                value={String(settings.blogColumns ?? 3)}
+                onChange={(e) => set('blogColumns', Number(e.target.value))}
+                className="settings-input"
+              >
+                <option value="3">3 columns</option>
+                <option value="2">2 columns</option>
+              </select>
+            </div>
+          </div>
+          <p className="settings-hint">The newest (or featured) post always shows large on top; the rest use this grid. Tablets show 2, phones 1.</p>
+        </div>
+      )}
+
       {tab === 'Profile' && (
         <>
           <div className="settings-card">

@@ -18,6 +18,8 @@ export function sanitizeContent(html: string) {
       ...sanitizeHtml.defaults.allowedAttributes,
       img: ['src', 'alt', 'title', 'width', 'height'],
       a: ['href', 'name', 'target', 'rel'],
+      // Quill 2 writes every list as <ol>; this attribute says bullet vs ordered.
+      li: ['data-list'],
       '*': ['class'],
     },
   })

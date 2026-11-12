@@ -1,8 +1,10 @@
 'use client'
 
 import { useEffect, useRef, type CSSProperties, type TouchEvent } from 'react'
+import Link from 'next/link'
 import { ArrowUpRight, Search, X } from 'lucide-react'
-import { headerNav, sectionIds, site } from '@/content/v8/site'
+import { headerNav, site } from '@/content/v8/site'
+import { routes } from '@/lib/v8/routes'
 import { cx } from '@/lib/v8/cx'
 import { lockScroll } from '@/lib/v8/smoothScroll'
 import { ButtonLink } from '../ui/Button'
@@ -16,8 +18,11 @@ const FOCUSABLE = 'a[href], button:not([disabled])'
 
 interface MobileMenuProps {
   open: boolean
-  /** Id of the section currently in view (scroll-spy), for the active link. */
+  /** href of the nav link for the current page. */
   active: string | null
+  /** Where "Get a free quote" goes (the form section on home, the contact page elsewhere). */
+  quoteHref: string
+  isHome: boolean
   onClose: () => void
   /** Opens the full-screen search. */
   onSearch: () => void
@@ -26,14 +31,13 @@ interface MobileMenuProps {
 /**
  * Full-screen mobile menu (Figma: "Home v8 — Mobile menu (open)").
  *  - Fades/slides down in 250ms; page scroll is locked behind it.
- *  - Links close the sheet and smooth-scroll to their section; "Get a free
- *    quote" closes it and scrolls to the contact form; the search row opens
- *    the full-screen search.
+ *  - Links close the sheet and open their page; "Get a free quote" closes it
+ *    and goes to the quote form; the search row opens the full-screen search.
  *  - Closes with the X button, Esc, or by swiping the sheet up.
  *  - Focus stays inside the sheet while open (and returns to the menu button
  *    on close); the theme toggle lives in the sheet's header.
  */
-export default function MobileMenu({ open, active, onClose, onSearch }: MobileMenuProps) {
+export default function MobileMenu({ open, active, quoteHref, isHome, onClose, onSearch }: MobileMenuProps) {
   const sheet = useRef<HTMLDivElement>(null)
   const closeButton = useRef<HTMLButtonElement>(null)
   const swipe = useRef<{ x: number; y: number; dragging: boolean } | null>(null)
@@ -143,7 +147,7 @@ export default function MobileMenu({ open, active, onClose, onSearch }: MobileMe
       onTouchCancel={onTouchEnd}
     >
       <div className="v8-sheet__bar">
-        <Logo onClick={onClose} />
+        <Logo href={isHome ? "#top" : routes.home} onClick={onClose} />
         <div className="v8-sheet__actions">
           <ThemeToggle />
           <button ref={closeButton} type="button" className="v8-sheet__close" aria-label="Close menu" onClick={onClose}>
@@ -158,19 +162,19 @@ export default function MobileMenu({ open, active, onClose, onSearch }: MobileMe
         <nav aria-label="Mobile">
           <ul className="v8-sheet__links">
             {headerNav.map((link, i) => {
-              const isActive = active === link.href.slice(1)
+              const isActive = active === link.href
               return (
                 <li key={link.href} style={{ '--i': i } as CSSProperties}>
-                  <a
+                  <Link
                     href={link.href}
                     className={cx(isActive && 'is-active')}
-                    aria-current={isActive ? 'true' : undefined}
+                    aria-current={isActive ? 'page' : undefined}
                     onClick={onClose}
                   >
                     <span className="v8-sheet__num">{String(i + 1).padStart(2, '0')}</span>
                     <span className="v8-sheet__name">{link.label}</span>
                     <ArrowUpRight aria-hidden="true" />
-                  </a>
+                  </Link>
                 </li>
               )
             })}
@@ -191,7 +195,7 @@ export default function MobileMenu({ open, active, onClose, onSearch }: MobileMe
         </button>
 
         <ButtonLink
-          href={`#${sectionIds.contact}`}
+          href={quoteHref}
           arrow
           glow
           className="v8-sheet__cta"

@@ -125,3 +125,43 @@ export const TECH: Record<TechKey, TechMeta> = {
   javascript: { label: 'JavaScript', icon: SiJavascript, color: '#E8C900' },
   express: { label: 'Express', icon: SiExpress, color: null },
 }
+
+// ── Free-text stack names (CMS) → registry keys ──
+const norm = (value: string) => value.toLowerCase().replace(/[^a-z0-9]/g, '')
+const ALIASES: Record<string, TechKey> = {
+  woo: 'woocommerce',
+  next: 'nextjs',
+  node: 'nodejs',
+  tailwindcss: 'tailwind',
+  postgres: 'postgresql',
+  makecom: 'make',
+  js: 'javascript',
+  expressjs: 'express',
+  reactjs: 'react',
+  wixstudio: 'wix',
+}
+const LOOKUP = new Map<string, TechKey>([
+  ...(Object.keys(TECH) as TechKey[]).flatMap((key) => [
+    [norm(key), key] as const,
+    [norm(TECH[key].label), key] as const,
+  ]),
+  ...Object.entries(ALIASES),
+])
+
+/**
+ * Maps the free-text `stack` strings typed in the dashboard ("WordPress",
+ * "Woocommerce"…) onto logo keys. Names without a logo come back in `extra`
+ * so they can still be shown as plain tags.
+ */
+export function toTechKeys(names: string[]): { keys: TechKey[]; extra: string[] } {
+  const keys: TechKey[] = []
+  const extra: string[] = []
+  for (const name of names) {
+    const key = LOOKUP.get(norm(name))
+    if (key) {
+      if (!keys.includes(key)) keys.push(key)
+    } else if (name.trim()) extra.push(name.trim())
+  }
+  return { keys, extra }
+}
+

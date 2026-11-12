@@ -1,7 +1,7 @@
 .dashboard-sidebar {
   width: 240px;
-  background: #111;
-  border-right: 1px solid #1f1f1f;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   position: sticky;
@@ -11,8 +11,12 @@
 }
 
 .sidebar-logo {
-  padding: 24px 20px;
-  border-bottom: 1px solid #1f1f1f;
+  padding: 22px 20px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-logo-link {
+  display: inline-block;
 }
 
 .sidebar-logo-text {
@@ -31,8 +35,8 @@
   font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #555;
-  margin-top: 4px;
+  color: var(--muted);
+  margin-top: 10px;
 }
 
 .sidebar-nav {
@@ -54,11 +58,11 @@
   font-weight: 500;
   transition: background 0.2s, color 0.2s;
   background: transparent;
-  color: #9a9a9a;
+  color: var(--text2);
 
   &.active {
-    background: rgba(184, 255, 79, 0.12);
-    color: #b8ff4f;
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    color: var(--accent);
   }
 
   &.sidebar-nav-link--sub {
@@ -80,11 +84,11 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: #9a9a9a;
+  color: var(--text2);
   text-align: left;
 
   &.active {
-    color: #b8ff4f;
+    color: var(--accent);
   }
 }
 
@@ -109,12 +113,12 @@
   margin-top: 2px;
   margin-left: 14px;
   padding-left: 12px;
-  border-left: 1px solid #1f1f1f;
+  border-left: 1px solid var(--border);
 }
 
 .sidebar-bottom {
   padding: 12px 10px;
-  border-top: 1px solid #1f1f1f;
+  border-top: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -127,7 +131,7 @@
   padding: 9px 12px;
   border-radius: 8px;
   font-size: 14px;
-  color: #9a9a9a;
+  color: var(--text2);
   transition: color 0.2s;
 }
 
@@ -137,4 +141,12 @@
   cursor: pointer;
   width: 100%;
   text-align: left;
+}
+
+// Hover feedback (v8): quiet surface tint, accent stays for the active item.
+.sidebar-nav-link:not(.active):hover,
+.sidebar-nav-group-btn:not(.active):hover,
+.sidebar-bottom-link:hover {
+  background: var(--surface2);
+  color: var(--text);
 }

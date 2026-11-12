@@ -1,0 +1,93 @@
+@use 'v8/tokens' as *;
+
+.v8-projects {
+  padding-top: 64px;
+
+  .v8-project--featured {
+    margin-top: 40px;
+  }
+
+  // CMS excerpts vary a lot in length; keep the grid rows even.
+  .v8-project__summary {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+// Filter chips (projects, blog).
+.v8-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  &__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 38px;
+    padding: 0 8px 0 14px;
+    border-radius: 999px;
+    border: 1px solid var(--border-strong);
+    background: transparent;
+    font: 500 14px/1 var(--ff-sans);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      background-color 0.2s ease,
+      color 0.2s ease;
+
+    &:hover {
+      color: var(--text-primary);
+      border-color: var(--text-muted);
+    }
+
+    &.is-active {
+      border-color: var(--text-primary);
+      background: var(--text-primary);
+      color: var(--bg-base);
+    }
+  }
+
+  &__more {
+    height: 38px;
+    padding: 0 12px;
+    border: 0;
+    background: none;
+    font: 500 13px/1 var(--ff-mono);
+    color: var(--text-muted);
+    cursor: pointer;
+
+    &:hover {
+      color: var(--text-primary);
+    }
+  }
+
+  &__count {
+    display: inline-grid;
+    place-items: center;
+    min-width: 24px;
+    height: 24px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: var(--surface-card-2);
+    font: 500 11.5px/1 var(--ff-mono);
+    color: var(--text-secondary);
+
+    .is-active & {
+      background: color-mix(in srgb, var(--bg-base) 16%, transparent);
+      color: inherit;
+    }
+  }
+}
+
+.v8-empty {
+  margin: 0;
+  padding: 48px 24px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 14px;
+  text-align: center;
+  color: var(--text-secondary);
+}

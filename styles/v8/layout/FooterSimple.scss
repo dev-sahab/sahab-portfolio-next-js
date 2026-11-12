@@ -1,0 +1,210 @@
+// BACKUP styles for components/v8/layout/FooterSimple.tsx (single-row footer). Not loaded unless that component is used.
+@use 'v8/tokens' as *;
+
+.v8-footer {
+  position: relative;
+  overflow: hidden;
+  padding: 80px 0 32px;
+
+  // Ember glow behind the wordmark.
+  &__glow {
+    position: absolute;
+    left: 50%;
+    bottom: -120px;
+    width: min(820px, 90vw);
+    height: 320px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: radial-gradient(closest-side, var(--glow), transparent);
+    filter: blur(40px);
+    pointer-events: none;
+  }
+
+  .v8-container {
+    position: relative;
+  }
+
+  &__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding-bottom: 32px;
+
+    // Figma mobile: logo + socials on one row, links wrap underneath.
+    @include below($bp-md) {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas:
+        'logo socials'
+        'nav  nav';
+      align-items: center;
+      gap: 20px 16px;
+      padding-bottom: 24px;
+
+      > :nth-child(1) {
+        grid-area: logo;
+      }
+      > :nth-child(2) {
+        grid-area: nav;
+      }
+      > :nth-child(3) {
+        grid-area: socials;
+      }
+    }
+  }
+
+  &__nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 28px;
+
+    // Mobile: links centred under the logo row.
+    @include below($bp-md) {
+      justify-content: center;
+      gap: 10px 20px;
+    }
+
+    a {
+      font: 400 14px/1.55 var(--ff-sans);
+      color: var(--text-secondary);
+      text-decoration: none;
+
+      &:hover {
+        color: var(--text-primary);
+      }
+    }
+  }
+
+  &__socials {
+    display: flex;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    a {
+      display: grid;
+      place-items: center;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      background: var(--surface-card);
+      color: var(--text-primary);
+      transition: border-color 0.2s ease;
+
+      &:hover {
+        border-color: var(--border-strong);
+      }
+    }
+  }
+
+  &__social-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  // Sized from the *content width* (viewport minus gutters), not the
+  // viewport, so the whole word always fits inside the container:
+  // desktop 440px @ 1120px (39.3%), mobile 120px @ 350px (34.3%, Figma
+  // mobile). Clipped at ~62% of the letter height ("peeking").
+  &__wordmark {
+    --wm-size: min(440px, calc((100vw - var(--gutter) * 2) * 0.393));
+    position: relative;
+    height: calc(var(--wm-size) * 0.62);
+    overflow: hidden;
+    user-select: none;
+
+    @include below($bp-sm) {
+      --wm-size: calc((100vw - var(--gutter) * 2) * 0.343);
+      height: calc(var(--wm-size) * 0.633);
+    }
+  }
+
+  &__word {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    display: flex;
+    font-family: var(--ff-display);
+    font-weight: 800;
+    font-size: var(--wm-size);
+    line-height: 0.8;
+    letter-spacing: -0.05em;
+    color: var(--text-primary);
+    opacity: 0.07;
+    white-space: nowrap;
+  }
+
+  // Letters rise from below the clip edge one by one (fast, smooth ease-out).
+  &__letter {
+    display: inline-block;
+    translate: 0 105%;
+    transition: translate 1s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: calc(var(--i) * var(--stagger));
+    will-change: translate;
+  }
+
+  &__wordmark.is-in &__letter {
+    translate: 0 0;
+  }
+
+  // No JS (reveal flag off) or reduced motion → letters simply sit in place.
+  html:not(.v8-js) & &__letter,
+  html.v8-js:not(.v8-hydrated) & &__letter {
+    translate: 0 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__letter {
+      translate: 0 0;
+      transition: none;
+    }
+  }
+
+  &__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+    padding-top: 24px;
+    // Same tone as the wordmark letters above (text-primary at 7%), so the line reads as their baseline.
+    border-top: 1px solid color-mix(in srgb, var(--text-primary) 7%, transparent);
+    font: 400 13px/1.55 var(--ff-sans);
+
+    p {
+      margin: 0;
+      color: var(--text-muted);
+    }
+
+    // Mobile: legal links first, copyright underneath, both centred.
+    @include below($bp-sm) {
+      flex-direction: column;
+      justify-content: center;
+      gap: 10px;
+      text-align: center;
+
+      .v8-footer__legal {
+        order: -1;
+        justify-content: center;
+      }
+    }
+  }
+
+  &__legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+
+    a {
+      color: var(--text-secondary);
+      text-decoration: none;
+
+      &:hover {
+        color: var(--text-primary);
+      }
+    }
+  }
+}

@@ -23,56 +23,72 @@
     position: relative;
   }
 
+  // Brand block (logo, one-line pitch, socials) + three link columns.
   &__top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    padding-bottom: 32px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.8fr);
+    gap: 48px 64px;
+    padding-bottom: 48px;
 
-    // Figma mobile: logo + socials on one row, links wrap underneath.
     @include below($bp-md) {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      grid-template-areas:
-        'logo socials'
-        'nav  nav';
-      align-items: center;
-      gap: 20px 16px;
-      padding-bottom: 24px;
-
-      > :nth-child(1) {
-        grid-area: logo;
-      }
-      > :nth-child(2) {
-        grid-area: nav;
-      }
-      > :nth-child(3) {
-        grid-area: socials;
-      }
+      grid-template-columns: 1fr;
+      gap: 40px;
+      padding-bottom: 32px;
     }
   }
 
-  &__nav {
+  &__brand {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px 28px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
 
-    // Mobile: links centred under the logo row.
-    @include below($bp-md) {
-      justify-content: center;
-      gap: 10px 20px;
+  &__tagline {
+    max-width: 340px;
+    margin: 0;
+    font: 400 14px/1.6 var(--ff-sans);
+    color: var(--text-secondary);
+  }
+
+  &__columns {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 32px 24px;
+
+    @include below($bp-sm) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  &__col {
+    ul {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
     }
 
     a {
-      font: 400 14px/1.55 var(--ff-sans);
+      font: 400 14.5px/1.5 var(--ff-sans);
       color: var(--text-secondary);
       text-decoration: none;
+      transition: color 0.2s ease;
 
       &:hover {
         color: var(--text-primary);
       }
     }
+  }
+
+  &__col-title {
+    margin: 0 0 16px;
+    font: 500 11.5px/1 var(--ff-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
   }
 
   &__socials {

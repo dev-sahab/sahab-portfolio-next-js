@@ -1,0 +1,99 @@
+@use 'v8/tokens' as *;
+
+.v8-cta-band {
+  padding: 0 0 120px;
+
+  @include below($bp-md) {
+    padding-bottom: 88px;
+  }
+
+  &__card {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 32px 48px;
+    padding: 56px;
+    border-radius: 20px;
+    background: var(--brand-deep);
+    color: var(--brand-on-deep);
+
+    // Same faint grid as the heroes, fading out to the right.
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(105deg, #000 10%, transparent 65%);
+      pointer-events: none;
+    }
+
+    @include below($bp-md) {
+      grid-template-columns: 1fr;
+      align-items: start;
+      padding: 40px 28px;
+    }
+  }
+
+  &__copy,
+  &__actions {
+    position: relative;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: var(--ff-display);
+    font-weight: 700;
+    font-size: clamp(36px, 4.4vw, 56px);
+    line-height: 1;
+    letter-spacing: -0.035em;
+    color: var(--brand-on-deep);
+
+    .v8-em {
+      color: var(--accent-fill);
+    }
+  }
+
+  &__text {
+    max-width: 520px;
+    margin: 16px 0 0;
+    color: var(--brand-on-deep-2);
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+
+    // Outlined button on the dark band.
+    .v8-cta-band__secondary {
+      border-color: rgba(255, 255, 255, 0.18);
+      color: var(--brand-on-deep);
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.06);
+      }
+    }
+
+    .v8-email-chip {
+      justify-content: space-between;
+      border-color: rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--brand-on-deep);
+    }
+
+    .v8-email-chip__value {
+      color: var(--brand-on-deep);
+    }
+
+    .v8-email-chip__action {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--brand-on-deep-2);
+    }
+  }
+}

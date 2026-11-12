@@ -5,6 +5,7 @@ import { ToastProvider } from './ToastProvider'
 import { CommandMenuProvider } from '../command/CommandMenuProvider'
 import SpotlightTracker from './SpotlightTracker'
 import SmoothScroll from './SmoothScroll'
+import ConsentProvider from '../consent/ConsentProvider'
 
 /** Client-side context for the v8 page: toasts + the ⌘K command menu. */
 export default function V8Providers({ children }: { children: ReactNode }) {
@@ -18,11 +19,13 @@ export default function V8Providers({ children }: { children: ReactNode }) {
 
   return (
     <ToastProvider>
-      <CommandMenuProvider>
-        {children}
-        <SpotlightTracker />
-        <SmoothScroll />
-      </CommandMenuProvider>
+      <ConsentProvider>
+        <CommandMenuProvider>
+          {children}
+          <SpotlightTracker />
+          <SmoothScroll />
+        </CommandMenuProvider>
+      </ConsentProvider>
     </ToastProvider>
   )
 }

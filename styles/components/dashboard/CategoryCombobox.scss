@@ -8,17 +8,17 @@
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #555;
+  color: var(--muted);
   margin-bottom: 6px;
 }
 
 .combobox-input {
   width: 100%;
-  background: #111;
-  border: 1px solid #2a2a2a;
+  background: var(--surface);
+  border: 1px solid var(--border2);
   border-radius: 6px;
   padding: 10px 14px;
-  color: #f0ede6;
+  color: var(--text);
   font-size: 14px;
   outline: none;
   font-family: inherit;
@@ -31,8 +31,8 @@
   left: 0;
   right: 0;
   margin-top: 4px;
-  background: #1a1a1a;
-  border: 1px solid #2a2a2a;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
   border-radius: 8px;
   max-height: 220px;
   overflow-y: auto;
@@ -41,31 +41,31 @@
 .combobox-option {
   padding: 8px 14px;
   font-size: 13px;
-  color: #f0ede6;
+  color: var(--text);
   cursor: pointer;
 
   &:hover {
-    background: rgba(184, 255, 79, 0.08);
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
   }
 }
 
 .combobox-option-create {
   padding: 8px 14px;
   font-size: 13px;
-  color: #b8ff4f;
+  color: var(--accent);
   cursor: pointer;
   font-family: var(--f-m);
 
   &:hover {
-    background: rgba(184, 255, 79, 0.08);
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
   }
 
   &.is-divided {
-    border-top: 1px solid #2a2a2a;
+    border-top: 1px solid var(--border2);
   }
 
   &.is-disabled {
-    color: #555;
+    color: var(--muted);
     cursor: default;
 
     &:hover {

@@ -9,22 +9,22 @@
   font-size: 24px;
   font-weight: 700;
   font-family: var(--f-d);
-  color: #f0ede6;
+  color: var(--text);
   letter-spacing: -0.02em;
   margin-bottom: 4px;
 }
 
 .page-header-subtitle {
   font-size: 14px;
-  color: #9a9a9a;
+  color: var(--text2);
 }
 
 .page-header-action {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: #b8ff4f;
-  color: #0a0a0a;
+  background: var(--accent);
+  color: var(--accent-ink);
   padding: 10px 20px;
   border-radius: 8px;
   font-size: 13px;

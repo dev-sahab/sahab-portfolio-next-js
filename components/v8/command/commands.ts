@@ -1,4 +1,5 @@
-import { sectionIds, site, socials } from '@/content/v8/site'
+import { headerNav, sectionIds, site, socials } from '@/content/v8/site'
+import { routes } from '@/lib/v8/routes'
 import { projects } from '@/content/v8/projects'
 import { services } from '@/content/v8/services'
 import type { TechKey } from '@/content/v8/types'
@@ -33,7 +34,7 @@ export const commands: Command[] = [
     meta: `${p.category} · ${p.year}`,
     keywords: `${p.summary} ${p.stack.join(' ')} ${p.domain}`,
     icon: { tech: p.menuIcon ?? p.stack[0] },
-    action: { type: 'scroll', target: `project-${p.slug}` },
+    action: { type: 'link', href: p.caseStudyHref },
   })),
   // "Stack" group, as in the HTML prototype — one entry per platform/service.
   ...services.map<Command>((s) => ({
@@ -43,7 +44,17 @@ export const commands: Command[] = [
     meta: s.features[0],
     keywords: `${s.description} ${s.features.join(' ')} ${s.stack.join(' ')} ${s.bestFor} services`,
     icon: { tech: s.stack[0] },
-    action: { type: 'scroll', target: sectionIds.services },
+    action: { type: 'link', href: s.href },
+  })),
+  // Every page, so search doubles as site navigation.
+  ...[{ label: 'Home', href: routes.home }, ...headerNav].map<Command>((page) => ({
+    id: `page-${page.href}`,
+    group: 'Pages',
+    label: page.label,
+    meta: page.href,
+    keywords: `${page.label} page go open`,
+    icon: { glyph: 'hash' },
+    action: { type: 'link', href: page.href },
   })),
   // Order matches the HTML prototype: copy email, quote, GitHub, LinkedIn.
   {
