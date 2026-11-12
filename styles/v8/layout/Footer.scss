@@ -23,7 +23,7 @@
     position: relative;
   }
 
-  // Brand block (logo, one-line pitch, socials) + three link columns.
+  // Brand block (logo, one-line pitch, socials) + the link columns.
   &__top {
     display: grid;
     grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.8fr);
@@ -51,12 +51,15 @@
     color: var(--text-secondary);
   }
 
+  // Every link column sits in one row, however many columns content/v8/site.ts has.
   &__columns {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
     gap: 32px 24px;
 
     @include below($bp-sm) {
+      grid-auto-flow: row;
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
@@ -121,10 +124,10 @@
 
   // Sized from the *content width* (viewport minus gutters), not the
   // viewport, so the whole word always fits inside the container:
-  // desktop 440px @ 1120px (39.3%), mobile 120px @ 350px (34.3%, Figma
+  // desktop 535px @ 1360px (39.3%), mobile 120px @ 350px (34.3%, Figma
   // mobile). Clipped at ~62% of the letter height ("peeking").
   &__wordmark {
-    --wm-size: min(440px, calc((100vw - var(--gutter) * 2) * 0.393));
+    --wm-size: min(535px, calc((100vw - var(--gutter) * 2) * 0.393));
     position: relative;
     height: calc(var(--wm-size) * 0.62);
     overflow: hidden;

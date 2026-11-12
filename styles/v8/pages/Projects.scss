@@ -3,6 +3,11 @@
 .v8-projects {
   padding-top: 64px;
 
+  // Service landing pages put a heading above the browser; same gap as other sections.
+  .v8-section-header {
+    margin-bottom: 56px;
+  }
+
   .v8-project--featured {
     margin-top: 40px;
   }
