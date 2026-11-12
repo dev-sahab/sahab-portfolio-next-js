@@ -2,7 +2,7 @@ import type { FaqItem, HeadingText } from './types'
 
 export const faqSection = {
   eyebrow: '05 / FAQ',
-  title: 'Questions,\n*answered.*' satisfies HeadingText,
+  title: 'Questions about hiring\n*a web developer.*' satisfies HeadingText,
   intro: 'What clients usually ask before hiring a web developer. If your question isn’t here, just email me.',
 }
 

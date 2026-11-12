@@ -27,7 +27,7 @@ export default function AboutPage() {
     <>
       <PageHero
         crumbs={[{ label: 'About', href: routes.about }]}
-        eyebrow="About"
+        eyebrow="Sahab Uddin, freelance web developer"
         title={aboutPage.title}
         intro={aboutSection.bio}
         meta={aboutPage.now}
@@ -38,7 +38,7 @@ export default function AboutPage() {
           <Reveal className="v8-story__portrait">
             <div className="v8-story__photo">
               <Image src={aboutSection.portrait.src} alt={aboutSection.portrait.alt} fill sizes="(max-width: 960px) 100vw, 420px" preload />
-              <span className="v8-story__caption">Sahab Uddin · Sylhet, Bangladesh</span>
+              <span className="v8-story__caption">Sahab Uddin · Freelance web developer</span>
             </div>
           </Reveal>
           <div className="v8-story__text">

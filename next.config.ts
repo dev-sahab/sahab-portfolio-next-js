@@ -33,7 +33,29 @@ const nextConfig: NextConfig = {
   // Old URLs → their pages on the current site (permanent, so search engines
   // move their ranking over). /v8/* was the preview address of this design.
   async redirects() {
+    // Domain move: once NEXT_PUBLIC_SITE_URL is set to the new domain
+    // (https://sahabuddin.me), every page on the old Vercel address 308s to
+    // the same path there. Nothing redirects while the variable still names
+    // the old address. API, OAuth and .well-known stay on both hosts so
+    // connected apps (the MCP connector) keep working until reconnected.
+    const OLD_HOST = 'sahabweb.vercel.app'
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+    const newHost = siteUrl ? new URL(siteUrl).host : OLD_HOST
+    const domainMove =
+      newHost !== OLD_HOST
+        ? [
+            { source: '/', has: [{ type: 'host' as const, value: OLD_HOST }], destination: `https://${newHost}/`, permanent: true },
+            {
+              source: '/:path((?!api/|oauth/|\\.well-known/).*)',
+              has: [{ type: 'host' as const, value: OLD_HOST }],
+              destination: `https://${newHost}/:path`,
+              permanent: true,
+            },
+          ]
+        : []
+
     return [
+      ...domainMove,
       { source: '/portfolio', destination: '/projects', permanent: true },
       { source: '/portfolio/:slug', destination: '/projects/:slug', permanent: true },
       { source: '/get-quote', destination: '/contact', permanent: true },

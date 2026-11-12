@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { getPosts, getProjects } from '@/lib/v8/data'
 import { absoluteUrl, routes } from '@/lib/v8/routes'
+import { servicePages } from '@/content/v8/servicePages'
 
 // Rebuilt hourly (and on dashboard edits, which revalidate the pages it lists).
 export const revalidate = 3600
@@ -15,6 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     page(routes.home, 1, 'weekly'),
     page(routes.services, 0.9, 'monthly'),
+    ...servicePages.map((s) => page(routes.servicePage(s.slug), 0.9, 'monthly')),
     page(routes.projects, 0.9, 'weekly'),
     page(routes.about, 0.7, 'monthly'),
     page(routes.blog, 0.8, 'weekly'),

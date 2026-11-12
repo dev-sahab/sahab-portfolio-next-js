@@ -26,7 +26,7 @@ export default async function BlogPage() {
     <>
       <PageHero
         crumbs={[{ label: 'Blog', href: routes.blog }]}
-        eyebrow="Blog"
+        eyebrow="Web development blog"
         title={'Web development notes\n*from real client work.*'}
         intro="Practical write-ups on WordPress, Webflow, site speed and SEO, plus what actually helps a small business get more from its website."
         meta={[

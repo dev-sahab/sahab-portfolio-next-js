@@ -46,6 +46,15 @@ export const footerColumns: { title: string; links: NavLink[] }[] = [
     ],
   },
   {
+    title: 'Services',
+    links: [
+      { label: 'WordPress developer', href: routes.servicePage('wordpress-developer') },
+      { label: 'Webflow developer', href: routes.servicePage('webflow-developer') },
+      { label: 'Next.js developer', href: routes.servicePage('nextjs-developer') },
+      { label: 'For agencies', href: routes.servicePage('white-label-for-agencies') },
+    ],
+  },
+  {
     title: 'Resources',
     links: [
       { label: 'Blog', href: routes.blog },

@@ -21,7 +21,7 @@ export default function FaqPage() {
     <>
       <PageHero
         crumbs={[{ label: 'FAQ', href: routes.faq }]}
-        eyebrow="FAQ"
+        eyebrow="Web development FAQ"
         title={'Questions about\n*your new website.*'}
         intro={faqSection.intro}
         meta={[

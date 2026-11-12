@@ -3,19 +3,19 @@ import type { HeadingText, Service } from './types'
 
 export const servicesSection = {
   eyebrow: '02 / Services',
-  title: 'Hire me like a\nstudio, *work with*\n*one developer.*' satisfies HeadingText,
+  title: 'Web development services,\n*from one developer.*' satisfies HeadingText,
   intro:
     'WordPress, Webflow and custom web app development with one point of contact. I build it, and trusted partners handle UI/UX design, SEO and marketing, so you’re not managing five freelancers.',
   /** Text link under the intro → the full services page. */
   cta: { label: 'View all services', href: routes.services },
 }
 
-// Each card links to its detailed section on the services page.
+// Each card links to that service's own landing page (/services/<slug>).
 export const services: Service[] = [
   {
     id: 'wordpress',
     variant: 'deep',
-    href: routes.service('wordpress'),
+    href: routes.servicePage('wordpress-developer'),
     badge: 'Most requested',
     stack: ['wordpress', 'woocommerce', 'elementor', 'php'],
     title: 'WordPress and\nWooCommerce',
@@ -32,7 +32,7 @@ export const services: Service[] = [
   {
     id: 'webflow',
     variant: 'plain',
-    href: routes.service('webflow'),
+    href: routes.servicePage('webflow-developer'),
     stack: ['webflow', 'framer', 'make', 'n8n'],
     title: 'Webflow\nand Framer',
     description:
@@ -48,7 +48,7 @@ export const services: Service[] = [
   {
     id: 'apps',
     variant: 'accent',
-    href: routes.service('apps'),
+    href: routes.servicePage('nextjs-developer'),
     stack: ['nextjs', 'nodejs', 'laravel', 'mongodb'],
     title: 'Custom apps\nand automation',
     description:

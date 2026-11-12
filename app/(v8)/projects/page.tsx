@@ -26,7 +26,7 @@ export default async function ProjectsPage() {
     <>
       <PageHero
         crumbs={[{ label: 'Projects', href: routes.projects }]}
-        eyebrow="Selected work"
+        eyebrow="Web development portfolio"
         title={'Web development work,\n*live and in use.*'}
         intro="Recent websites I built for clients on WordPress, WooCommerce and Webflow. Hover a screen to scroll the whole page, or open a project for the details."
         meta={[

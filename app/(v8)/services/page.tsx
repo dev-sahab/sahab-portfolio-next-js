@@ -148,7 +148,7 @@ export default function ServicesPage() {
 
       <JsonLd
         data={serviceSchema(
-          services.map((s) => ({ name: (servicesPage.details[s.id]?.heading ?? s.title).replace(/[*\n]/g, ' ').replace(/\s+/g, ' ').trim(), description: s.description, url: routes.service(s.id) })),
+          services.map((s) => ({ name: (servicesPage.details[s.id]?.heading ?? s.title).replace(/[*\n]/g, ' ').replace(/\s+/g, ' ').trim(), description: s.description, url: s.href })),
         )}
       />
     </>

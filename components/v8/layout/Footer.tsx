@@ -31,7 +31,7 @@ export default function Footer() {
           <Reveal className="v8-footer__brand">
             <Logo />
             <p className="v8-footer__tagline">
-              Fast, SEO-friendly websites on WordPress, Webflow and custom code. Based in {site.location}, working worldwide.
+              Fast, SEO-friendly websites on WordPress, Webflow and custom code.
             </p>
             <ul className="v8-footer__socials">
               {socials.map(({ kind, label, href }) => {

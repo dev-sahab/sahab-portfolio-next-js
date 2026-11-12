@@ -53,7 +53,8 @@ const person = {
   '@type': 'Person',
   '@id': absoluteUrl(`${routes.about}#person`),
   name: site.name,
-  alternateName: site.legalName,
+  // Every spelling clients and profiles use, so search engines treat them as one person.
+  alternateName: [site.legalName, 'Shahab Uddin'],
   url: absoluteUrl(routes.about),
   image: absoluteUrl('/v8/portrait.jpg'),
   jobTitle: 'Freelance Web Developer',
@@ -141,6 +142,20 @@ export function faqSchema(items: { question: string; answer: string }[]) {
       name: item.question,
       acceptedAnswer: { '@type': 'Answer', text: item.answer },
     })),
+  }
+}
+
+/** One dedicated service page (/services/<slug>). */
+export function singleServiceSchema(item: { name: string; description: string; url: string; serviceType: string }) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: item.name,
+    serviceType: item.serviceType,
+    description: item.description,
+    url: absoluteUrl(item.url),
+    areaServed: 'Worldwide',
+    provider: { '@id': person['@id'] },
   }
 }
 

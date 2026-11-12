@@ -3,7 +3,7 @@ import type { HeadingText, Project } from './types'
 
 export const workSection = {
   eyebrow: '01 / Selected work',
-  title: 'Recent client sites,\n*live and in use.*' satisfies HeadingText,
+  title: 'WordPress and Webflow sites,\n*live and in use.*' satisfies HeadingText,
   intro: 'A few recent WordPress, WooCommerce and Webflow websites I built for clients. Hover a screen to scroll the whole page.',
   footerNote: '300+ projects delivered so far. See more WordPress, Webflow and web app work.',
   allProjects: { label: 'See all projects', href: routes.projects },
@@ -33,7 +33,7 @@ export const projects: Project[] = [
     title: 'GLAMLIP',
     year: '2026',
     category: 'Online store',
-    summary: 'mylipscare, an online store for lip care products on the Hera theme, customised in Elementor.',
+    summary: 'mylipscare, an online store for lip care products on the Hera theme, customized in Elementor.',
     stack: ['wordpress', 'woocommerce'],
     domain: 'mylipscare.com',
     image: `${CLOUDINARY}/v1787933058/sahab-projects/glamlip-hc04mh.jpg`,

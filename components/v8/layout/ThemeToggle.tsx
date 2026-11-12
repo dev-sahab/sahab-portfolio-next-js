@@ -24,7 +24,7 @@ export default function ThemeToggle() {
   ]
 
   return (
-    <div className="v8-theme-toggle" role="radiogroup" aria-label="Colour theme">
+    <div className="v8-theme-toggle" role="radiogroup" aria-label="Color theme">
       {options.map(({ id, label, Icon }) => (
         <button
           key={id}

@@ -124,7 +124,7 @@ export const privacyPolicy: LegalDoc = {
       id: 'transfers',
       heading: 'International transfers',
       body: [
-        'I work remotely from outside the UK and EU, and the providers above run servers in several countries, including the United States. When your information leaves the UK or EU, it’s protected by recognised safeguards such as the EU Standard Contractual Clauses, the UK International Data Transfer Addendum, or the EU-US Data Privacy Framework where the provider is certified.',
+        'I work remotely from outside the UK and EU, and the providers above run servers in several countries, including the United States. When your information leaves the UK or EU, it’s protected by recognized safeguards such as the EU Standard Contractual Clauses, the UK International Data Transfer Addendum, or the EU-US Data Privacy Framework where the provider is certified.',
       ],
     },
     {

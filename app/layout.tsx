@@ -11,7 +11,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const title = settings?.siteTitle || 'Sahab Uddin Mintu'
   const description = settings?.siteDescription || 'Fast, SEO-friendly WordPress, Webflow and custom websites by Sahab Uddin.'
   return {
-    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://shahabweb.vercel.app'),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://sahabuddin.me'),
     // The public site (app/(v8)/layout.tsx) sets its own titles; this covers dashboard + login.
     title: { default: title, template: `%s · ${title}` },
     description,

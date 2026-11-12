@@ -25,7 +25,7 @@ export default function ContactPage() {
     <>
       <PageHero
         crumbs={[{ label: 'Contact', href: routes.contact }]}
-        eyebrow="Contact"
+        eyebrow="Hire a freelance web developer"
         title={'Hire a web developer.\n*Get a plan in 24 hours.*'}
         intro={contactSection.intro}
       />

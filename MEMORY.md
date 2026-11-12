@@ -6,6 +6,10 @@
 
 ---
 
+### 2026-11-12 — SEO pass 2: service landing pages, llms.txt, domain move to sahabuddin.me
+
+Four keyword landing pages at `/services/<slug>` (`app/(v8)/services/[slug]/page.tsx`, copy in `content/v8/servicePages.ts`): WordPress, Webflow, Next.js, white label for agencies. One page per search phrase because a single /services page can't rank for all three platforms. Service cards and the new footer "Services" column link there; each page has Service + FAQPage + BreadcrumbList JSON-LD and is in the sitemap. `/llms.txt` (`app/llms.txt/route.ts`) maps the site for AI assistants. Domain move: `next.config.ts` 308-redirects every page on `sahabweb.vercel.app` to the same path on the host in `NEXT_PUBLIC_SITE_URL`, but only once that variable names a different host, so nothing redirects before the new domain is live; `/api/*`, `/oauth/*` and `/.well-known/*` are excluded so the MCP connector keeps working on the old host. Visible location text (Sylhet, Bangladesh) removed per Sahab; the Person schema address is kept for now. Public copy uses US spelling. Prices are deliberately absent from service pages and FAQ until Sahab sets ranges.
+
 ### 2026-11-12 — Cleanup: unused packages, assets, Tailwind utilities
 
 - `app/globals.css` now imports only `tailwindcss/preflight.css` instead of the full `tailwindcss`. Tailwind was scanning the source and generating ~160 utility classes from ordinary words (`.hidden`, `.table`, `.border`, `.container`…) that sat in `@layer utilities` and always lost to our own unlayered CSS. Global CSS went from ~17 KB to ~9 KB; the reset and all of our own CSS are byte-for-byte the same as before (checked by diffing the built CSS).

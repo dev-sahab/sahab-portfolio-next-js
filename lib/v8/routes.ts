@@ -12,6 +12,8 @@ export const routes = {
   about: at('/about'),
   services: at('/services'),
   service: (id: string) => `${at('/services')}#${id}`,
+  /** Dedicated landing page per service (content/v8/servicePages.ts). */
+  servicePage: (slug: string) => at(`/services/${slug}`),
   projects: at('/projects'),
   project: (slug: string) => at(`/projects/${slug}`),
   blog: at('/blog'),
@@ -25,7 +27,7 @@ export const routes = {
   homeSection: (id: string) => `${V8_BASE || '/'}#${id}`,
 } as const
 
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://shahabweb.vercel.app').replace(/\/$/, '')
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://sahabuddin.me').replace(/\/$/, '')
 
 /** Absolute URL for canonical links, Open Graph and JSON-LD. */
 export const absoluteUrl = (path: string) => `${SITE_URL}${path.startsWith('/') ? path : `/${path}`}`

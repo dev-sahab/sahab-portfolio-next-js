@@ -25,7 +25,7 @@ export const timeline: TimelineEntry[] = [
     version: 'v4',
     org: 'TechNuxt · remote',
     description:
-      'Turned designs into responsive Elementor websites, customised WooCommerce stores, themes and plugins, and cut load times by roughly 30%.',
+      'Turned designs into responsive Elementor websites, customized WooCommerce stores, themes and plugins, and cut load times by roughly 30%.',
   },
   {
     period: '2021 – 2025',
@@ -33,7 +33,7 @@ export const timeline: TimelineEntry[] = [
     version: 'v3',
     org: 'Webeliyo',
     description:
-      'Built WooCommerce stores, landing pages and custom Elementor + Crocoblock sites, with speed optimisation and on-page SEO.',
+      'Built WooCommerce stores, landing pages and custom Elementor + Crocoblock sites, with speed optimization and on-page SEO.',
   },
   {
     period: '2021 – now',

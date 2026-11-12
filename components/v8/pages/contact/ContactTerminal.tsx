@@ -18,7 +18,7 @@ interface ContactTerminalProps {
  * Contact details as a little terminal window: `$ email`, `$ reply-time`,
  * `$ elsewhere`. The address is a mailto: link; the small button copies it.
  */
-export default function ContactTerminal({ email, timeZone, location, utcOffset, links }: ContactTerminalProps) {
+export default function ContactTerminal({ email, timeZone, utcOffset, links }: ContactTerminalProps) {
   const copy = useCopy()
   const [copied, setCopied] = useState(false)
   const timer = useRef<number | undefined>(undefined)
@@ -60,7 +60,7 @@ export default function ContactTerminal({ email, timeZone, location, utcOffset, 
         <div>
           <dt>reply-time</dt>
           <dd>
-            Within 24 hours, {location.split(',')[0]} time ({utcOffset})
+            Within 24 hours ({utcOffset})
             <span className="v8-terminal__muted">
               {' '}
               · now <LocalTime timeZone={timeZone} />
