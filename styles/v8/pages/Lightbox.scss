@@ -1,0 +1,241 @@
+@use 'v8/tokens' as *;
+
+// ── Project gallery: thumbnails ──
+.v8-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  @include below($bp-sm) {
+    grid-template-columns: 1fr;
+  }
+
+  &__thumb {
+    display: block;
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    border-radius: 12px;
+    border: 1px solid var(--border-subtle);
+    background: var(--surface-card-2);
+    cursor: zoom-in;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      transition: transform 0.6s $ease-out;
+    }
+
+    &:hover img {
+      transform: scale(1.03);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--accent-fill);
+      outline-offset: 3px;
+    }
+  }
+}
+
+// ── Full-screen viewer (always dark, whatever the theme) ──
+.v8-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 72px 84px 84px;
+  background: rgba(8, 8, 9, 0.94);
+  backdrop-filter: blur(6px);
+  animation: v8-lightbox-in 0.25s ease both;
+
+  @include below($bp-sm) {
+    padding: 64px 12px 76px;
+  }
+
+  // Scroll container; the image centers itself with margin:auto so a zoomed
+  // image can still scroll back to its true top-left (flex centering can't).
+  &__stage {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    scrollbar-gutter: stable;
+  }
+
+  &__img {
+    flex-shrink: 0;
+    margin: auto;
+    border-radius: 8px;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+    animation: v8-lightbox-img 0.35s $ease-out both;
+
+    &.is-fit {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      cursor: zoom-in;
+    }
+
+    &.is-zoomed {
+      max-width: none;
+      max-height: none;
+      cursor: zoom-out;
+    }
+  }
+
+  // Round glass buttons (close, arrows, zoom bar share the look).
+  &__btn,
+  &__zoom,
+  &__counter {
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.06);
+    color: #f4f2ee;
+  }
+
+  &__btn {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      color 0.2s ease;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover {
+      border-color: var(--accent-fill);
+      color: var(--accent-fill);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--accent-fill);
+      outline-offset: 2px;
+    }
+  }
+
+  &__close {
+    top: 16px;
+    right: 16px;
+  }
+
+  &__arrow {
+    top: 50%;
+    transform: translateY(-50%);
+
+    &--prev {
+      left: 20px;
+    }
+
+    &--next {
+      right: 20px;
+    }
+
+    @include below($bp-sm) {
+      top: auto;
+      bottom: 16px;
+      transform: none;
+
+      &--prev {
+        left: 12px;
+      }
+
+      &--next {
+        right: 12px;
+      }
+    }
+  }
+
+  &__counter {
+    position: absolute;
+    bottom: 22px;
+    left: 50%;
+    margin: 0;
+    padding: 6px 14px;
+    border-radius: 999px;
+    transform: translateX(-50%);
+    font: 500 11px/1.4 var(--ff-mono);
+    letter-spacing: 0.12em;
+  }
+
+  &__zoom {
+    position: absolute;
+    right: 20px;
+    bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 8px;
+    border-radius: 999px;
+
+    @include below($bp-sm) {
+      display: none;
+    }
+
+    button {
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+
+      svg {
+        width: 15px;
+        height: 15px;
+      }
+
+      &:hover:not(:disabled) {
+        color: var(--accent-fill);
+      }
+
+      &:disabled {
+        opacity: 0.35;
+        cursor: default;
+      }
+    }
+
+    span {
+      min-width: 46px;
+      font: 500 11.5px/1 var(--ff-mono);
+      text-align: center;
+    }
+  }
+}
+
+@keyframes v8-lightbox-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes v8-lightbox-img {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v8-lightbox,
+  .v8-lightbox__img {
+    animation: none;
+  }
+}

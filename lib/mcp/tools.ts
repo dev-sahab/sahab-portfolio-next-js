@@ -101,7 +101,8 @@ const projectFields = {
   tags: z.array(z.string().min(1).max(40)).max(20).optional(),
   liveUrl: z.string().url().max(500).optional(),
   githubUrl: z.string().url().max(500).optional(),
-  coverImage: z.string().url().max(1000).optional().describe('Image URL (Cloudinary)'),
+  coverImage: z.string().url().max(1000).optional().describe('Feature image URL (Cloudinary)'),
+  screenshot: z.string().url().max(1000).optional().describe('Full-page screenshot URL; fades in and scrolls on hover'),
   client: z.string().max(120).optional(),
   year: z.number().int().min(2000).max(2100).optional(),
   duration: z.string().max(60).optional(),
@@ -180,7 +181,7 @@ export const TOOLS: ToolDef[] = [
       const doc = await (await findOne(ProjectModel, id_or_slug))?.populate(['category', 'tags'])
       if (!doc) throw new ToolError(`No project "${id_or_slug}".`)
       const p = plain(doc.toObject())
-      return { ...projectSummary(p), excerpt: p.excerpt, content: p.content, client: p.client, duration: p.duration, coverImage: p.coverImage, gallery: p.gallery, tags: (p.tags ?? []).map((t: Doc) => t.name) }
+      return { ...projectSummary(p), excerpt: p.excerpt, content: p.content, client: p.client, duration: p.duration, coverImage: p.coverImage, screenshot: p.screenshot, gallery: p.gallery, tags: (p.tags ?? []).map((t: Doc) => t.name) }
     },
   },
   {
@@ -197,6 +198,7 @@ export const TOOLS: ToolDef[] = [
         liveUrl: httpOnly(args.liveUrl),
         githubUrl: httpOnly(args.githubUrl),
         coverImage: httpOnly(args.coverImage),
+        screenshot: httpOnly(args.screenshot),
         published: args.published === true,
         slug: await uniqueSlug(ProjectModel, args.title),
         category: await resolveCategory(args.category, 'project'),
@@ -221,7 +223,7 @@ export const TOOLS: ToolDef[] = [
       const set: Doc = { ...changes }
       if ('category' in set) set.category = await resolveCategory(set.category, 'project')
       if ('tags' in set) set.tags = await resolveTagIds(set.tags, 'project')
-      for (const k of ['liveUrl', 'githubUrl', 'coverImage']) if (k in set) set[k] = httpOnly(set[k])
+      for (const k of ['liveUrl', 'githubUrl', 'coverImage', 'screenshot']) if (k in set) set[k] = httpOnly(set[k])
       doc.set(set)
       await doc.save()
       revalidateProjects()

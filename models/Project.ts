@@ -7,6 +7,8 @@ const ProjectSchema = new Schema({
   excerpt: { type: String, required: true },
   content: { type: String, default: '' },
   coverImage: { type: String },
+  // Full-page capture: fades in over the cover on hover and scrolls (optional).
+  screenshot: { type: String },
   gallery: [{ type: String }],
   tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }],
   liveUrl: { type: String },

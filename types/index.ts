@@ -22,6 +22,7 @@ export interface Project {
   excerpt: string
   content: string
   coverImage?: string
+  screenshot?: string
   gallery?: string[]
   tags: Tag[]
   liveUrl?: string

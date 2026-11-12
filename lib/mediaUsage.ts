@@ -14,7 +14,7 @@ export interface MediaReference {
 export async function getAllReferencedUrls(): Promise<Map<string, MediaReference[]>> {
   await connectDB()
   const [projects, posts, testimonials] = await Promise.all([
-    Project.find({}, 'title coverImage gallery').lean(),
+    Project.find({}, 'title coverImage screenshot gallery').lean(),
     BlogPost.find({}, 'title coverImage').lean(),
     Testimonial.find({}, 'name avatar').lean(),
   ])
@@ -29,6 +29,7 @@ export async function getAllReferencedUrls(): Promise<Map<string, MediaReference
 
   ;(projects as any[]).forEach(p => {
     add(p.coverImage, { type: 'project', id: String(p._id), title: p.title })
+    add(p.screenshot, { type: 'project', id: String(p._id), title: p.title })
     ;(p.gallery || []).forEach((g: string) => add(g, { type: 'project', id: String(p._id), title: p.title }))
   })
   ;(posts as any[]).forEach(p => add(p.coverImage, { type: 'blog', id: String(p._id), title: p.title }))

@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
@@ -10,6 +9,7 @@ import Reveal from '@/components/v8/ui/Reveal'
 import TechIcon from '@/components/v8/ui/TechIcon'
 import { ButtonLink } from '@/components/v8/ui/Button'
 import ProjectShowcase from '@/components/v8/pages/projects/ProjectShowcase'
+import GalleryLightbox from '@/components/v8/pages/projects/GalleryLightbox'
 import { getProject, getProjects } from '@/lib/v8/data'
 import { routes } from '@/lib/v8/routes'
 import { pageMetadata, projectSchema } from '@/lib/v8/seo'
@@ -54,7 +54,7 @@ export default async function ProjectPage({ params }: Params) {
   const next = all.length > 1 && index !== -1 ? all[(index + 1) % all.length] : null
 
   const platforms = [...project.stack.map((k) => TECH[k].label), ...(project.stackExtra ?? [])]
-  const gallery = project.gallery.filter((src) => src !== project.image)
+  const gallery = project.gallery.filter((src) => src !== project.image && src !== project.screenshot)
 
   // Spec card lines ("project.json"): only the fields that exist.
   const spec: [string, string][] = [
@@ -111,7 +111,7 @@ export default async function ProjectPage({ params }: Params) {
       <section className="v8-detail" aria-label={`${project.title} screenshot`}>
         <div className="v8-container">
           <Reveal>
-            <ProjectShowcase domain={project.domain} src={project.image} alt={project.imageAlt} />
+            <ProjectShowcase domain={project.domain} src={project.image} alt={project.imageAlt} screenshot={project.screenshot} />
           </Reveal>
         </div>
       </section>
@@ -133,15 +133,7 @@ export default async function ProjectPage({ params }: Params) {
             {gallery.length > 0 && (
               <div className="v8-detail-gallery">
                 <h2 className="v8-detail-body__label">More screens</h2>
-                <ul>
-                  {gallery.map((src, i) => (
-                    <li key={src}>
-                      <a href={src} target="_blank" rel="noopener noreferrer" aria-label={`Open screen ${i + 1} full size`}>
-                        <Image src={src} alt={`${project.title} website, page ${i + 1}, built with ${platforms[0] ?? 'custom code'}`} width={1200} height={900} sizes="(max-width: 960px) 100vw, 560px" />
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+                <GalleryLightbox images={gallery} alts={gallery.map((_, i) => `${project.title} website, page ${i + 1}, built with ${platforms[0] ?? 'custom code'}`)} />
               </div>
             )}
           </article>

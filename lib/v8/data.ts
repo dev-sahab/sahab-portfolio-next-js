@@ -75,6 +75,7 @@ function toProject(doc: Doc): ProjectDetail {
     stackExtra: extra,
     domain: hostOf(liveUrl) ?? doc.slug,
     image: safeUrl(doc.coverImage) ?? '',
+    screenshot: safeUrl(doc.screenshot),
     imageAlt: `${doc.title} website${keys.length ? `, built with ${keys.map((k) => TECH_LABELS[k]).join(' and ')}` : ''}`,
     caseStudyHref: routes.project(doc.slug),
     liveUrl,

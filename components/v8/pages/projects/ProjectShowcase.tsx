@@ -4,7 +4,7 @@ import { useRef } from 'react'
 import BrowserFrame, { type BrowserFrameHandle } from '../../sections/work/BrowserFrame'
 
 /** Large browser-framed screenshot that scrolls the full page on hover/focus (same as the cards). */
-export default function ProjectShowcase({ domain, src, alt }: { domain: string; src: string; alt: string }) {
+export default function ProjectShowcase({ domain, src, alt, screenshot }: { domain: string; src: string; alt: string; screenshot?: string }) {
   const frame = useRef<BrowserFrameHandle>(null)
   return (
     <div
@@ -16,7 +16,7 @@ export default function ProjectShowcase({ domain, src, alt }: { domain: string; 
       onFocus={() => frame.current?.scrollDown()}
       onBlur={() => frame.current?.scrollBack()}
     >
-      <BrowserFrame ref={frame} domain={domain} src={src} alt={alt} priority />
+      <BrowserFrame ref={frame} domain={domain} src={src} alt={alt} screenshot={screenshot} priority />
     </div>
   )
 }

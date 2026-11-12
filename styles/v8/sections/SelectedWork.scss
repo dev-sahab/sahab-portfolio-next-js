@@ -278,6 +278,32 @@
     object-fit: cover;
     object-position: top;
     will-change: transform;
+    transition: opacity 0.35s ease;
+  }
+
+  // Feature image + full-page screenshot: the feature fills the frame at
+  // rest; on hover (.is-full, set by BrowserFrame) it fades out and the
+  // screenshot fades in on top, then scrolls.
+  &__shot--feature {
+    height: 100%;
+  }
+
+  &__shot--full {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-height: 0;
+    opacity: 0;
+  }
+
+  &__viewport.is-full {
+    .v8-browser__shot--feature {
+      opacity: 0;
+    }
+
+    .v8-browser__shot--full {
+      opacity: 1;
+    }
   }
 }
 

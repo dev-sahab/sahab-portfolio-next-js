@@ -61,9 +61,11 @@ export interface Project {
   stack: TechKey[]
   /** Text shown in the fake browser address bar. */
   domain: string
-  /** Full-page screenshot; scrolls inside the frame on hover. */
+  /** Feature image shown in the browser frame (a tall full-page capture also works and scrolls itself). */
   image: string
   imageAlt: string
+  /** Optional full-page screenshot: fades in over `image` on hover and scrolls. */
+  screenshot?: string
   caseStudyHref: string
   liveUrl?: string
   featured?: boolean

@@ -112,7 +112,7 @@ All models: `models/*.ts`, guarded with `models.X || model('X', Schema)` (Mongoo
 | title, slug | String | slug unique |
 | category | ObjectId → Category | required |
 | excerpt, content | String | content is Markdown/case-study body |
-| coverImage, gallery | String / String[] | Cloudinary URLs |
+| coverImage, screenshot, gallery | String / String / String[] | Cloudinary URLs. `screenshot` is an optional full-page capture that fades in over the cover on hover and scrolls |
 | tags | ObjectId[] → Tag | |
 | liveUrl, githubUrl | String | |
 | featured, published | Boolean | published default `true` |

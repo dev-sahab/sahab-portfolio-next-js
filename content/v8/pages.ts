@@ -11,17 +11,17 @@ import { faqs } from './faq'
 export const aboutPage = {
   title: 'Five years of *shipping*\n*websites that work.*' satisfies HeadingText,
   description:
-    'Sahab Uddin is a freelance web developer and WordPress developer with 300+ WordPress, Webflow and web app projects and a 5.0 rating from 200+ reviews.',
+    'Sahab Uddin is a freelance web developer for WordPress, Webflow and Next.js. 300+ projects since 2021, a 5.0 rating from 200+ reviews, and fixed quotes up front.',
   story: [
-    'I wrote my first page in HTML and CSS in 2018, self-taught, and kept going. By 2021 I was building WordPress sites for clients on Upwork and Fiverr, and I still do: 300+ projects later, with a 5.0 average across 200+ reviews.',
-    'Along the way I worked as a web developer at Webeliyo and as a WordPress developer at TechNuxt, turning designs into Elementor sites, customizing WooCommerce stores and cutting load times by roughly 30%. Since 2025 I’ve focused on CMS builds: 120+ client projects so far, including 50+ Webflow sites.',
-    'What hasn’t changed is how I work: one point of contact, a fixed price before anything starts, and a site your team can actually edit. For UI/UX design, SEO and marketing I bring in trusted partners, so you never have to manage five freelancers.',
+    'I wrote my first web page in 2018, in plain HTML and CSS, teaching myself from tutorials. In 2021 I took my first paid WordPress project on Upwork. Five years and 300+ projects later, clients from around the world still find me there, on Fiverr, and more and more through referrals.',
+    'Freelancing is only half of where I learned the job. I’ve also worked inside agency teams, where I picked up the habits clients never see but always feel: tidy builds, real testing on real phones, and pages that load fast. That agency work is also where I built 50+ Webflow sites.',
+    'Your project gets a fixed timeline when you get the quote, and I keep to it. You talk to me directly, not an account manager, and you hear back within 24 hours. For UI/UX design, SEO and marketing I bring in partners I trust, so you still deal with one person.',
   ],
-  /** The strip under the About hero (rendered with a status dot, logos and chips). */
+  /** The strip under the About hero: a short line and a quiet note per item. */
   now: {
-    focus: 'Websites that win clients',
+    focus: 'Sites that bring in work',
     focusNote: 'Business sites, online stores and web apps',
-    availability: 'Available for new projects',
+    availability: 'Taking new projects',
     availabilityNote: 'Replies within 24 hours',
     stack: 'WordPress, Webflow and Next.js',
     stackNote: 'Plus WooCommerce, Elementor and React',
@@ -31,19 +31,19 @@ export const aboutPage = {
   principles: [
     {
       title: 'Your requirements come first',
-      text: 'Before any price, I make sure I understand your business, your goals and what the site actually has to do.',
+      text: 'Before I quote, I ask about your business, your customers and what the site has to do for them. A pretty site that brings in nothing is a failed project.',
     },
     {
       title: 'Then a fixed price, before any work',
-      text: 'Once the scope is clear, you get the full cost up front, whether you brought a Figma file or just the idea.',
+      text: 'Once the scope is clear you get one number and a delivery date, whether you sent a Figma file or a two-line idea. No hourly meter running.',
     },
     {
       title: 'Fast, and easy for your team to edit',
-      text: 'Clean code and on-page SEO in every build, set up so your team can change text, images and pages without touching code.',
+      text: 'Clean code, compressed images and on-page SEO in every build, set up so your team can change text, images and pages without calling me.',
     },
     {
       title: 'Still here after launch',
-      text: 'You review everything on a staging link first, and I stay on call for fixes once the site is live.',
+      text: 'You review everything on a staging link before launch, and if something breaks after it goes live, I fix it.',
     },
   ],
 }

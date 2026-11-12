@@ -55,7 +55,7 @@ export default function ProjectCard({ project, variant = 'standard', delay = 0, 
           }}
           onMouseLeave={() => cursor.current?.classList.remove('is-visible')}
         >
-          <BrowserFrame ref={frame} domain={project.domain} src={project.image} alt={project.imageAlt} priority={featured} />
+          <BrowserFrame ref={frame} domain={project.domain} src={project.image} alt={project.imageAlt} screenshot={project.screenshot} priority={featured} />
           <span ref={cursor} className="v8-project__cursor" aria-hidden="true">
             <ArrowUpRight />
             View
