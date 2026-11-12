@@ -29,7 +29,7 @@ One codebase, one database, one deploy — not two products.
 | **Contributor** | Writes blog drafts only — an editor/admin must publish. |
 | **Subscriber** | View-only dashboard access. |
 
-Full permission matrix: [`lib/permissions.ts`](./lib/permissions.ts), documented in [SECURITY.md](./SECURITY.md#authorization-model).
+Full permission matrix: [`lib/permissions.ts`](../lib/permissions.ts), documented in [SECURITY.md](./SECURITY.md#authorization-model).
 
 ## 4. Public site — features
 

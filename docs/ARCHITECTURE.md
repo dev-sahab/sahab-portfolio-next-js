@@ -1,15 +1,15 @@
 # Architecture
 
-> System structure and data model reference. For product context see [PRD.md](./PRD.md); for day-to-day repo rules (commands, gotchas, styling conventions) see [CLAUDE.md](./CLAUDE.md); for coding patterns/conventions see [RULES.md](./RULES.md); for auth/permissions detail see [SECURITY.md](./SECURITY.md).
+> System structure and data model reference. For product context see [PRD.md](./PRD.md); for day-to-day repo rules (commands, gotchas, styling conventions) see [CLAUDE.md](../CLAUDE.md); for coding patterns/conventions see [RULES.md](./RULES.md); for auth/permissions detail see [SECURITY.md](./SECURITY.md).
 
 ## 1. Stack at a glance
 
 | Layer | Choice | Version |
 |---|---|---|
-| Framework | Next.js (App Router) | 16.2.11 — **webpack**, not Turbopack (see `CLAUDE.md`) |
+| Framework | Next.js (App Router) | 16.4.6 — **webpack**, not Turbopack (see `CLAUDE.md`) |
 | UI | React | 19.2.4 |
 | Language | TypeScript | ^5 |
-| Database | MongoDB Atlas via Mongoose | mongoose ^9.8.0 |
+| Database | MongoDB Atlas via Mongoose | mongoose ^9.12.1 |
 | Auth | NextAuth (Auth.js) v5, credentials provider, JWT sessions | ^5.0.0-beta.32 |
 | Styling | Plain global SCSS (no CSS Modules; Tailwind is only used for its preflight reset in `app/globals.css`) | sass ^1.102.0 |
 | Rich text editor | react-quill-new | ^3.8.3 |

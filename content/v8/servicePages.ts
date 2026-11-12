@@ -5,7 +5,7 @@ import type { FaqItem, HeadingText, TechKey } from './types'
  * phrase so Google knows which page answers which query. The /services hub
  * links here. Facts come from the rest of the site (300+ projects, 50+
  * Webflow builds, 5.0 from 200+ reviews). Prices are Sahab's starting
- * ranges in USD (MEMORY.md, 2026-11-13); every project still gets a fixed quote.
+ * ranges in USD (docs/MEMORY.md, 2026-11-13); every project still gets a fixed quote.
  */
 export interface ServicePage {
   slug: string

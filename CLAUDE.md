@@ -8,18 +8,18 @@ This file (always loaded) covers day-to-day repo conventions and platform gotcha
 
 | File | Read it when the task involves... |
 |---|---|
-| [`PRD.md`](./PRD.md) | Understanding what this product is/does, who it's for, feature scope, or whether something is in/out of scope. |
-| [`ARCHITECTURE.md`](./ARCHITECTURE.md) | System structure, the full data model (every Mongoose schema's fields), env vars, deployment topology, or the request lifecycle. |
-| [`RULES.md`](./RULES.md) | Writing new code — conventions, patterns to follow, tech-choice rationale, anti-patterns already caught. |
-| [`DESIGN.md`](./DESIGN.md) | Touching styling, colors, typography, spacing, grids, or animations — the actual token values and conventions, not just "use CSS vars." |
-| [`SECURITY.md`](./SECURITY.md) | Writing/reviewing an API route, auth, permissions, or anything handling user input — includes a concrete pre-ship checklist. |
-| [`MEMORY.md`](./MEMORY.md) | Understanding *why* something is the way it is — dated log of past fixes/decisions and the reasoning behind them. |
+| [`docs/PRD.md`](./docs/PRD.md) | Understanding what this product is/does, who it's for, feature scope, or whether something is in/out of scope. |
+| [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) | System structure, the full data model (every Mongoose schema's fields), env vars, deployment topology, or the request lifecycle. |
+| [`docs/RULES.md`](./docs/RULES.md) | Writing new code — conventions, patterns to follow, tech-choice rationale, anti-patterns already caught. |
+| [`docs/DESIGN.md`](./docs/DESIGN.md) | Touching styling, colors, typography, spacing, grids, or animations — the actual token values and conventions, not just "use CSS vars." |
+| [`docs/SECURITY.md`](./docs/SECURITY.md) | Writing/reviewing an API route, auth, permissions, or anything handling user input — includes a concrete pre-ship checklist. |
+| [`docs/MEMORY.md`](./docs/MEMORY.md) | Understanding *why* something is the way it is — dated log of past fixes/decisions and the reasoning behind them. |
 
-Keep these current: if a change alters something one of these files documents, update that file and add a dated entry to `MEMORY.md` in the same piece of work — don't leave it to be rediscovered from a diff later.
+Keep these current: if a change alters something one of these files documents, update that file and add a dated entry to `docs/MEMORY.md` in the same piece of work — don't leave it to be rediscovered from a diff later.
 
 ## ⚠️ Next.js version warning
 
-This repo runs **Next.js 16.2.11** and **React 19.2.4** — both newer than your training data, with breaking API/convention changes from the Next.js you know. Before writing code that touches routing, middleware, metadata, or config, check `node_modules/next/dist/docs/` for the current behavior rather than assuming.
+This repo runs **Next.js 16.4.6** and **React 19.2.4** — both newer than your training data, with breaking API/convention changes from the Next.js you know. Before writing code that touches routing, middleware, metadata, or config, check `node_modules/next/dist/docs/` for the current behavior rather than assuming.
 
 The most important breaking change already hit in this repo: **`middleware.ts` has been renamed/replaced by `proxy.ts`**, which exports a `proxy` function (not `middleware`). See `proxy.ts` at the repo root — it wraps NextAuth's `auth` and gates `/dashboard/:path*`.
 
@@ -56,7 +56,7 @@ This is a single Next.js App Router project serving three things under one deplo
 - **`app/(dashboard)/dashboard/`** — an admin CMS for managing all site content, gated by `proxy.ts` + `lib/auth.ts`.
 - **`app/api/`** — REST-style route handlers backing the dashboard's CRUD calls (each resource has a `route.ts` list/create handler and a `[id]/route.ts` get/update/delete handler).
 
-The public site lives in **`app/(v8)/`** with its own frame (`components/v8/layout/V8Shell.tsx`: fonts, providers, header, footer), `components/v8/` (layout/sections/ui/pages/command/consent/providers), static copy in `content/v8/`, helpers in `lib/v8/`, and `v8-`-prefixed styles under `styles/v8/` with tokens scoped to `.v8`. Every public URL comes from `lib/v8/routes.ts` (`V8_BASE = ''`), CMS data from `lib/v8/data.ts`, metadata/JSON-LD from `lib/v8/seo.ts`. Old URLs (`/portfolio…`, `/get-quote`, `/v8…`) 308-redirect in `next.config.ts`. See the 2026-11-12 entries in `MEMORY.md`.
+The public site lives in **`app/(v8)/`** with its own frame (`components/v8/layout/V8Shell.tsx`: fonts, providers, header, footer), `components/v8/` (layout/sections/ui/pages/command/consent/providers), static copy in `content/v8/`, helpers in `lib/v8/`, and `v8-`-prefixed styles under `styles/v8/` with tokens scoped to `.v8`. Every public URL comes from `lib/v8/routes.ts` (`V8_BASE = ''`), CMS data from `lib/v8/data.ts`, metadata/JSON-LD from `lib/v8/seo.ts`. Old URLs (`/portfolio…`, `/get-quote`, `/v8…`) 308-redirect in `next.config.ts`. See the 2026-11-12 entries in `docs/MEMORY.md`.
 
 `sahab-site/` at the repo root is the **original static HTML/CSS/JS template** this app was rebuilt from — not part of the running app, but the authoritative design/animation/markup reference when a page needs to match the original template exactly (check there before guessing at intended styling/behavior). Its `scss/` folder is also the origin of most class names now used in `app/globals.css` and the component-level `.scss` files (see Styling below).
 
@@ -79,7 +79,7 @@ Five WordPress-analogous roles (`models/User.ts`'s `UserRole`): `administrator`,
 
 Route handlers all follow the same shape: pull `role` off `session.user.role`, then gate with `can(role, '<resource>.<read|write>')` (or `canWriteContent` for blog). `components/dashboard/Sidebar.tsx` filters nav items the same way — each entry can declare a `perm` string checked against the logged-in user's role. Note this only covers the Sidebar and the API layer: a dashboard *page* itself (e.g. `/dashboard/settings`) doesn't redirect a role that can't act on it, it just gets a 403 from the API on submit. **`proxy.ts` does not cover `/api/*`** (its matcher is `/dashboard/:path*` only) — every route handler must do its own `auth()`/`can()` check, there's no middleware safety net.
 
-Beyond the auth/permission gate, every `route.ts` follows one more shape, added during a 2026-08-23 security pass (full detail: `SECURITY.md`): wrap client JSON with `stripOperatorKeys()` (`lib/sanitizeInput.ts`) before it reaches a Mongoose write, return errors via `apiError(e, label)` (`lib/apiError.ts`) instead of `NextResponse.json({ error: e.message })`, and force the published-only filter for any caller that isn't authenticated with `<resource>.read` on a list/detail GET. Follow this shape for any new route rather than the older pattern still visible in git history.
+Beyond the auth/permission gate, every `route.ts` follows one more shape, added during a 2026-08-23 security pass (full detail: `docs/SECURITY.md`): wrap client JSON with `stripOperatorKeys()` (`lib/sanitizeInput.ts`) before it reaches a Mongoose write, return errors via `apiError(e, label)` (`lib/apiError.ts`) instead of `NextResponse.json({ error: e.message })`, and force the published-only filter for any caller that isn't authenticated with `<resource>.read` on a list/detail GET. Follow this shape for any new route rather than the older pattern still visible in git history.
 
 ### Media / image handling
 Every Cloudinary upload (via `app/api/upload/route.ts`) creates a matching `Media` document (title/alt/caption/dimensions/uploader) — the Media Library (`/dashboard/media`) is just a browser over that collection, not a separate system. Filenames are derived from the original upload name + a random suffix (not Cloudinary's default hash id).
@@ -126,7 +126,7 @@ Every component/page has its own `.scss` file, but none of them sit next to thei
 A handful of genuinely data-driven inline styles remain by design and should **not** be converted to classes: per-item colors/values computed from CMS data (e.g. `dashboard/page.tsx`'s stat-card icon color), tree-depth indentation in `CategoryCombobox`/`TaxonomyManager`, and CSS custom properties set from props (`Marquee`'s `--ms` speed, `components/site/SkillBar.tsx`'s `--w`). That last one is half CSS, half JS: `globals.css`'s `.skill-fill` starts at `width: 0` and only animates to `var(--w)` once a `.go` class is present, which `SkillBar.tsx` adds via an `IntersectionObserver` on scroll-into-view — reading only one of the two files makes it look like the bar does nothing.
 
 ### MCP server (Claude / ChatGPT connector)
-`POST /api/mcp` is a stateless MCP server (tools in `lib/mcp/tools.ts`) behind an OAuth 2.1 server (`lib/oauth.ts`, `app/api/oauth/*`, consent page `app/oauth/authorize`). Each tool re-checks `can()`/`canWriteContent()` with the token user's current role; there are deliberately no delete tools and creates default to drafts. `/oauth/*` has its own CSP (`form-action` allows https so the Allow form can redirect back to the AI app). Connections: `/dashboard/connected-apps`. Details: the 2026-11-12 MCP entry in `MEMORY.md`.
+`POST /api/mcp` is a stateless MCP server (tools in `lib/mcp/tools.ts`) behind an OAuth 2.1 server (`lib/oauth.ts`, `app/api/oauth/*`, consent page `app/oauth/authorize`). Each tool re-checks `can()`/`canWriteContent()` with the token user's current role; there are deliberately no delete tools and creates default to drafts. `/oauth/*` has its own CSP (`form-action` allows https so the Allow form can redirect back to the AI app). Connections: `/dashboard/connected-apps`. Details: the 2026-11-12 MCP entry in `docs/MEMORY.md`.
 
 ### Deployment
 Vercel (region `sin1`, see `vercel.json`), MongoDB Atlas, Cloudinary for image storage, Resend for transactional email.

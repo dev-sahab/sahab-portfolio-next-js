@@ -6,6 +6,10 @@
 
 ---
 
+### 2026-11-13 — Docs moved to docs/, dependency security pass
+
+PRD, ARCHITECTURE, RULES, DESIGN, SECURITY and MEMORY now live in `docs/`. CLAUDE.md, AGENTS.md and README.md stay at the root on purpose: Claude Code only auto-loads a root CLAUDE.md, AGENTS.md is read by other AI tools from the root, and GitHub shows the root README. Same pass: Next.js 16.2.11 → 16.4.6 and Mongoose 9.12.1 for critical advisories, minimum versions raised in `package.json` so a fresh install can't fall back below the fixed releases, and length caps on the public contact/quote models (details in `docs/SECURITY.md` audit log).
+
 ### 2026-11-13 — Project screenshot field, gallery lightbox, About copy
 
 `Project` has an optional `screenshot` (full-page capture) next to `coverImage`. The card and project showcase show the cover, and on hover the screenshot fades in and scrolls; with no screenshot, a tall cover still scrolls itself as before. It is in the dashboard forms, the MCP tools and `lib/mediaUsage.ts`, so a screenshot in use can't be deleted. Project-page gallery is now `GalleryLightbox` (thumbnails open a full-screen viewer with arrows, keys and zoom steps ported from the old site; zoom is relative to fit-width so the first click fills the width). Alts are passed as a string array because the page is a Server Component and can't pass a function. About timeline: kept the committed order (PIXELVEGA v5, TechNuxt, Webeliyo, Freelance v2, 2018); both v5 and v2 are `current` (highlighted) because both are ongoing. Local gotcha: `npm run build` fails in this folder because the path contains an apostrophe (`Shahab's`), which breaks Next's metadata-route loader; Vercel is unaffected. Build a copy in a path without `'` to test locally.

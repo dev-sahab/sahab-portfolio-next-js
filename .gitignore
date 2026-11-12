@@ -6,8 +6,6 @@ node_modules/
 out/
 
 # Environment
-.env
-.env.local
 .env.*.local
 
 # Logs
@@ -18,7 +16,6 @@ npm-debug.log*
 Thumbs.db
 
 # IDE
-.vscode/
 .idea/
 
 # Ignore the following directories
@@ -26,3 +23,4 @@ Thumbs.db
 /html-template
 # TypeScript incremental build cache
 *.tsbuildinfo
+config.bat

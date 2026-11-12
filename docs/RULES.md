@@ -1,6 +1,6 @@
 # Engineering Rules
 
-> How to write code that fits this codebase. For system structure see [ARCHITECTURE.md](./ARCHITECTURE.md); for security-specific rules see [SECURITY.md](./SECURITY.md); for design tokens see [DESIGN.md](./DESIGN.md); for day-to-day repo gotchas (commands, Windows/Turbopack quirks) see [CLAUDE.md](./CLAUDE.md) — read that one first, it overrides defaults.
+> How to write code that fits this codebase. For system structure see [ARCHITECTURE.md](./ARCHITECTURE.md); for security-specific rules see [SECURITY.md](./SECURITY.md); for design tokens see [DESIGN.md](./DESIGN.md); for day-to-day repo gotchas (commands, Windows/Turbopack quirks) see [CLAUDE.md](../CLAUDE.md) — read that one first, it overrides defaults.
 
 ## 1. Golden rules
 
