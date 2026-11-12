@@ -28,7 +28,7 @@ export const timeline: TimelineEntry[] = [
       'Turned designs into responsive Elementor websites, customized WooCommerce stores, themes and plugins, and cut load times by roughly 30%.',
   },
   {
-    period: '2021 – 2025',
+    period: '2021 – 2023',
     role: 'Web Developer',
     version: 'v3',
     org: 'Webeliyo',
