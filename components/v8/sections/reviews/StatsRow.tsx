@@ -55,7 +55,10 @@ export default function StatsRow({ stats }: { stats: Stat[] }) {
       {stats.map((stat, i) => (
         <div key={stat.label} className="v8-stats__item v8-spotlight">
           <dt className="v8-sr-only">{stat.label}</dt>
-          <dd className="v8-stats__value" aria-label={`${stat.value}${stat.suffix ?? ''}`}>
+          {/* The counting digits are hidden from assistive tech; the final value is read instead
+              (aria-label isn't allowed on <dd>, so it's a visually hidden span). */}
+          <dd className="v8-stats__value">
+            <span className="v8-sr-only">{`${stat.value}${stat.suffix ?? ''}`}</span>
             <span aria-hidden="true">{display[i]}</span>
             {stat.suffix && <span className="v8-stats__suffix" aria-hidden="true">{stat.suffix}</span>}
           </dd>
