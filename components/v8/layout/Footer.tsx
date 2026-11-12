@@ -31,7 +31,7 @@ export default function Footer() {
           <Reveal className="v8-footer__brand">
             <Logo />
             <p className="v8-footer__tagline">
-              Freelance web developer building fast, SEO-friendly websites and web apps on WordPress, Webflow and Next.js for businesses and agencies. Fixed quotes, a reply within 24 hours, and support after launch.
+              I build fast websites and web apps on WordPress, Webflow and Next.js for small businesses and agencies. You get a fixed quote up front, a reply within a day, and I’m still around after launch.
             </p>
             <ul className="v8-footer__socials">
               {socials.map(({ kind, label, href }) => {

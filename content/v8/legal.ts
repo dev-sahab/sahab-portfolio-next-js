@@ -93,7 +93,7 @@ export const privacyPolicy: LegalDoc = {
       body: [
         {
           list: [
-            '**Replying to your enquiry and preparing a quote:** because you asked me to (steps before a possible contract).',
+            '**Replying to your inquiry and preparing a quote:** because you asked me to (steps before a possible contract).',
             '**Working on your project** if you go ahead: to perform our agreement.',
             '**Keeping the site and forms secure and spam-free:** my legitimate interest in running a safe website, which doesn’t override your privacy because only the minimum is processed, briefly.',
             ...(usesTracking ? ['**Analytics and advertising measurement:** your consent, which you can withdraw at any time in the cookie settings.'] : []),
