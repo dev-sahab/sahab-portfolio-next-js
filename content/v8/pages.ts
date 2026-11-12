@@ -1,4 +1,4 @@
-import type { FaqItem, HeadingText, TechKey } from './types'
+import type { FaqItem, HeadingText } from './types'
 import { faqs } from './faq'
 
 /**
@@ -22,7 +22,9 @@ export const aboutPage = {
     focus: 'Websites that win clients',
     focusNote: 'Business sites, online stores and web apps',
     availability: 'Available for new projects',
-    stack: ['wordpress', 'webflow', 'nextjs'] as TechKey[],
+    availabilityNote: 'Replies within 24 hours',
+    stack: 'WordPress, Webflow and Next.js',
+    stackNote: 'Plus WooCommerce, Elementor and React',
     reach: 'Clients worldwide',
     reachNote: 'Fully remote, from first call to launch',
   },

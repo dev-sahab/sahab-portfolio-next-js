@@ -9,9 +9,6 @@ import Timeline from '@/components/v8/sections/about/Timeline'
 import ToolsMarquee from '@/components/v8/sections/tools/ToolsMarquee'
 import { aboutSection } from '@/content/v8/about'
 import { aboutPage } from '@/content/v8/pages'
-import { Globe, Target } from 'lucide-react'
-import TechIcon from '@/components/v8/ui/TechIcon'
-import { TECH } from '@/lib/v8/tech'
 import { stats } from '@/content/v8/reviews'
 import { routes } from '@/lib/v8/routes'
 import { pageMetadata, personSchema } from '@/lib/v8/seo'
@@ -27,45 +24,22 @@ export const metadata = pageMetadata({
 
 const { now } = aboutPage
 
-/** The strip under the hero: each item gets a small visual (icon, status light or logos). */
-const withIcon = (Icon: typeof Globe, title: string, note: string) => (
-  <span className="v8-now__item">
-    <Icon className="v8-now__icon" aria-hidden="true" />
-    <span className="v8-now__text">
+/** The strip under the hero: a short line and a quiet note per item (only "available" gets a status light). */
+const item = (title: string, note: string, live = false) => (
+  <span className="v8-now__text">
+    <span className={live ? 'v8-now__status' : undefined}>
+      {live && <span className="v8-now__dot" aria-hidden="true" />}
       {title}
-      <span className="v8-now__note">{note}</span>
     </span>
+    <span className="v8-now__note">{note}</span>
   </span>
 )
 
 const nowMeta = [
-  { label: 'Focus', value: withIcon(Target, now.focus, now.focusNote) },
-  {
-    label: 'Freelance',
-    value: (
-      <span className="v8-now__status">
-        <span className="v8-now__dot" aria-hidden="true" />
-        {now.availability}
-      </span>
-    ),
-  },
-  {
-    label: 'Builds with',
-    value: (
-      <span className="v8-now__chips">
-        {now.stack.map((tech) => (
-          <span key={tech} className="v8-tag">
-            <TechIcon tech={tech} size={14} />
-            {TECH[tech].label}
-          </span>
-        ))}
-      </span>
-    ),
-  },
-  {
-    label: 'Works with',
-    value: withIcon(Globe, now.reach, now.reachNote),
-  },
+  { label: 'Focus', value: item(now.focus, now.focusNote) },
+  { label: 'Freelance', value: item(now.availability, now.availabilityNote, true) },
+  { label: 'Builds with', value: item(now.stack, now.stackNote) },
+  { label: 'Works with', value: item(now.reach, now.reachNote) },
 ]
 
 export default function AboutPage() {
