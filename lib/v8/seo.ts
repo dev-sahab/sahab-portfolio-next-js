@@ -111,10 +111,11 @@ export function articleSchema(post: { title: string; excerpt: string; slug: stri
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.excerpt,
-    image: post.coverImage ? [post.coverImage] : undefined,
+    image: [post.coverImage || DEFAULT_OG_IMAGE],
     datePublished: post.publishedAt,
     dateModified: post.updatedAt,
-    author: { '@id': person['@id'], '@type': 'Person', name: site.name },
+    author: { '@id': person['@id'], '@type': 'Person', name: site.name, url: absoluteUrl(routes.about) },
+    publisher: { '@id': person['@id'] },
     mainEntityOfPage: absoluteUrl(routes.post(post.slug)),
   }
 }
@@ -146,7 +147,7 @@ export function faqSchema(items: { question: string; answer: string }[]) {
 }
 
 /** One dedicated service page (/services/<slug>). */
-export function singleServiceSchema(item: { name: string; description: string; url: string; serviceType: string }) {
+export function singleServiceSchema(item: { name: string; description: string; url: string; serviceType: string; startingPrice?: number }) {
   return {
     '@context': 'https://schema.org',
     '@type': 'Service',
@@ -156,6 +157,10 @@ export function singleServiceSchema(item: { name: string; description: string; u
     url: absoluteUrl(item.url),
     areaServed: 'Worldwide',
     provider: { '@id': person['@id'] },
+    offers:
+      item.startingPrice != null
+        ? { '@type': 'Offer', priceCurrency: 'USD', price: item.startingPrice, description: 'Starting price' }
+        : undefined,
   }
 }
 
