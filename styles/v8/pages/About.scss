@@ -6,7 +6,7 @@
 
   &__grid {
     display: grid;
-    grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 500px) minmax(0, 1fr);
     gap: 72px;
     align-items: start;
 
@@ -22,7 +22,7 @@
 
     @include below($bp-md) {
       position: static;
-      max-width: 420px;
+      max-width: 500px;
     }
   }
 

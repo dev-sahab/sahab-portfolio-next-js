@@ -37,7 +37,7 @@ export default function AboutPage() {
         <div className="v8-container v8-story__grid">
           <Reveal className="v8-story__portrait">
             <div className="v8-story__photo">
-              <Image src={aboutSection.portrait.src} alt={aboutSection.portrait.alt} fill sizes="(max-width: 960px) 100vw, 420px" preload />
+              <Image src={aboutSection.portrait.src} alt={aboutSection.portrait.alt} fill sizes="(max-width: 960px) 100vw, 500px" preload />
               <span className="v8-story__caption">Sahab Uddin · Freelance web developer</span>
             </div>
           </Reveal>
