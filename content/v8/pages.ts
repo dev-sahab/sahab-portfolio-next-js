@@ -20,7 +20,7 @@ export const aboutPage = {
   now: [
     { label: 'Now', value: 'Professional CMS Developer at PIXELVEGA' },
     { label: 'Freelance', value: 'Taking new projects' },
-    { label: 'Hours', value: 'GMT+6, overlaps UK mornings and US evenings' },
+    { label: 'Builds with', value: 'WordPress, Webflow and Next.js' },
     { label: 'Works with', value: 'Clients worldwide, remotely' },
   ],
   principles: [
