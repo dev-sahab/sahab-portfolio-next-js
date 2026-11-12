@@ -236,14 +236,28 @@
     }
   }
 
-  &__regions {
+  &__item {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  &__icon {
+    flex: none;
+    width: 16px;
+    height: 16px;
+    margin-top: 3px;
+    color: var(--accent-fill);
+  }
+
+  &__text {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 3px;
   }
 
   &__note {
-    font: 400 12.5px/1.4 var(--ff-mono);
+    font: 400 12.5px/1.45 var(--ff-sans);
     color: var(--text-muted);
   }
 }

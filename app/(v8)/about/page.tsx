@@ -9,6 +9,7 @@ import Timeline from '@/components/v8/sections/about/Timeline'
 import ToolsMarquee from '@/components/v8/sections/tools/ToolsMarquee'
 import { aboutSection } from '@/content/v8/about'
 import { aboutPage } from '@/content/v8/pages'
+import { Globe, Target } from 'lucide-react'
 import TechIcon from '@/components/v8/ui/TechIcon'
 import { TECH } from '@/lib/v8/tech'
 import { stats } from '@/content/v8/reviews'
@@ -26,9 +27,19 @@ export const metadata = pageMetadata({
 
 const { now } = aboutPage
 
-/** The strip under the hero: a live status, the platforms as logos, client regions as chips. */
+/** The strip under the hero: each item gets a small visual (icon, status light or logos). */
+const withIcon = (Icon: typeof Globe, title: string, note: string) => (
+  <span className="v8-now__item">
+    <Icon className="v8-now__icon" aria-hidden="true" />
+    <span className="v8-now__text">
+      {title}
+      <span className="v8-now__note">{note}</span>
+    </span>
+  </span>
+)
+
 const nowMeta = [
-  { label: 'Focus', value: now.focus },
+  { label: 'Focus', value: withIcon(Target, now.focus, now.focusNote) },
   {
     label: 'Freelance',
     value: (
@@ -53,18 +64,7 @@ const nowMeta = [
   },
   {
     label: 'Works with',
-    value: (
-      <span className="v8-now__regions">
-        <span className="v8-now__chips">
-          {now.regions.map((region) => (
-            <span key={region} className="v8-tag">
-              {region}
-            </span>
-          ))}
-        </span>
-        <span className="v8-now__note">{now.regionsNote}</span>
-      </span>
-    ),
+    value: withIcon(Globe, now.reach, now.reachNote),
   },
 ]
 

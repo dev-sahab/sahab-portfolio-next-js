@@ -19,11 +19,12 @@ export const aboutPage = {
   ],
   /** The strip under the About hero (rendered with a status dot, logos and chips). */
   now: {
-    focus: 'Business websites and web apps',
+    focus: 'Websites that win clients',
+    focusNote: 'Business sites, online stores and web apps',
     availability: 'Available for new projects',
     stack: ['wordpress', 'webflow', 'nextjs'] as TechKey[],
-    regions: ['US', 'UK', 'Europe'],
-    regionsNote: 'and anywhere else, remotely',
+    reach: 'Clients worldwide',
+    reachNote: 'Fully remote, from first call to launch',
   },
   principles: [
     {
