@@ -57,9 +57,9 @@
     flex-direction: column;
     gap: 20px;
 
+    // Full column width, so the text lines up with the stats row below.
     > p {
       margin: 0;
-      max-width: 620px;
       font-size: 17.5px;
       line-height: 1.7;
       color: var(--text-secondary);
